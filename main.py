@@ -3,13 +3,13 @@ from src.data_prep.data_cleaning import data_cleaning
 from src.data_prep.feature_selection import feature_selection_execution
 #from feature_extraction.feature_extraction import feature_extraction
 
-# Caricamento del dataset
+# Loading the dataset
 file_path = 'data/raw/challenge_campus_biomedico_2024.parquet'
 df = pd.read_parquet(file_path)
 
-# Visualizzazione del numero di righe e colonne del dataset
+# Displaying the number of rows and columns in the dataset
 num_rows, num_columns = df.shape
-print(f"Il DataFrame ha {num_rows} righe e {num_columns} colonne.")
+print(f"The DataFrame has {num_rows} rows and {num_columns} columns.\n")
 
 # Data Cleaning
 df = data_cleaning(df)
@@ -20,11 +20,11 @@ df = feature_selection_execution(df)
 # Feature extraction
 #df = feature_extraction(df)
 
-#df.to_csv('datasets/challenge_campus_biomedico_2024_imputed_selected_extracted.csv', index=False)
+#df.to_csv('data/raw/challenge_campus_biomedico_2024_imputed_selected_extracted.csv', index=False)
 
-# Visualizzazione del numero di righe e colonne del dataset
+# Displaying the number of rows and columns in the dataset
 num_rows, num_columns = df.shape
-print(f"Il DataFrame ha {num_rows} righe e {num_columns} colonne.")
+print(f"The DataFrame has {num_rows} rows and {num_columns} columns.")
 
 '''
 Statistiche valori mancanti dopo l'imputazione:
