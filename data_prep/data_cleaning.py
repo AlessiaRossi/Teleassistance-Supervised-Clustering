@@ -191,3 +191,32 @@ def imputate_missing_values(df) -> pd.DataFrame:
 
     return df
 
+def data_cleaning(df) -> pd.DataFrame:
+    """
+    Performs cleaning operations on the df dataset.
+    1) Imputation of missing values and removal of samples with non-zero 'data_disdetta'.
+    2) Identification and removal of outliers.
+    3) Handling of noisy data.
+    4) Removal of duplicates.
+    :param df:
+    :return:
+    """
+    # Imputation of missing values
+    df = imputate_missing_values(df)
+
+    # Removing samples with non-zero 'data_disdetta'
+    df = remove_disdette(df)
+
+    # Identifying and removing outliers from specified columns.
+    df = identify_and_remove_outliers(df, ['ora_inizio_erogazione', 'ora_fine_erogazione'])
+
+    # Handling noisy data in the specified column.
+    df = smooth_noisy_data(df, 'ora_inizio_erogazione')
+
+    # Duplicate removal
+    df = remove_duplicati(df)
+
+    # TODO: stabilire a quali features applicare 'identify_and_remove_outliers' e 'smooth_noisy_data'.
+
+    return df
+
