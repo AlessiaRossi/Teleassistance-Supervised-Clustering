@@ -79,3 +79,14 @@ def imputate_comune_residenza(df) -> pd.DataFrame:
     '''
 
     return df
+
+def check_missing_values_start(df):
+    """
+    Checks for missing values for 'ora_inizio_erogazione'.
+    :param df:
+    :return:
+    """
+    missing_start = df['ora_inizio_erogazione'].isna()
+    rows_with_start_missing = df[missing_start]
+    num_rows_with_start_missing = len(rows_with_start_missing)
+    print(f"Number of rows with 'ora_inizio_erogazione' missing: {num_rows_with_start_missing}")
