@@ -44,3 +44,12 @@ def smooth_noisy_data(df, column, window_size=3):
         df[column] = df[column].rolling(window=window_size, min_periods=1).mean()
 
     return df
+
+def remove_duplicati(df) -> pd.DataFrame:
+    """
+    Removes duplicates from dataset df.
+    :param df:
+    :return:
+    """
+    df.drop_duplicates(inplace=True)
+    return df
