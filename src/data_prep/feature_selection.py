@@ -82,6 +82,18 @@ def remove_data_disdetta(df) -> pd.DataFrame:
     df.drop(columns=['data_disdetta'], inplace=True)
     return df
 
+def clean_codice_struttura(df, colonna='codice_struttura_erogazione'):
+    """
+    Cleans the values in the specified column by removing everything following the period, if any.
+    :param df: DataFrame to operate on
+    :param colonna: Name of column to clean.
+    :return: DataFrame with the values in the specified column cleaned
+    """
+    # Use a lambda function to divide the value based on the point and take the first element
+    df[colonna] = df[colonna].apply(lambda x: str(x).split('.')[0])
+    # df.to_csv('df_cod_strut_pulito.csv', index=False)
+    return df
+
 
 def feature_selection_execution(df) -> pd.DataFrame:
     '''
