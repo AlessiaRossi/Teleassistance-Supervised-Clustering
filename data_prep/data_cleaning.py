@@ -80,6 +80,17 @@ def imputate_comune_residenza(df) -> pd.DataFrame:
 
     return df
 
+def check_missing_values_same_row(df):
+    """
+    Checks whether the missing values for 'ora_inizio_erogazione' and 'ora_fine_erogazione' are at the same rows.
+    :param df:
+    :return:
+    """
+    missing_both = df['ora_inizio_erogazione'].isna() & df['ora_fine_erogazione'].isna()
+    rows_with_both_missing = df[missing_both]
+    num_rows_with_both_missing = len(rows_with_both_missing)
+    print(f"Number of rows with 'ora_inizio_erogazione' and 'ora_fine_erogazione' missing: {num_rows_with_both_missing}")
+
 def check_missing_values_start(df):
     """
     Checks for missing values for 'ora_inizio_erogazione'.
@@ -101,3 +112,4 @@ def check_missing_values_end(df):
     rows_with_end_missing = df[missing_end]
     num_rows_with_end_missing = len(rows_with_end_missing)
     print(f"Number of rows with 'ora_fine_erogazione' missing: {num_rows_with_end_missing}")
+
