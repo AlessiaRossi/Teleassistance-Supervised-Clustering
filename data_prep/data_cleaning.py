@@ -90,3 +90,14 @@ def check_missing_values_start(df):
     rows_with_start_missing = df[missing_start]
     num_rows_with_start_missing = len(rows_with_start_missing)
     print(f"Number of rows with 'ora_inizio_erogazione' missing: {num_rows_with_start_missing}")
+
+def check_missing_values_end(df):
+    """
+    Check for missing values for 'ora_fine_erogazione'.
+    :param df:
+    :return:
+    """
+    missing_end = df['ora_fine_erogazione'].isna()
+    rows_with_end_missing = df[missing_end]
+    num_rows_with_end_missing = len(rows_with_end_missing)
+    print(f"Number of rows with 'ora_fine_erogazione' missing: {num_rows_with_end_missing}")
