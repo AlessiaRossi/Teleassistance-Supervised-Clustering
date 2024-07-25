@@ -34,13 +34,13 @@ def print_details_corrections(df, codice, descrizione, gruppi_codice, gruppi_des
             codici_associati = df[df[descrizione] == desc][codice].unique()
             print(f"The description '{desc}' is associated with {num_cod} codes: {codici_associati}")
 
+
 def remove_columns_with_unique_correlation(df, coppie_colonne) -> pd.DataFrame:
     '''
     Removes columns with unique correlation
     :param df:
     :return:
     '''
-
     coppie_rimosse = []
     for codice, descrizione in coppie_colonne:
         if codice in df.columns and descrizione in df.columns:
@@ -64,3 +64,12 @@ def remove_columns_with_unique_correlation(df, coppie_colonne) -> pd.DataFrame:
     coppie_colonne_aggiornate = [coppia for coppia in coppie_colonne if coppia not in coppie_rimosse]
 
     return df, coppie_colonne_aggiornate
+
+def remove_data_disdetta(df) -> pd.DataFrame:
+    """
+    Removes samples with non-zero 'data_disdetta'.
+    :param df:
+    :return: df without samples with non-zero 'data_disdetta'.
+    """
+    df.drop(columns=['data_disdetta'], inplace=True)
+    return df
