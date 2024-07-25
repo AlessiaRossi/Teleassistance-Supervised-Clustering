@@ -152,3 +152,42 @@ def imputate_ora_inizio_erogazione_and_ora_fine_erogazione(df) -> pd.DataFrame:
 
     return df
 
+def imputate_missing_values(df) -> pd.DataFrame:
+    """
+    Impute missing values from the df dataset. After an initial analysis, the following results are obtained:
+    Statistics missing values before imputation:
+
+    codice_provincia_residenza      28380
+    comune_residenza                  135
+    codice_provincia_erogazione     28776
+    ora_inizio_erogazione           28181
+    ora_fine_erogazione             28181
+    data_disdetta                  460639
+
+    'codice_provincia_residenza' and 'codice_provincia_erogazione' are not imputed as they will be removed
+    later. In addition, 'data_disdetta' is also not imputed. The imputation done for 'comune_residenza' does not
+    produces results because the missing values are related to the municipality of 'None', which is why we cannot
+    speak of missing values. 'ora_inizio_erogazione' and 'ora_fine_erogazione' are imputed correctly.
+    :param df:
+    :return:
+    """
+    # Display statistics of missing values before imputation.
+    print("Statistics missing values before imputation:\n")
+    colonne_con_mancanti = df.columns[df.isnull().any()]
+    print(df[colonne_con_mancanti].isnull().sum())
+    print('-----------------------------------')
+
+    # Imputation of missing values related to 'comune_residenza'
+    df = imputate_comune_residenza(df)
+
+    # Imputation of missing values related to 'ora_inizio_erogazione' and 'ora_fine_erogazione'
+    df = imputate_ora_inizio_erogazione_and_ora_fine_erogazione(df)
+
+    # Display statistics of missing values after imputation
+    print("Statistics missing values after imputation:\n")
+    colonne_con_mancanti = df.columns[df.isnull().any()]
+    print(df[colonne_con_mancanti].isnull().sum())
+    print('-----------------------------------')
+
+    return df
+
