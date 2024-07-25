@@ -27,7 +27,7 @@ def print_details_corrections(df, codice, descrizione, gruppi_codice, gruppi_des
     for cod, num_desc in gruppi_codice.items():
         if num_desc > 1:
             descrizioni_associate = df[df[codice] == cod][descrizione].unique()
-            print(f"The {cod} code is associated with {num_desc} descriptions:: {descrizioni_associate}")
+            print(f"The {cod} code is associated with {num_desc} descriptions: {descrizioni_associate}")
 
     for desc, num_cod in gruppi_descrizione.items():
         if num_cod > 1:
