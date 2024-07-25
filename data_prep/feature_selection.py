@@ -74,6 +74,7 @@ def remove_data_disdetta(df) -> pd.DataFrame:
     df.drop(columns=['data_disdetta'], inplace=True)
     return df
 
+
 def feature_selection_execution(df) -> pd.DataFrame:
     '''
     Executes feature selection
@@ -83,5 +84,6 @@ def feature_selection_execution(df) -> pd.DataFrame:
     global coppie_colonne
     df, coppie_colonne_aggiornate = remove_columns_with_unique_correlation(df, coppie_colonne)
     print("------------ cleanup feature code_structure finished ------------\n")
-    df_finale, _ = remove_columns_with_unique_correlation(df, coppie_colonne_aggiornate)
-    return df_finale
+    df, _ = remove_columns_with_unique_correlation(df, coppie_colonne_aggiornate)
+    df = remove_data_disdetta(df)
+    return df
