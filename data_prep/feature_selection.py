@@ -33,3 +33,34 @@ def print_details_corrections(df, codice, descrizione, gruppi_codice, gruppi_des
         if num_cod > 1:
             codici_associati = df[df[descrizione] == desc][codice].unique()
             print(f"The description '{desc}' is associated with {num_cod} codes: {codici_associati}")
+
+def remove_columns_with_unique_correlation(df, coppie_colonne) -> pd.DataFrame:
+    '''
+    Removes columns with unique correlation
+    :param df:
+    :return:
+    '''
+
+    coppie_rimosse = []
+    for codice, descrizione in coppie_colonne:
+        if codice in df.columns and descrizione in df.columns:
+            gruppi_codice = df.groupby(codice)[descrizione].nunique()
+            gruppi_descrizione = df.groupby(descrizione)[codice].nunique()
+
+            print_details_corrections(df, codice, descrizione, gruppi_codice, gruppi_descrizione)
+
+            correlazione_univoca_codice_descrizione = all(gruppi_codice <= 1)
+            correlazione_univoca_descrizione_codice = all(gruppi_descrizione <= 1)
+
+            if correlazione_univoca_codice_descrizione and correlazione_univoca_descrizione_codice:
+                df.drop(columns=[codice], inplace=True)
+                print(f"Correlazione univoca tra {codice} e {descrizione}:\nrimossa colonna {codice}.\n")
+                coppie_rimosse.append((codice, descrizione))
+        else:
+            print(f"Impossibile trovare le colonne {codice} o {descrizione} nel DataFrame.")
+            coppie_rimosse.append((codice, descrizione))
+
+    # Update coppie_colonne by removing processed pairs.
+    coppie_colonne_aggiornate = [coppia for coppia in coppie_colonne if coppia not in coppie_rimosse]
+
+    return df, coppie_colonne_aggiornate
