@@ -102,7 +102,14 @@ def feature_selection_execution(df) -> pd.DataFrame:
     :return:
     '''
     global coppie_colonne
+    print("------------ check unique correlation between codes and descriptions: ------------\n")
     df, coppie_colonne_aggiornate = remove_columns_with_unique_correlation(df, coppie_colonne)
-    print("------------ cleanup feature code_structure finished ------------\n")
+    print("------------ check unique correlation with clean feature codice_struttura: ------------\n")
+    df = clean_codice_struttura(df)
+    df, coppie_colonne_aggiornate = remove_columns_with_unique_correlation(df, coppie_colonne_aggiornate)
+
+    # TODO: decidere se eliminare la feature struttura_erogazione con il dato sbagliato 'PRESIDIO OSPEDALIERO UNIFICATO' e usarlo nel post-processing o se gestirlo prima.
+
+    print("------------ removal of the feature data_disdetta: ------------\n")
     df = remove_data_disdetta(df)
     return df
