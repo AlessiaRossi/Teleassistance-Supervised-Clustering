@@ -113,3 +113,42 @@ def check_missing_values_end(df):
     num_rows_with_end_missing = len(rows_with_end_missing)
     print(f"Number of rows with 'ora_fine_erogazione' missing: {num_rows_with_end_missing}")
 
+def imputate_ora_inizio_erogazione_and_ora_fine_erogazione(df) -> pd.DataFrame:
+    """
+    Imputes missing values for 'ora_inizio_erogazione' and 'ora_fine_erogazione' of dataset df.
+    :param df:
+    :return:
+    """
+    # Check if the missing values are related to the same rows in the dataset:
+    check_missing_values_same_row(df)
+
+    # Conversion of 'ora_inizio_erogazione' and 'ora_fine_erogazione' columns to datetime format.
+    df['ora_inizio_erogazione'] = pd.to_datetime(df['ora_inizio_erogazione'], errors='coerce', utc=True)
+    df['ora_fine_erogazione'] = pd.to_datetime(df['ora_fine_erogazione'], errors='coerce', utc=True)
+
+    # Calculation of average task duration for each 'codice_descrizione_attivita'
+    df_non_missing = df.dropna(subset=['ora_inizio_erogazione', 'ora_fine_erogazione']).copy()
+    df_non_missing['durata'] = (
+            df_non_missing['ora_fine_erogazione'] - df_non_missing['ora_inizio_erogazione']).dt.total_seconds()
+    media_durata_sec = df_non_missing.groupby('codice_descrizione_attivita')['durata'].mean()
+    media_durata = pd.to_timedelta(media_durata_sec, unit='s')
+
+    # Convert the resulting Series to a dictionary.
+    media_durata_dict = media_durata.to_dict()
+
+    # Iterates through each row of the original DataFrame and imputes the missing values for 'ora_inizio_erogazione' and 'ora_fine_erogazione'
+    for index, row in df.iterrows():
+        if pd.isnull(row['ora_inizio_erogazione']) and pd.isnull(row['ora_fine_erogazione']) and pd.isnull(
+                row['data_disdetta']):
+            codice_attivita = row['codice_descrizione_attivita']
+            if codice_attivita in media_durata_dict:
+                durata_media = media_durata_dict[codice_attivita]
+                data_erogazione = pd.to_datetime(row['data_erogazione'], utc=True)
+                df.at[index, 'ora_inizio_erogazione'] = data_erogazione.strftime('%Y-%m-%d %H:%M:%S%z')
+                df.at[index, 'ora_fine_erogazione'] = (data_erogazione + durata_media).strftime('%Y-%m-%d %H:%M:%S%z')
+
+    check_missing_values_start(df)
+    check_missing_values_end(df)
+
+    return df
+
