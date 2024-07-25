@@ -54,10 +54,10 @@ def remove_columns_with_unique_correlation(df, coppie_colonne) -> pd.DataFrame:
 
             if correlazione_univoca_codice_descrizione and correlazione_univoca_descrizione_codice:
                 df.drop(columns=[codice], inplace=True)
-                print(f"Correlazione univoca tra {codice} e {descrizione}:\nrimossa colonna {codice}.\n")
+                print(f"Unique correlation between {codice} and {descrizione}:\nremoved column {codice}.\n")
                 coppie_rimosse.append((codice, descrizione))
         else:
-            print(f"Impossibile trovare le colonne {codice} o {descrizione} nel DataFrame.")
+            print(f"Cannot find the {codice} or {descrizione} in the DataFrame.")
             coppie_rimosse.append((codice, descrizione))
 
     # Update coppie_colonne by removing processed pairs.
