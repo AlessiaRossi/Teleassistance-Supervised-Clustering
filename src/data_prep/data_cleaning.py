@@ -61,7 +61,7 @@ def imputate_comune_residenza(df) -> pd.DataFrame:
        :return:
     """
     # Load the dataset related to the ISTAT codes of Italian municipalities so that I can make imputation
-    df_istat = pd.read_excel('datasets/Codici-statistici-e-denominazioni-al-30_06_2024.xlsx')
+    df_istat = pd.read_excel('data/raw/Codici-statistici-e-denominazioni-al-30_06_2024.xlsx')
 
     codice_comune_to_nome = pd.Series(df_istat['Denominazione in italiano'].values,
                                       index=df_istat['Codice Comune formato alfanumerico'])
@@ -111,7 +111,7 @@ def check_missing_values_end(df):
     missing_end = df['ora_fine_erogazione'].isna()
     rows_with_end_missing = df[missing_end]
     num_rows_with_end_missing = len(rows_with_end_missing)
-    print(f"Number of rows with 'ora_fine_erogazione' missing: {num_rows_with_end_missing}")
+    print(f"Number of rows with 'ora_fine_erogazione' missing: {num_rows_with_end_missing}\n")
 
 def imputate_ora_inizio_erogazione_and_ora_fine_erogazione(df) -> pd.DataFrame:
     """
