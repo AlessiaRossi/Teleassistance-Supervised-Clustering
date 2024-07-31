@@ -1,5 +1,10 @@
+<<<<<<< HEAD
 env_FIA/*
 __pycache__/*
 .idea/*
 .DS_Store
 .venv/*
+=======
+venv
+.DS_store
+>>>>>>> 1b831bd (aggiunta .gitignore)
