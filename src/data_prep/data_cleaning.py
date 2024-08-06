@@ -35,7 +35,7 @@ def imputate_comune_residenza(df):
 
 
 
-def fill_missing_comune_residenza(df, codice_comune_to_nome):
+def fill_missing_comune_residenza(df, codice_comune_to_nome) -> pd.DataFrame:
       """
       Fills missing values in the 'comune_residenza' column using a mapping.
     
@@ -94,6 +94,8 @@ def impute_ora_inizio_and_fine_erogazione(df:pd.DataFrame) -> pd.DataFrame:
                 data_erogazione = pd.to_datetime(row['data_erogazione'], utc=True)
                 df.at[index, 'ora_inizio_erogazione'] = data_erogazione.strftime('%Y-%m-%d %H:%M:%S%z')
                 df.at[index, 'ora_fine_erogazione'] = (data_erogazione + durata_media).strftime('%Y-%m-%d %H:%M:%S%z')
+
+    return df
         
 
 
@@ -140,7 +142,7 @@ def smooth_noisy_data(df, column, window_size=3):
     return df
 
 
-def remove_duplicates(df) -> pd.DataFrame:
+def remove_duplicates(df:pd.DataFrame) -> pd.DataFrame:
     """
     Removes duplicates from dataset df.
     :param df:
@@ -150,7 +152,7 @@ def remove_duplicates(df) -> pd.DataFrame:
     return df
 
 
-def data_cleaning_execution():
+def data_cleaning_execution(df:pd.DataFrame) -> pd.DataFrame:
     # Apply the function to imputate missing values for 'comune_residenza'
     df, codice_comune_to_nome = imputate_comune_residenza(df)
 
