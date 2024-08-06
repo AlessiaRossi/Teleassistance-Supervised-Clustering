@@ -1,5 +1,5 @@
 import pandas as pd
-from src.data_prep.data_cleaning import data_cleaning
+from src.data_prep.data_cleaning import data_cleaning_execution
 from src.data_prep.feature_selection import feature_selection_execution
 #from feature_extraction.feature_extraction import feature_extraction
 
@@ -12,7 +12,7 @@ num_rows, num_columns = df.shape
 print(f"The DataFrame has {num_rows} rows and {num_columns} columns.\n")
 
 # Data Cleaning
-df = data_cleaning(df)
+df = data_cleaning_execution(df)
 
 # Features Selection
 df = feature_selection_execution(df)
