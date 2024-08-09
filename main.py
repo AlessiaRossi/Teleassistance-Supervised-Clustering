@@ -1,5 +1,6 @@
 import pandas as pd
 from src.data_prep.data_cleaning import data_cleaning_execution
+from src.data_prep.feature_selection import feature_selection_execution
 
 #from feature_extraction.feature_extraction import feature_extraction
 
@@ -16,17 +17,7 @@ print('\nNULLS BEFORE DATA CLEANING\n', df.isnull().sum().sort_values(ascending=
 # Data Cleaning
 df = data_cleaning_execution(df)
 
-# Features Selection
-# df = feature_selection_execution(df)
 
-# Feature extraction
-#df = feature_extraction(df)
-
-#df.to_csv('data/raw/challenge_campus_biomedico_2024_imputed_selected_extracted.csv', index=False)
-
-# Displaying the number of rows and columns in the dataset
-num_rows, num_columns = df.shape
-print(f"The DataFrame has {num_rows} rows and {num_columns} columns.")
 
 print('\nNULLS AFTER DATA CLEANING\n', df.isnull().sum().sort_values(ascending=False))
 
@@ -40,6 +31,21 @@ print('\nNULLS AFTER DATA CLEANING\n', df.isnull().sum().sort_values(ascending=F
     ora_inizio_erogazione                         28181
     comune_residenza                                135
 '''
+
+
+
+# Features Selection
+df = feature_selection_execution(df)
+
+# Feature extraction
+#df = feature_extraction(df)
+
+#df.to_csv('data/raw/challenge_campus_biomedico_2024_imputed_selected_extracted.csv', index=False)
+
+# Displaying the number of rows and columns in the dataset
+num_rows, num_columns = df.shape
+print(f"The DataFrame has {num_rows} rows and {num_columns} columns.")
+
 
 
 '''

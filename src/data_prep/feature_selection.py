@@ -102,6 +102,33 @@ def remove_data_disdetta(df) -> pd.DataFrame:
     This function remove data_disdetta column from the DataFrame
     '''
 
-
     df.drop(columns=['data_disdetta'], inplace=True)
+    return df
+
+
+ # TODO: decidere se eliminare la feature struttura_erogazione con il dato sbagliato 'PRESIDIO OSPEDALIERO UNIFICATO' e usarlo nel post-processing o se gestirlo prima.
+def feature_selection_execution(df:pd.DataFrame) -> pd.DataFrame:
+    '''
+    This function executes the feature selection process
+
+    Args:
+        df: The DataFrame containing the data.
+
+    Returns:
+        The DataFrame with removed columns
+    '''
+
+    global columns_pairs
+
+    # Remove code columns with unique correlation
+    df, columns_pairs = remove_columns_with_unique_correlation(df, columns_pairs)
+
+    # Clean 'codice_struttura_erogazione' column
+    df = clean_codice_struttura_erogazione(df)
+
+    # Remove 'data_disdetta' column cause all the data is null
+    df = remove_data_disdetta(df)
+
+    df.to_parquet('data/processed/feature_selected_data.parquet')
+
     return df
