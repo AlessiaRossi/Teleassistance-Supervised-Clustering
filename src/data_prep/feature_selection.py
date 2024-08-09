@@ -1,7 +1,7 @@
 import pandas as pd
 
 # List of tuples containing the code-description column pairs to be compared.
-coppie_colonne = [
+columns_pairs = [
     ('codice_provincia_residenza', 'provincia_residenza'),
     ('codice_provincia_erogazione', 'provincia_erogazione'),
     ('codice_regione_residenza', 'regione_residenza'),
@@ -15,101 +15,93 @@ coppie_colonne = [
     ('codice_tipologia_professionista_sanitario', 'tipologia_professionista_sanitario')
 ]
 
-def print_details_corrections(df, codice, descrizione, gruppi_codice, gruppi_descrizione):
+
+def print_details_corrections (df, code, description, code_groups, description_groups):
     '''
-    Print details if there are codes with multiple descriptions or vice versa
-    :param df: DataFrame to operate on
-    :param codice: Code column to analyze
-    :param descrizione: Description column to be parsed
-    :param gruppi_codice: Code groups with unique description counts
-    :param gruppi_descrizione: Groups of descriptions with unique code counts
+        This function prints details if there are codes with multiple descriptions or vice versa
+
+        Args:
+            df: DataFrame to operate on
+            code: Code column to analyze
+            description: Description column to be parsed
+            code_groups: Code groups with unique description counts
+            description_groups: Groups of descriptions with unique code counts
+        
+        Returns:
+            None
     '''
-    non_univoco = False
-
-    for cod, num_desc in gruppi_codice.items():
-        if num_desc > 1:
-            descrizioni_associate = df[df[codice] == cod][descrizione].unique()
-            print(f"The {cod} code is associated with {num_desc} descriptions: {descrizioni_associate}")
-            non_univoco = True
-
-    for desc, num_cod in gruppi_descrizione.items():
-        if num_cod > 1:
-            codici_associati = df[df[descrizione] == desc][codice].unique()
-            print(f"The description '{desc}' is associated with {num_cod} codes: {codici_associati}")
-            non_univoco = True
-
-    if non_univoco:
-        print(f"--> NOT unique correlation between {codice} and {descrizione}\n")
 
 
-def remove_columns_with_unique_correlation(df, coppie_colonne) -> pd.DataFrame:
+    not_unique = False
+
+    for cod, desc_count in code_groups.items():
+        if desc_count > 1:
+            associated_descriptions = df[df[code] == cod][description].unique()
+            print(f"The {cod} code is associated with {desc_count} descriptions: {associated_descriptions}")
+            not_unique = True
+            
+    for desc, code_count in description_groups.items():
+        if code_count > 1:
+            associated_codes =df[df[description] == desc][code].unique()
+            print(f"The {desc} description is associated with {code_count} codes: {associated_codes}")
+            not_unique = True
+
+    if not_unique:
+        print(f"--> NOT unique correlation between {code} and {description}\n")
+
+
+
+def remove_columns_with_unique_correlation(df, columns_pairs) -> pd.DataFrame:
     '''
-    Removes columns with unique correlation
-    :param df:
-    :return:
+    This function removes columns (column code) with unique correlation
+
+    Args:
+        df: The DataFrame containing the data.
+        columns_pairs: List of tuples containing the code-description column pairs to be compared.
+
+    Returns:
+        The DataFrame with removed columns
     '''
-    coppie_rimosse = []
-    for codice, descrizione in coppie_colonne:
-        if codice in df.columns and descrizione in df.columns:
-            gruppi_codice = df.groupby(codice)[descrizione].nunique()
-            gruppi_descrizione = df.groupby(descrizione)[codice].nunique()
 
+    pairs_removed = []
 
-            print_details_corrections(df, codice, descrizione, gruppi_codice, gruppi_descrizione)
+    for code, description in columns_pairs:
+        if code in df.columns and description in df.columns:
+            code_groups = df.groupby(code)[description].nunique()
+            description_groups = df.groupby(description)[code].nunique()
 
-            correlazione_univoca_codice_descrizione = all(gruppi_codice <= 1)
-            correlazione_univoca_descrizione_codice = all(gruppi_descrizione <= 1)
+            print_details_corrections(df, code, description, code_groups, description_groups)
 
-            if correlazione_univoca_codice_descrizione and correlazione_univoca_descrizione_codice:
-                df.drop(columns=[codice], inplace=True)
-                print(f"Unique correlation between {codice} and {descrizione}:\nremoved column {codice}.\n")
-                coppie_rimosse.append((codice, descrizione))
+            unique_correlation_code_description = all(code_groups <= 1)
+            unique_correlation_description_code = all(description_groups <= 1)
+
+            if unique_correlation_code_description and unique_correlation_description_code:
+                df.drop(columns=[code], inplace=True)
+                print(f'Unique correlation between {code} and {description}. Column {code} removed.')
+                pairs_removed.append((code, description))
         else:
-            print(f"Cannot find the {codice} or {descrizione} in the DataFrame.")
-            coppie_rimosse.append((codice, descrizione))
+            print(f'Columns {code} or {description} not found in the dataframe.')
+            pairs_removed.append((code, description))
 
-    # Update coppie_colonne by removing processed pairs.
-    coppie_colonne_aggiornate = [coppia for coppia in coppie_colonne if coppia not in coppie_rimosse]
+    # Update the list of columns pairs removing the ones that have been removed
+    columns_pairs_updated = [pair for pair in columns_pairs if pair not in pairs_removed]
+    return df, columns_pairs_updated
 
-    return df, coppie_colonne_aggiornate
+            
+def clean_codice_struttura_erogazione(df, column = 'codice_struttura_erogazione'):
+    '''
+    This function cleans the 'codice_struttura_erogazione' column by converting it to an integer type
+    '''
+
+    df[column] = df[column].astype(int)
+    return df
+
 
 def remove_data_disdetta(df) -> pd.DataFrame:
-    """
-    Removes samples with non-zero 'data_disdetta'.
-    :param df:
-    :return: df without samples with non-zero 'data_disdetta'.
-    """
+    '''
+    This function remove data_disdetta column from the DataFrame
+    '''
+
+
     df.drop(columns=['data_disdetta'], inplace=True)
-    return df
-
-def clean_codice_struttura(df, colonna='codice_struttura_erogazione'):
-    """
-    Cleans the values in the specified column by removing everything following the period, if any.
-    :param df: DataFrame to operate on
-    :param colonna: Name of column to clean.
-    :return: DataFrame with the values in the specified column cleaned
-    """
-    # Use a lambda function to divide the value based on the point and take the first element
-    df[colonna] = df[colonna].apply(lambda x: str(x).split('.')[0])
-    # df.to_csv('df_cod_strut_pulito.csv', index=False)
-    return df
-
-
-def feature_selection_execution(df) -> pd.DataFrame:
-    '''
-    Executes feature selection
-    :param df:
-    :return:
-    '''
-    global coppie_colonne
-    print("------------ check unique correlation between codes and descriptions: ------------\n")
-    df, coppie_colonne_aggiornate = remove_columns_with_unique_correlation(df, coppie_colonne)
-    print("------------ check unique correlation with clean feature codice_struttura: ------------\n")
-    df = clean_codice_struttura(df)
-    df, coppie_colonne_aggiornate = remove_columns_with_unique_correlation(df, coppie_colonne_aggiornate)
-
-    # TODO: decidere se eliminare la feature struttura_erogazione con il dato sbagliato 'PRESIDIO OSPEDALIERO UNIFICATO' e usarlo nel post-processing o se gestirlo prima.
-
-    print("------------ removal of the feature data_disdetta: ------------\n")
-    df = remove_data_disdetta(df)
     return df
