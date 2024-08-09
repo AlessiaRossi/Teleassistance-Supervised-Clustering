@@ -1,8 +1,7 @@
 env_FIA/*
-__pycache__/*
+**/__pycache__/*
 .idea/*
 .DS_Store
-
 venv/*
 .venv/*
 

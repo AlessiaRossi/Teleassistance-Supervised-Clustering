@@ -1,6 +1,6 @@
 import pandas as pd
 from src.data_prep.data_cleaning import data_cleaning_execution
-from src.data_prep.feature_selection import feature_selection_execution
+
 #from feature_extraction.feature_extraction import feature_extraction
 
 # Loading the dataset
@@ -11,11 +11,13 @@ df = pd.read_parquet(file_path)
 num_rows, num_columns = df.shape
 print(f"The DataFrame has {num_rows} rows and {num_columns} columns.\n")
 
+print('\nNULLS BEFORE DATA CLEANING\n', df.isnull().sum().sort_values(ascending=False))
+
 # Data Cleaning
 df = data_cleaning_execution(df)
 
 # Features Selection
-df = feature_selection_execution(df)
+# df = feature_selection_execution(df)
 
 # Feature extraction
 #df = feature_extraction(df)
@@ -26,15 +28,29 @@ df = feature_selection_execution(df)
 num_rows, num_columns = df.shape
 print(f"The DataFrame has {num_rows} rows and {num_columns} columns.")
 
-'''
-Statistiche valori mancanti dopo l'imputazione:
+print('\nNULLS AFTER DATA CLEANING\n', df.isnull().sum().sort_values(ascending=False))
 
-codice_provincia_residenza      28380
-comune_residenza                  135 --> da non toccare perché relativi al comune di None in provincia di Torino
-codice_provincia_erogazione     28776
-ora_inizio_erogazione           23652
-ora_fine_erogazione             23652
-data_disdetta                  460639
+'''
+    NULLS BEFORE DATA CLEANING
+
+    data_disdetta                                460639
+    codice_provincia_erogazione                   28776
+    codice_provincia_residenza                    28380
+    ora_fine_erogazione                           28181
+    ora_inizio_erogazione                         28181
+    comune_residenza                                135
+'''
+
+
+'''
+    Statistiche valori mancanti dopo l'imputazione:
+
+    codice_provincia_residenza      28380
+    comune_residenza                  135 --> da non toccare perché relativi al comune di None in provincia di Torino
+    codice_provincia_erogazione     28776
+    ora_inizio_erogazione           23652
+    ora_fine_erogazione             23652
+    data_disdetta                  460639
 '''
 
 # TODO: rimuovere colonne relative a 'codice_provincia_residenza' e 'codice_provincia_erogazione' in quanto non utili
@@ -45,13 +61,13 @@ data_disdetta                  460639
 # TODO: rimuovere colonne relative a 'data_disdetta' in quanto non utili. Dopo il secondo TODO per quella feature ci saranno solo valori mancanti
 
 """
-DOPO TODO:
-Statistiche valori mancanti dopo l'imputazione:
+    DOPO TODO:
+    Statistiche valori mancanti dopo l'imputazione:
 
-codice_provincia_residenza      27016
-comune_residenza                  130
-codice_provincia_erogazione     27396
-data_disdetta                  460639
-dtype: int64
+    data_disdetta                                460639
+    codice_provincia_erogazione                   27396
+    codice_provincia_residenza                    27016
+    comune_residenza                                130
+    dtype: int64
 -----------------------------------
 """

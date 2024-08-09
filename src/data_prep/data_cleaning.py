@@ -13,7 +13,7 @@ def imputate_comune_residenza(df):
     """
 
     # Load ISTAT data
-    istat_data = pd.read_excel('../../data/raw/Codici-statistici-e-denominazioni-al-30_06_2024.xlsx')
+    istat_data = pd.read_excel('data/raw/Codici-statistici-e-denominazioni-al-30_06_2024.xlsx')
     
     # Create the mapping dictionary
     codice_comune_to_nome = pd.Series(istat_data['Denominazione in italiano'].values,
@@ -128,17 +128,21 @@ def identify_and_remove_outliers_zscore(df, columns, threshold=3):
 def smooth_noisy_data(df, column, window_size=3):
     """
     Smooth noisy data using moving average.
-
-    Args:
-    df: The original DataFrame.
-    column: The column to apply smoothing to.
-    window_size: The size of the moving average window.
-
-    Returns:
-    A DataFrame with the smoothed data.
+    :param df: The original DataFrame.
+    :param column: The column on which to apply smoothing.
+    :param window_size: The window size for the moving average.
+    :return: A DataFrame with the smoothed data.
     """
+    if pd.api.types.is_datetime64_any_dtype(df[column]):
+        # Convert datetime to timestamp
+        df[column] = df[column].apply(lambda x: x.timestamp() if pd.notnull(x) else x)
+        # Apply rolling mean
+        df[column] = df[column].rolling(window=window_size, min_periods=1).mean()
+        # Convert timestamp back to datetime
+        df[column] = pd.to_datetime(df[column], unit='s', utc=True)
+    else:
+        df[column] = df[column].rolling(window=window_size, min_periods=1).mean()
 
-    df[column] = df[column].rolling(window=window_size, min_periods=1).mean()
     return df
 
 
@@ -174,4 +178,6 @@ def data_cleaning_execution(df:pd.DataFrame) -> pd.DataFrame:
     # Remove duplicates from the dataset
     df = remove_duplicates(df)
 
-    df.to_parquet('../../data/processed/challenge_campus_biomedico_2024_cleaned.parquet', index=False)
+    df.to_parquet('data/processed/challenge_campus_biomedico_2024_cleaned.parquet', index=False)
+
+    return df
