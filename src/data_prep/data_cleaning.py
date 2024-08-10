@@ -166,6 +166,7 @@ def data_cleaning_execution(df:pd.DataFrame) -> pd.DataFrame:
     # Impute missing values for 'ora_inizio_erogazione' and 'ora_fine_erogazione'
     df = impute_ora_inizio_and_fine_erogazione(df)   
 
+    # TODO: fare prima remove_disdette e poi impute_ora_inizio_and_fine_erogazione
     # Remove rows where 'data_disdetta' is not null
     df = remove_disdette(df)
 

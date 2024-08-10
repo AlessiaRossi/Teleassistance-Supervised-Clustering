@@ -106,7 +106,11 @@ def remove_data_disdetta(df) -> pd.DataFrame:
     return df
 
 
- # TODO: decidere se eliminare la feature struttura_erogazione con il dato sbagliato 'PRESIDIO OSPEDALIERO UNIFICATO' e usarlo nel post-processing o se gestirlo prima.
+# TODO: decidere se eliminare la feature struttura_erogazione con il dato sbagliato 'PRESIDIO OSPEDALIERO UNIFICATO' e usarlo nel post-processing o se gestirlo prima.
+# Modifichiamo PRESIDIO OSPEDALIERO UNIFICATO con le relative provincie e rimuoviamo la colonna codice_struttura_erogazione
+# TODO: aggiungere colonna eta
+# TODO: rimuovere colonne ora inizio e fine erogazione e aggiungere durata
+# TODO: 
 def feature_selection_execution(df:pd.DataFrame) -> pd.DataFrame:
     '''
     This function executes the feature selection process
