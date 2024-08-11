@@ -170,6 +170,23 @@ def remove_duplicates(df:pd.DataFrame) -> pd.DataFrame:
     return df
 
 
+def impute_durata_erogazione(df:pd.DataFrame) -> pd.DataFrame:
+    '''
+    Imputes missing values for 'durata_erogazione' using the mean duration of the activity.
+    '''
+
+
+    # Convert 'ora_inizio_erogazione' and 'ora_fine_erogazione' to datetime
+    df['ora_inizio_erogazione'] = pd.to_datetime(df['ora_inizio_erogazione'], utc=True, errors='coerce')
+    df['ora_fine_erogazione'] = pd.to_datetime(df['ora_fine_erogazione'], utc=True, errors='coerce')
+
+    # Imputate missing values for 'durata_erogazione' using the mean duration of the activity 
+    df['durata_erogazione_min'] = df.groupby('codice_descrizione_attivita')['durata_erogazione_min'].transform(lambda x: x.fillna(x.mean()))
+
+    return df
+
+
+
 def data_cleaning_execution(df:pd.DataFrame) -> pd.DataFrame:
     # Apply the function to imputate missing values for 'comune_residenza'
     df, codice_comune_to_nome = imputate_comune_residenza(df)

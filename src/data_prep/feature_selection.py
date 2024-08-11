@@ -1,5 +1,5 @@
 import pandas as pd
-from src.data_prep.data_cleaning import identify_and_remove_outliers_boxplot    
+from src.data_prep.data_cleaning import identify_and_remove_outliers_boxplot, impute_durata_erogazione 
 
 # List of tuples containing the code-description column pairs to be compared.
 columns_pairs = [
@@ -154,14 +154,16 @@ def feature_selection_execution(df:pd.DataFrame) -> pd.DataFrame:
 
     # Create 'durata_erogazione' column, and remove outliers
     df = colonna_durata_erogazione(df)
+    df = impute_durata_erogazione(df)
 
     rows, columns = df.shape
     print('Before boxplot The DataFrame has {} rows and {} columns.'.format(rows, columns))
 
-    df = identify_and_remove_outliers_boxplot(df, ['durata_erogazione'])
+    df = identify_and_remove_outliers_boxplot(df, ['durata_erogazione_min'])
 
     rows, columns = df.shape
     print('After boxplot The DataFrame has {} rows and {} columns.'.format(rows, columns))
+
 
     # Create 'eta' column
     df = colonna_eta(df)
