@@ -110,14 +110,18 @@ def remove_disdette(df) -> pd.DataFrame:
 
 
 def identify_and_remove_outliers_boxplot(df, columns, threshold=3):
-    """
-    Identifies and removes outliers using the z-score method (normalization).
+    '''
+    Identifies and removes outliers using the boxplot method.
     
-    :param df: The original DataFrame.
-    :param columns: The columns on which to apply outliers removal.
-    :param threshold: The z-score threshold for outlier detection (default: 3).
-    :return: A DataFrame with no outliers.
-    """
+    Args: 
+        df: The DataFrame containing the data.
+        columns: The columns on which to identify and remove outliers.
+        threshold: The threshold for identifying outliers.
+    
+    Returns:
+        The DataFrame with removed outliers.
+    '''
+
     # for col in columns:
     #     z_scores = np.abs((df[col] - df[col].mean()) / df[col].std())
     #     print(z_scores)
@@ -140,13 +144,18 @@ def identify_and_remove_outliers_boxplot(df, columns, threshold=3):
 
 # NOT USED
 def smooth_noisy_data(df, column, window_size=3):
-    """
-    Smooth noisy data using moving average.
-    :param df: The original DataFrame.
-    :param column: The column on which to apply smoothing.
-    :param window_size: The window size for the moving average.
-    :return: A DataFrame with the smoothed data.
-    """
+    '''
+    Smooths noisy data using a moving average.
+
+    Args:
+        df: The DataFrame containing the data.
+        column: The column to smooth.
+        window_size: The window size for the moving average.
+    
+    Returns:
+        The DataFrame with smoothed data.
+    '''
+
     if pd.api.types.is_datetime64_any_dtype(df[column]):
         # Convert datetime to timestamp
         df[column] = df[column].apply(lambda x: x.timestamp() if pd.notnull(x) else x)
