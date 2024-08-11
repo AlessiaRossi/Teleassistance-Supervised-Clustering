@@ -56,7 +56,7 @@ def fill_missing_comune_residenza(df, codice_comune_to_nome) -> pd.DataFrame:
       return df
 
 
-
+# NOT USED
 def impute_ora_inizio_and_fine_erogazione(df:pd.DataFrame) -> pd.DataFrame:
     """
     Imputes missing values for 'ora_inizio_erogazione' and 'ora_fine_erogazione' using the mean duration of the activity.
@@ -178,19 +178,14 @@ def data_cleaning_execution(df:pd.DataFrame) -> pd.DataFrame:
     df = fill_missing_comune_residenza(df, codice_comune_to_nome) 
 
     # Impute missing values for 'ora_inizio_erogazione' and 'ora_fine_erogazione'
-    df = impute_ora_inizio_and_fine_erogazione(df)  
+    # DISBLED
+    # df = impute_ora_inizio_and_fine_erogazione(df)  
 
     # Remove rows where 'data_disdetta' is not null
     df = remove_disdette(df)
 
-    rows, columns = df.shape
-    print('The DataFrame has {} rows and {} columns.'.format(rows, columns))
-
     # Identify and remove outliers using the z-score method
     df = identify_and_remove_outliers_boxplot(df, ['ora_inizio_erogazione', 'ora_fine_erogazione'])
-
-    rows, columns = df.shape
-    print('The DataFrame has {} rows and {} columns.'.format(rows, columns))
 
     # Smooth noisy data using moving average
     df = smooth_noisy_data(df, 'ora_inizio_erogazione')
