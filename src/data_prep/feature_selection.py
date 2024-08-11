@@ -1,4 +1,5 @@
 import pandas as pd
+from src.data_prep.data_cleaning import identify_and_remove_outliers_boxplot    
 
 # List of tuples containing the code-description column pairs to be compared.
 columns_pairs = [
@@ -106,6 +107,24 @@ def remove_data_disdetta(df) -> pd.DataFrame:
     return df
 
 
+def colonna_durata_erogazione(df:pd.DataFrame) -> pd.DataFrame:
+    '''
+    This function creates a new column 'durata_erogazione' which is the difference between 'ora_fine_erogazione' and 'ora_inizio_erogazione'
+    '''
+
+    df['durata_erogazione'] = (df['ora_fine_erogazione'] - df['ora_inizio_erogazione']).dt.total_seconds()
+    
+    return df
+
+def colonna_eta(df:pd.DataFrame) -> pd.DataFrame:
+    '''
+    This function creates a new column 'eta' which is the difference between 'ora_fine_erogazione' and 'ora_inizio_erogazione'
+    '''
+
+    df['eta'] = df.dt.now() - df['data_nascita']
+    return df
+
+
 # TODO: decidere se eliminare la feature struttura_erogazione con il dato sbagliato 'PRESIDIO OSPEDALIERO UNIFICATO' e usarlo nel post-processing o se gestirlo prima.
 # Modifichiamo PRESIDIO OSPEDALIERO UNIFICATO con le relative provincie e rimuoviamo la colonna codice_struttura_erogazione
 # TODO: aggiungere colonna eta
@@ -132,6 +151,21 @@ def feature_selection_execution(df:pd.DataFrame) -> pd.DataFrame:
 
     # Remove 'data_disdetta' column cause all the data is null
     df = remove_data_disdetta(df)
+
+    # Create 'durata_erogazione' column, and remove outliers
+    df = colonna_durata_erogazione(df)
+
+    rows, columns = df.shape
+    print('Before boxplot The DataFrame has {} rows and {} columns.'.format(rows, columns))
+
+    df = identify_and_remove_outliers_boxplot(df, ['durata_erogazione'])
+
+    rows, columns = df.shape
+    print('After boxplot The DataFrame has {} rows and {} columns.'.format(rows, columns))
+
+    # Create 'eta' column
+    df = colonna_eta(df)
+
 
     df.to_parquet('data/processed/feature_selected_data.parquet')
 

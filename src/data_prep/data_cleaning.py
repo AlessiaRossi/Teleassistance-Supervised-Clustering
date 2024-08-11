@@ -109,7 +109,7 @@ def remove_disdette(df) -> pd.DataFrame:
 
 
 
-def identify_and_remove_outliers_zscore(df, columns, threshold=3):
+def identify_and_remove_outliers_boxplot(df, columns, threshold=3):
     """
     Identifies and removes outliers using the z-score method (normalization).
     
@@ -118,9 +118,23 @@ def identify_and_remove_outliers_zscore(df, columns, threshold=3):
     :param threshold: The z-score threshold for outlier detection (default: 3).
     :return: A DataFrame with no outliers.
     """
-    for col in columns:
-        z_scores = np.abs((df[col] - df[col].mean()) / df[col].std())
-        df = df[z_scores <= threshold]
+    # for col in columns:
+    #     z_scores = np.abs((df[col] - df[col].mean()) / df[col].std())
+    #     print(z_scores)
+    #     print('Number of outliers in {}: {}'.format(col, len(z_scores[z_scores > threshold])))
+    #     df = df[z_scores <= threshold]
+    # return df
+
+
+    for column in columns:
+        Q1 = df[column].quantile(0.25)
+        Q3 = df[column].quantile(0.75)
+        IQR = Q3 - Q1
+        lower_bound = Q1 - 1.5 * IQR
+        upper_bound = Q3 + 1.5 * IQR
+        print('lower_bound:', lower_bound)
+        print('upper_bound:', upper_bound)
+        df = df[(df[column] >= lower_bound) & (df[column] <= upper_bound)]
     return df
 
 
@@ -161,17 +175,22 @@ def data_cleaning_execution(df:pd.DataFrame) -> pd.DataFrame:
     df, codice_comune_to_nome = imputate_comune_residenza(df)
 
     # Fill missing values for 'comune_residenza' using a mapping
-    df = fill_missing_comune_residenza(df, codice_comune_to_nome)
+    df = fill_missing_comune_residenza(df, codice_comune_to_nome) 
 
     # Impute missing values for 'ora_inizio_erogazione' and 'ora_fine_erogazione'
-    df = impute_ora_inizio_and_fine_erogazione(df)   
+    df = impute_ora_inizio_and_fine_erogazione(df)  
 
-    # TODO: fare prima remove_disdette e poi impute_ora_inizio_and_fine_erogazione
     # Remove rows where 'data_disdetta' is not null
     df = remove_disdette(df)
 
+    rows, columns = df.shape
+    print('The DataFrame has {} rows and {} columns.'.format(rows, columns))
+
     # Identify and remove outliers using the z-score method
-    df = identify_and_remove_outliers_zscore(df, ['ora_inizio_erogazione', 'ora_fine_erogazione'])
+    df = identify_and_remove_outliers_boxplot(df, ['ora_inizio_erogazione', 'ora_fine_erogazione'])
+
+    rows, columns = df.shape
+    print('The DataFrame has {} rows and {} columns.'.format(rows, columns))
 
     # Smooth noisy data using moving average
     df = smooth_noisy_data(df, 'ora_inizio_erogazione')
