@@ -55,6 +55,19 @@ def fill_missing_comune_residenza(df, codice_comune_to_nome) -> pd.DataFrame:
 
       return df
 
+def remove_comune_residenza(df:pd.DataFrame) -> pd.DataFrame:
+    """
+    Removes rows where 'comune_residenza' is missing.
+
+    Args:
+        df: The DataFrame containing the data.
+
+    Returns:
+        The DataFrame with removed rows.
+    """
+
+    df = df.dropna(subset=['comune_residenza'])
+    return df
 
 # NOT USED
 def impute_ora_inizio_and_fine_erogazione(df:pd.DataFrame) -> pd.DataFrame:
@@ -202,6 +215,8 @@ def data_cleaning_execution(df:pd.DataFrame) -> pd.DataFrame:
 
     # Fill missing values for 'comune_residenza' using a mapping
     df = fill_missing_comune_residenza(df, codice_comune_to_nome) 
+
+    df = remove_comune_residenza(df)
 
     # Impute missing values for 'ora_inizio_erogazione' and 'ora_fine_erogazione'
     # DISABLED
