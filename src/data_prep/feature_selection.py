@@ -1,5 +1,5 @@
 import pandas as pd
-from src.data_prep.data_cleaning import identify_and_remove_outliers_boxplot, impute_durata_erogazione 
+from src.data_prep.data_cleaning import identify_and_remove_outliers_boxplot, impute_durata_erogazione
 
 # List of tuples containing the code-description column pairs to be compared.
 columns_pairs = [
@@ -111,8 +111,11 @@ def colonna_durata_erogazione(df:pd.DataFrame) -> pd.DataFrame:
     '''
     This function creates a new column 'durata_erogazione' which is the difference between 'ora_fine_erogazione' and 'ora_inizio_erogazione'
     '''
+    # Convert 'ora_inizio_erogazione' and 'ora_fine_erogazione' to datetime
+    df['ora_inizio_erogazione'] = pd.to_datetime(df['ora_inizio_erogazione'], utc=True, errors='coerce')
+    df['ora_fine_erogazione'] = pd.to_datetime(df['ora_fine_erogazione'], utc=True, errors='coerce')
 
-    df['durata_erogazione'] = (df['ora_fine_erogazione'] - df['ora_inizio_erogazione']).dt.total_seconds()
+    df['durata_erogazione_min'] = (df['ora_fine_erogazione'] - df['ora_inizio_erogazione']).dt.total_seconds()
     
     return df
 
@@ -131,7 +134,9 @@ def colonna_eta(df:pd.DataFrame) -> pd.DataFrame:
     This function creates a new column 'eta' which is the difference between 'ora_fine_erogazione' and 'ora_inizio_erogazione'
     '''
 
-    df['eta'] = df.dt.now() - df['data_nascita']
+    df['data_nascita'] = pd.to_datetime(df['data_nascita'], utc=True, errors='coerce')
+    
+    df['eta'] = (pd.to_datetime('today', utc=True) - df['data_nascita']).dt.days // 365
     return df
 
 
@@ -139,9 +144,11 @@ def colonna_eta(df:pd.DataFrame) -> pd.DataFrame:
 
 # TODO: decidere se eliminare la feature struttura_erogazione con il dato sbagliato 'PRESIDIO OSPEDALIERO UNIFICATO' e usarlo nel post-processing o se gestirlo prima.
 # Modifichiamo PRESIDIO OSPEDALIERO UNIFICATO con le relative provincie e rimuoviamo la colonna codice_struttura_erogazione
-# TODO: aggiungere colonna eta
-# TODO: rimuovere colonne ora inizio e fine erogazione e aggiungere durata
-# TODO: 
+
+# 11/08/2024
+# DONE - TODO: aggiungere colonna eta
+# DONE - TODO: rimuovere colonne ora inizio e fine erogazione e aggiungere durata
+# DONE - TODO: imputare in valori mancanti in durata erogazione con la media della durata per attività
 def feature_selection_execution(df:pd.DataFrame) -> pd.DataFrame:
     '''
     This function executes the feature selection process

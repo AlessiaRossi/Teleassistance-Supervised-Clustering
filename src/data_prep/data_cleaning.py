@@ -138,7 +138,7 @@ def identify_and_remove_outliers_boxplot(df, columns, threshold=3):
     return df
 
 
-
+# NOT USED
 def smooth_noisy_data(df, column, window_size=3):
     """
     Smooth noisy data using moving average.
@@ -195,17 +195,18 @@ def data_cleaning_execution(df:pd.DataFrame) -> pd.DataFrame:
     df = fill_missing_comune_residenza(df, codice_comune_to_nome) 
 
     # Impute missing values for 'ora_inizio_erogazione' and 'ora_fine_erogazione'
-    # DISBLED
+    # DISABLED
     # df = impute_ora_inizio_and_fine_erogazione(df)  
 
     # Remove rows where 'data_disdetta' is not null
     df = remove_disdette(df)
 
     # Identify and remove outliers using the z-score method
-    df = identify_and_remove_outliers_boxplot(df, ['ora_inizio_erogazione', 'ora_fine_erogazione'])
+    #df = identify_and_remove_outliers_boxplot(df, ['ora_inizio_erogazione', 'ora_fine_erogazione'])
 
     # Smooth noisy data using moving average
-    df = smooth_noisy_data(df, 'ora_inizio_erogazione')
+    # DISABLED
+    #df = smooth_noisy_data(df, 'ora_inizio_erogazione')
 
     # Remove duplicates from the dataset
     df = remove_duplicates(df)

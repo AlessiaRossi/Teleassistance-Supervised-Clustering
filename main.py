@@ -63,3 +63,10 @@ print(f"The DataFrame has {num_rows} rows and {num_columns} columns.")
 '''
     The DataFrame has 460639 rows and 22 columns.
 '''
+
+
+print('\nNULLS AFTER FEATURE SELECTION\n', df.isnull().sum().sort_values(ascending=False))
+'''
+NULLS AFTER FEATURE SELECTION
+ comune_residenza                      130
+'''
