@@ -116,6 +116,16 @@ def colonna_durata_erogazione(df:pd.DataFrame) -> pd.DataFrame:
     
     return df
 
+
+def remove_ora_inizio_fine_erogazione(df:pd.DataFrame) -> pd.DataFrame:
+    '''
+    This function removes 'ora_inizio_erogazione' and 'ora_fine_erogazione' columns from the DataFrame
+    '''
+
+    df.drop(columns=['ora_inizio_erogazione', 'ora_fine_erogazione'], inplace=True)
+    return df
+
+
 def colonna_eta(df:pd.DataFrame) -> pd.DataFrame:
     '''
     This function creates a new column 'eta' which is the difference between 'ora_fine_erogazione' and 'ora_inizio_erogazione'
@@ -123,6 +133,8 @@ def colonna_eta(df:pd.DataFrame) -> pd.DataFrame:
 
     df['eta'] = df.dt.now() - df['data_nascita']
     return df
+
+
 
 
 # TODO: decidere se eliminare la feature struttura_erogazione con il dato sbagliato 'PRESIDIO OSPEDALIERO UNIFICATO' e usarlo nel post-processing o se gestirlo prima.
@@ -143,8 +155,6 @@ def feature_selection_execution(df:pd.DataFrame) -> pd.DataFrame:
 
     global columns_pairs
 
-    # Remove code columns with unique correlation
-    df, columns_pairs = remove_columns_with_unique_correlation(df, columns_pairs)
 
     # Clean 'codice_struttura_erogazione' column
     df = clean_codice_struttura_erogazione(df)
@@ -155,15 +165,11 @@ def feature_selection_execution(df:pd.DataFrame) -> pd.DataFrame:
     # Create 'durata_erogazione' column, and remove outliers
     df = colonna_durata_erogazione(df)
     df = impute_durata_erogazione(df)
-
-    rows, columns = df.shape
-    print('Before boxplot The DataFrame has {} rows and {} columns.'.format(rows, columns))
-
     df = identify_and_remove_outliers_boxplot(df, ['durata_erogazione_min'])
+    df = remove_ora_inizio_fine_erogazione(df)
 
-    rows, columns = df.shape
-    print('After boxplot The DataFrame has {} rows and {} columns.'.format(rows, columns))
-
+    # Remove code columns with unique correlation
+    df, columns_pairs = remove_columns_with_unique_correlation(df, columns_pairs)
 
     # Create 'eta' column
     df = colonna_eta(df)
