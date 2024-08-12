@@ -1,4 +1,5 @@
 import pandas as pd
+from src.data_prep.data_cleaning import identify_and_remove_outliers_boxplot, impute_durata_erogazione
 
 # List of tuples containing the code-description column pairs to be compared.
 columns_pairs = [
@@ -106,7 +107,48 @@ def remove_data_disdetta(df) -> pd.DataFrame:
     return df
 
 
- # TODO: decidere se eliminare la feature struttura_erogazione con il dato sbagliato 'PRESIDIO OSPEDALIERO UNIFICATO' e usarlo nel post-processing o se gestirlo prima.
+def colonna_durata_erogazione(df:pd.DataFrame) -> pd.DataFrame:
+    '''
+    This function creates a new column 'durata_erogazione' which is the difference between 'ora_fine_erogazione' and 'ora_inizio_erogazione'
+    '''
+    # Convert 'ora_inizio_erogazione' and 'ora_fine_erogazione' to datetime
+    df['ora_inizio_erogazione'] = pd.to_datetime(df['ora_inizio_erogazione'], utc=True, errors='coerce')
+    df['ora_fine_erogazione'] = pd.to_datetime(df['ora_fine_erogazione'], utc=True, errors='coerce')
+
+    df['durata_erogazione_min'] = (df['ora_fine_erogazione'] - df['ora_inizio_erogazione']).dt.total_seconds()
+    
+    return df
+
+
+def remove_ora_inizio_fine_erogazione(df:pd.DataFrame) -> pd.DataFrame:
+    '''
+    This function removes 'ora_inizio_erogazione' and 'ora_fine_erogazione' columns from the DataFrame
+    '''
+
+    df.drop(columns=['ora_inizio_erogazione', 'ora_fine_erogazione'], inplace=True)
+    return df
+
+
+def colonna_eta(df:pd.DataFrame) -> pd.DataFrame:
+    '''
+    This function creates a new column 'eta' which is the difference between 'ora_fine_erogazione' and 'ora_inizio_erogazione'
+    '''
+
+    df['data_nascita'] = pd.to_datetime(df['data_nascita'], utc=True, errors='coerce')
+    
+    df['eta'] = (pd.to_datetime('today', utc=True) - df['data_nascita']).dt.days // 365
+    return df
+
+
+
+
+# TODO: decidere se eliminare la feature struttura_erogazione con il dato sbagliato 'PRESIDIO OSPEDALIERO UNIFICATO' e usarlo nel post-processing o se gestirlo prima.
+# Modifichiamo PRESIDIO OSPEDALIERO UNIFICATO con le relative provincie e rimuoviamo la colonna codice_struttura_erogazione
+
+# 11/08/2024
+# DONE - TODO: aggiungere colonna eta
+# DONE - TODO: rimuovere colonne ora inizio e fine erogazione e aggiungere durata
+# DONE - TODO: imputare in valori mancanti in durata erogazione con la media della durata per attività
 def feature_selection_execution(df:pd.DataFrame) -> pd.DataFrame:
     '''
     This function executes the feature selection process
@@ -120,14 +162,25 @@ def feature_selection_execution(df:pd.DataFrame) -> pd.DataFrame:
 
     global columns_pairs
 
-    # Remove code columns with unique correlation
-    df, columns_pairs = remove_columns_with_unique_correlation(df, columns_pairs)
 
     # Clean 'codice_struttura_erogazione' column
     df = clean_codice_struttura_erogazione(df)
 
     # Remove 'data_disdetta' column cause all the data is null
     df = remove_data_disdetta(df)
+
+    # Create 'durata_erogazione' column, and remove outliers
+    df = colonna_durata_erogazione(df)
+    df = impute_durata_erogazione(df)
+    df = identify_and_remove_outliers_boxplot(df, ['durata_erogazione_min'])
+    df = remove_ora_inizio_fine_erogazione(df)
+
+    # Remove code columns with unique correlation
+    df, columns_pairs = remove_columns_with_unique_correlation(df, columns_pairs)
+
+    # Create 'eta' column
+    df = colonna_eta(df)
+
 
     df.to_parquet('data/processed/feature_selected_data.parquet')
 

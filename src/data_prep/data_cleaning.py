@@ -55,8 +55,21 @@ def fill_missing_comune_residenza(df, codice_comune_to_nome) -> pd.DataFrame:
 
       return df
 
+def remove_comune_residenza(df:pd.DataFrame) -> pd.DataFrame:
+    """
+    Removes rows where 'comune_residenza' is missing.
 
+    Args:
+        df: The DataFrame containing the data.
 
+    Returns:
+        The DataFrame with removed rows.
+    """
+
+    df = df.dropna(subset=['comune_residenza'])
+    return df
+
+# NOT USED
 def impute_ora_inizio_and_fine_erogazione(df:pd.DataFrame) -> pd.DataFrame:
     """
     Imputes missing values for 'ora_inizio_erogazione' and 'ora_fine_erogazione' using the mean duration of the activity.
@@ -109,30 +122,53 @@ def remove_disdette(df) -> pd.DataFrame:
 
 
 
-def identify_and_remove_outliers_zscore(df, columns, threshold=3):
-    """
-    Identifies and removes outliers using the z-score method (normalization).
+def identify_and_remove_outliers_boxplot(df, columns, threshold=3):
+    '''
+    Identifies and removes outliers using the boxplot method.
     
-    :param df: The original DataFrame.
-    :param columns: The columns on which to apply outliers removal.
-    :param threshold: The z-score threshold for outlier detection (default: 3).
-    :return: A DataFrame with no outliers.
-    """
-    for col in columns:
-        z_scores = np.abs((df[col] - df[col].mean()) / df[col].std())
-        df = df[z_scores <= threshold]
+    Args: 
+        df: The DataFrame containing the data.
+        columns: The columns on which to identify and remove outliers.
+        threshold: The threshold for identifying outliers.
+    
+    Returns:
+        The DataFrame with removed outliers.
+    '''
+
+    # for col in columns:
+    #     z_scores = np.abs((df[col] - df[col].mean()) / df[col].std())
+    #     print(z_scores)
+    #     print('Number of outliers in {}: {}'.format(col, len(z_scores[z_scores > threshold])))
+    #     df = df[z_scores <= threshold]
+    # return df
+
+
+    for column in columns:
+        Q1 = df[column].quantile(0.25)
+        Q3 = df[column].quantile(0.75)
+        IQR = Q3 - Q1
+        lower_bound = Q1 - 1.5 * IQR
+        upper_bound = Q3 + 1.5 * IQR
+        print('lower_bound:', lower_bound)
+        print('upper_bound:', upper_bound)
+        df = df[(df[column] >= lower_bound) & (df[column] <= upper_bound)]
     return df
 
 
-
+# NOT USED
 def smooth_noisy_data(df, column, window_size=3):
-    """
-    Smooth noisy data using moving average.
-    :param df: The original DataFrame.
-    :param column: The column on which to apply smoothing.
-    :param window_size: The window size for the moving average.
-    :return: A DataFrame with the smoothed data.
-    """
+    '''
+    Smooths noisy data using a moving average.
+
+    Args:
+        df: The DataFrame containing the data.
+        column: The column to smooth.
+        window_size: The window size for the moving average.
+    
+    Returns:
+        The DataFrame with smoothed data.
+    '''
+
     if pd.api.types.is_datetime64_any_dtype(df[column]):
         # Convert datetime to timestamp
         df[column] = df[column].apply(lambda x: x.timestamp() if pd.notnull(x) else x)
@@ -156,24 +192,45 @@ def remove_duplicates(df:pd.DataFrame) -> pd.DataFrame:
     return df
 
 
+def impute_durata_erogazione(df:pd.DataFrame) -> pd.DataFrame:
+    '''
+    Imputes missing values for 'durata_erogazione' using the mean duration of the activity.
+    '''
+
+
+    # Convert 'ora_inizio_erogazione' and 'ora_fine_erogazione' to datetime
+    df['ora_inizio_erogazione'] = pd.to_datetime(df['ora_inizio_erogazione'], utc=True, errors='coerce')
+    df['ora_fine_erogazione'] = pd.to_datetime(df['ora_fine_erogazione'], utc=True, errors='coerce')
+
+    # Imputate missing values for 'durata_erogazione' using the mean duration of the activity 
+    df['durata_erogazione_min'] = df.groupby('codice_descrizione_attivita')['durata_erogazione_min'].transform(lambda x: x.fillna(x.mean()))
+
+    return df
+
+
+
 def data_cleaning_execution(df:pd.DataFrame) -> pd.DataFrame:
     # Apply the function to imputate missing values for 'comune_residenza'
     df, codice_comune_to_nome = imputate_comune_residenza(df)
 
     # Fill missing values for 'comune_residenza' using a mapping
-    df = fill_missing_comune_residenza(df, codice_comune_to_nome)
+    df = fill_missing_comune_residenza(df, codice_comune_to_nome) 
+
+    df = remove_comune_residenza(df)
 
     # Impute missing values for 'ora_inizio_erogazione' and 'ora_fine_erogazione'
-    df = impute_ora_inizio_and_fine_erogazione(df)   
+    # DISABLED
+    # df = impute_ora_inizio_and_fine_erogazione(df)  
 
     # Remove rows where 'data_disdetta' is not null
     df = remove_disdette(df)
 
     # Identify and remove outliers using the z-score method
-    df = identify_and_remove_outliers_zscore(df, ['ora_inizio_erogazione', 'ora_fine_erogazione'])
+    #df = identify_and_remove_outliers_boxplot(df, ['ora_inizio_erogazione', 'ora_fine_erogazione'])
 
     # Smooth noisy data using moving average
-    df = smooth_noisy_data(df, 'ora_inizio_erogazione')
+    # DISABLED
+    #df = smooth_noisy_data(df, 'ora_inizio_erogazione')
 
     # Remove duplicates from the dataset
     df = remove_duplicates(df)
