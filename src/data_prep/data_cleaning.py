@@ -226,11 +226,12 @@ def data_cleaning_execution(df:pd.DataFrame) -> pd.DataFrame:
     df = remove_disdette(df)
 
     # Identify and remove outliers using the z-score method
-    #df = identify_and_remove_outliers_boxplot(df, ['ora_inizio_erogazione', 'ora_fine_erogazione'])
+    # DISABLED
+    # df = identify_and_remove_outliers_boxplot(df, ['ora_inizio_erogazione', 'ora_fine_erogazione'])
 
     # Smooth noisy data using moving average
     # DISABLED
-    #df = smooth_noisy_data(df, 'ora_inizio_erogazione')
+    # df = smooth_noisy_data(df, 'ora_inizio_erogazione')
 
     # Remove duplicates from the dataset
     df = remove_duplicates(df)
