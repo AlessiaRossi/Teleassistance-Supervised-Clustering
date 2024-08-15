@@ -185,24 +185,45 @@ def cramer_v(x, y):
     # Calculate Cramér's V
     return np.sqrt(chi2 / (n * min_dim))
 
-# Calculate the correlation matrix
-correlations = pd.DataFrame(index=corr_cols, columns=corr_cols)
-for col1 in corr_cols:
-    for col2 in corr_cols:
-        if col1 != col2:
-            correlations.loc[col1, col2] = cramer_v(df[col1], df[col2])
-        else:
-            correlations.loc[col1, col2] = 1.0  # Perfect correlation with itself
+def calculate_correlation_matrix(df, corr_cols):
+    '''
+    This function calculates the correlation matrix using Cramér's V.
 
-# Visualize the correlation matrix
-plt.figure(figsize=(16, 12))
-sns.heatmap(correlations.astype(float), annot=True, cmap="coolwarm", fmt=".2f", linewidths=0.5, square=True)
+    Args:
+        df: DataFrame containing the data.
+        corr_cols: List of columns to calculate the correlation matrix for.
 
-plt.xticks(rotation=45, ha="right", fontsize=12)
-plt.yticks(fontsize=12)
-plt.tight_layout()
+    Returns:
+        DataFrame containing the correlation matrix.
+    '''
+    correlations = pd.DataFrame(index=corr_cols, columns=corr_cols)
+    for col1 in corr_cols:
+        for col2 in corr_cols:
+            if col1 != col2:
+                correlations.loc[col1, col2] = cramer_v(df[col1], df[col2])
+            else:
+                correlations.loc[col1, col2] = 1.0  # Perfect correlation with itself
+    return correlations
 
-plt.show()
+
+def visualize_correlation_matrix(correlations):
+    '''
+    This function visualizes the correlation matrix using a heatmap.
+
+    Args:
+        correlations: DataFrame containing the correlation matrix.
+
+    Returns:
+        None
+    '''
+    plt.figure(figsize=(16, 12))
+    sns.heatmap(correlations.astype(float), annot=True, cmap="coolwarm", fmt=".2f", linewidths=0.5, square=True)
+
+    plt.xticks(rotation=45, ha="right", fontsize=12)
+    plt.yticks(fontsize=12)
+    plt.tight_layout()
+
+    plt.show()
 
 # TODO: decidere se eliminare la feature struttura_erogazione con il dato sbagliato 'PRESIDIO OSPEDALIERO UNIFICATO' e usarlo nel post-processing o se gestirlo prima.
 # Modifichiamo PRESIDIO OSPEDALIERO UNIFICATO con le relative provincie e rimuoviamo la colonna codice_struttura_erogazione
@@ -243,7 +264,19 @@ def feature_selection_execution(df:pd.DataFrame) -> pd.DataFrame:
     # Create 'eta' column
     df = colonna_eta(df)
 
+    # Calculate the correlation matrix
+    corr_cols = [
+        'sesso', 'regione_residenza', 'asl_residenza', 'provincia_residenza', 'comune_residenza',
+        'descrizione_attivita', 'regione_erogazione', 'asl_erogazione', 'provincia_erogazione',
+        'struttura_erogazione', 'tipologia_struttura_erogazione', 'tipologia_professionista_sanitario', 'eta'
+    ]
 
+    correlations = calculate_correlation_matrix(df, corr_cols)
+    visualize_correlation_matrix(correlations)
+
+
+    # Save the DataFrame to a parquet file
     df.to_parquet('data/processed/feature_selected_data.parquet')
+
 
     return df
