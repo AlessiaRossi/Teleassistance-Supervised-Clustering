@@ -1,6 +1,13 @@
 import pandas as pd
 from src.data_prep.data_cleaning import identify_and_remove_outliers_boxplot, impute_durata_erogazione
+import numpy as np
+from scipy.stats import chi2_contingency
+import seaborn as sns
+import matplotlib.pyplot as plt
 
+# Load the dataset
+file_path = '../../data/processed/feature_selected_data.parquet'
+df = pd.read_parquet(file_path, engine='pyarrow')
 # List of tuples containing the code-description column pairs to be compared.
 columns_pairs = [
     ('codice_provincia_residenza', 'provincia_residenza'),
@@ -139,7 +146,58 @@ def colonna_eta(df:pd.DataFrame) -> pd.DataFrame:
     df['eta'] = (pd.to_datetime('today', utc=True) - df['data_nascita']).dt.days // 365
     return df
 
+# Define the columns for correlation
+corr_cols = [
+    'sesso',
+    'regione_residenza',
+    'asl_residenza',
+    'provincia_residenza',
+    'comune_residenza',
+    'descrizione_attivita',
+    'regione_erogazione',
+    'asl_erogazione',
+    'provincia_erogazione',
+    'struttura_erogazione',
+    'tipologia_struttura_erogazione',
+    'tipologia_professionista_sanitario',
+    'eta'
+]
 
+def cramer_v(x, y):
+    '''
+    This function calculates Cramér's V for two categorical variables.
+
+    Args:
+        x: First categorical variable.
+        y: Second categorical variable.
+
+    Returns:
+        Cramér's V statistic.
+    '''
+    # Create a contingency table
+    contingency = pd.crosstab(x, y)
+
+    # Calculate the chi-square test statistic and other values
+    chi2, _, _, _ = chi2_contingency(contingency)
+    n = contingency.sum().sum()
+    min_dim = min(contingency.shape) - 1
+
+    # Calculate Cramér's V
+    return np.sqrt(chi2 / (n * min_dim))
+
+# Calculate the correlation matrix
+correlations = pd.DataFrame(index=corr_cols, columns=corr_cols)
+for col1 in corr_cols:
+    for col2 in corr_cols:
+        if col1 != col2:
+            correlations.loc[col1, col2] = cramer_v(df[col1], df[col2])
+        else:
+            correlations.loc[col1, col2] = 1.0  # Perfect correlation with itself
+
+# Visualize the correlation matrix
+plt.figure(figsize=(12, 9))  # Increase the figure size to your desired dimensions
+sns.heatmap(correlations.astype(float), annot=True, cmap="coolwarm")
+plt.show()
 
 
 # TODO: decidere se eliminare la feature struttura_erogazione con il dato sbagliato 'PRESIDIO OSPEDALIERO UNIFICATO' e usarlo nel post-processing o se gestirlo prima.
