@@ -195,10 +195,14 @@ for col1 in corr_cols:
             correlations.loc[col1, col2] = 1.0  # Perfect correlation with itself
 
 # Visualize the correlation matrix
-plt.figure(figsize=(12, 9))  # Increase the figure size to your desired dimensions
-sns.heatmap(correlations.astype(float), annot=True, cmap="coolwarm")
-plt.show()
+plt.figure(figsize=(16, 12))
+sns.heatmap(correlations.astype(float), annot=True, cmap="coolwarm", fmt=".2f", linewidths=0.5, square=True)
 
+plt.xticks(rotation=45, ha="right", fontsize=12)
+plt.yticks(fontsize=12)
+plt.tight_layout()
+
+plt.show()
 
 # TODO: decidere se eliminare la feature struttura_erogazione con il dato sbagliato 'PRESIDIO OSPEDALIERO UNIFICATO' e usarlo nel post-processing o se gestirlo prima.
 # Modifichiamo PRESIDIO OSPEDALIERO UNIFICATO con le relative provincie e rimuoviamo la colonna codice_struttura_erogazione
