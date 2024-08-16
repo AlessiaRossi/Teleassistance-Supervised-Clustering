@@ -5,6 +5,8 @@ from scipy.stats import chi2_contingency
 import seaborn as sns
 import matplotlib.pyplot as plt
 
+import matplotlib
+matplotlib.use('Agg')
 
 # List of tuples containing the code-description column pairs to be compared.
 columns_pairs = [
