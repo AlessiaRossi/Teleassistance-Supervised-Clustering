@@ -144,22 +144,11 @@ def colonna_eta(df:pd.DataFrame) -> pd.DataFrame:
     df['eta'] = (pd.to_datetime('today', utc=True) - df['data_nascita']).dt.days // 365
     return df
 
-# Define the columns for correlation
-corr_cols = [
-    'sesso',
-    'regione_residenza',
-    'asl_residenza',
-    'provincia_residenza',
-    'comune_residenza',
-    'descrizione_attivita',
-    'regione_erogazione',
-    'asl_erogazione',
-    'provincia_erogazione',
-    'struttura_erogazione',
-    'tipologia_struttura_erogazione',
-    'tipologia_professionista_sanitario',
-    'eta'
-]
+def colonne_anno_e_quadrimestre(df:pd.DataFrame) -> pd.DataFrame:    
+    df['anno'] = df['data_erogazione'].df.year
+    df['quadrimestre'] = df['data_erogazione'].df.quarter
+
+    return df
 
 def cramer_v(x, y):
     '''
@@ -279,29 +268,52 @@ def feature_selection_execution(df:pd.DataFrame) -> pd.DataFrame:
 
     # Create 'eta' column
     df = colonna_eta(df)
-
-    # print(df.columns)
-
-    # # Calculate the correlation matrix
-    # corr_cols = [
-    #     'sesso', 'regione_residenza', 'asl_residenza', 'provincia_residenza', 'comune_residenza',
-    #     'descrizione_attivita', 'regione_erogazione', 'asl_erogazione', 'provincia_erogazione',
-    #     'struttura_erogazione', 'tipologia_struttura_erogazione', 'tipologia_professionista_sanitario', 'eta'
-    # ]
-
-    # correlations = calculate_correlation_matrix(df, corr_cols)
-    # visualize_correlation_matrix(correlations)
+    df = colonne_anno_e_quadrimestre(df)
 
 
-    # columns_to_remove = [
-    #     'regione_residenza', 'provincia_residenza', 'regione_erogazione', 'provincia_erogazione', 'asl_erogazione'
-    # ]
-    # df = remove_highly_correlated_columns(df, columns_to_remove)
+    ''' 
+        Remove highly correlated columns 
+    '''
+    # Calculate the correlation matrix
+    corr_cols = [
+        'sesso', 'regione_residenza', 'asl_residenza', 'provincia_residenza', 'comune_residenza',
+        'descrizione_attivita', 'regione_erogazione', 'asl_erogazione', 'provincia_erogazione',
+        'struttura_erogazione', 'tipologia_struttura_erogazione', 'tipologia_professionista_sanitario', 'eta'
+    ]
 
-    # print(df.columns)
+    correlations = calculate_correlation_matrix(df, corr_cols)
+    visualize_correlation_matrix(correlations)
+
+
+    columns_to_remove = [
+            'comune_residenza', 'asl_residenza', 'provincia_residenza', 'regione_erogazione', 'asl_erogazione', 'provincia_erogazione', 'struttura_erogazione'
+    ]
+
+    df = remove_highly_correlated_columns(df, columns_to_remove)
+
+
+    new_corr_cols = ['sesso', 
+        'regione_residenza', 
+        # 'asl_residenza', 
+        # 'provincia_residenza',
+        # 'comune_residenza',
+        'descrizione_attivita',
+        # 'regione_erogazione',
+        # 'asl_erogazione',
+        # 'provincia_erogazione',
+        # 'struttura_erogazione',
+        'tipologia_struttura_erogazione',
+        'tipologia_professionista_sanitario',
+        'eta']
+
+    correlations = calculate_correlation_matrix(df, new_corr_cols)
+    visualize_correlation_matrix(correlations)
+
+    '''
+        End of remove highly correlated columns
+    '''
 
     # Save the DataFrame to a parquet file
     df.to_parquet('data/processed/feature_selected_data.parquet')
-
-
+   
     return df
