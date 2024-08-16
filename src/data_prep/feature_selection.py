@@ -223,6 +223,24 @@ def visualize_correlation_matrix(correlations):
 
     plt.show()
 
+
+def remove_highly_correlated_columns(df, columns_to_remove):
+    '''
+    This function removes columns based on the correlation analysis.
+
+    Args:
+        df: DataFrame containing the data.
+        columns_to_remove: List of columns to be removed.
+
+    Returns:
+        DataFrame with the specified columns removed.
+    '''
+
+    df.drop(columns=columns_to_remove, inplace=True)
+    return df
+
+
+
 # TODO: decidere se eliminare la feature struttura_erogazione con il dato sbagliato 'PRESIDIO OSPEDALIERO UNIFICATO' e usarlo nel post-processing o se gestirlo prima.
 # Modifichiamo PRESIDIO OSPEDALIERO UNIFICATO con le relative provincie e rimuoviamo la colonna codice_struttura_erogazione
 
@@ -262,16 +280,25 @@ def feature_selection_execution(df:pd.DataFrame) -> pd.DataFrame:
     # Create 'eta' column
     df = colonna_eta(df)
 
-    # Calculate the correlation matrix
-    corr_cols = [
-        'sesso', 'regione_residenza', 'asl_residenza', 'provincia_residenza', 'comune_residenza',
-        'descrizione_attivita', 'regione_erogazione', 'asl_erogazione', 'provincia_erogazione',
-        'struttura_erogazione', 'tipologia_struttura_erogazione', 'tipologia_professionista_sanitario', 'eta'
-    ]
+    # print(df.columns)
 
-    correlations = calculate_correlation_matrix(df, corr_cols)
-    visualize_correlation_matrix(correlations)
+    # # Calculate the correlation matrix
+    # corr_cols = [
+    #     'sesso', 'regione_residenza', 'asl_residenza', 'provincia_residenza', 'comune_residenza',
+    #     'descrizione_attivita', 'regione_erogazione', 'asl_erogazione', 'provincia_erogazione',
+    #     'struttura_erogazione', 'tipologia_struttura_erogazione', 'tipologia_professionista_sanitario', 'eta'
+    # ]
 
+    # correlations = calculate_correlation_matrix(df, corr_cols)
+    # visualize_correlation_matrix(correlations)
+
+
+    # columns_to_remove = [
+    #     'regione_residenza', 'provincia_residenza', 'regione_erogazione', 'provincia_erogazione', 'asl_erogazione'
+    # ]
+    # df = remove_highly_correlated_columns(df, columns_to_remove)
+
+    # print(df.columns)
 
     # Save the DataFrame to a parquet file
     df.to_parquet('data/processed/feature_selected_data.parquet')
