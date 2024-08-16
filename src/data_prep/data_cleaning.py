@@ -203,7 +203,7 @@ def impute_durata_erogazione(df:pd.DataFrame) -> pd.DataFrame:
     df['ora_fine_erogazione'] = pd.to_datetime(df['ora_fine_erogazione'], utc=True, errors='coerce')
 
     # Imputate missing values for 'durata_erogazione' using the mean duration of the activity 
-    df['durata_erogazione_min'] = df.groupby('codice_descrizione_attivita')['durata_erogazione_min'].transform(lambda x: x.fillna(x.mean()))
+    df['durata_erogazione_sec'] = df.groupby('codice_descrizione_attivita')['durata_erogazione_sec'].transform(lambda x: x.fillna(x.mean()))
 
     return df
 

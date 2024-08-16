@@ -120,7 +120,7 @@ def colonna_durata_erogazione(df:pd.DataFrame) -> pd.DataFrame:
     df['ora_inizio_erogazione'] = pd.to_datetime(df['ora_inizio_erogazione'], utc=True, errors='coerce')
     df['ora_fine_erogazione'] = pd.to_datetime(df['ora_fine_erogazione'], utc=True, errors='coerce')
 
-    df['durata_erogazione_min'] = (df['ora_fine_erogazione'] - df['ora_inizio_erogazione']).dt.total_seconds()
+    df['durata_erogazione_sec'] = (df['ora_fine_erogazione'] - df['ora_inizio_erogazione']).dt.total_seconds()
     
     return df
 
@@ -253,7 +253,7 @@ def feature_selection_execution(df:pd.DataFrame) -> pd.DataFrame:
     # Create 'durata_erogazione' column, and remove outliers
     df = colonna_durata_erogazione(df)
     df = impute_durata_erogazione(df)
-    df = identify_and_remove_outliers_boxplot(df, ['durata_erogazione_min'])
+    df = identify_and_remove_outliers_boxplot(df, ['durata_erogazione_sec'])
     df = remove_ora_inizio_fine_erogazione(df)
 
     # Remove code columns with unique correlation
