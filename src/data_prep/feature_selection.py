@@ -145,8 +145,9 @@ def colonna_eta(df:pd.DataFrame) -> pd.DataFrame:
     return df
 
 def colonne_anno_e_quadrimestre(df:pd.DataFrame) -> pd.DataFrame:    
-    df['anno'] = df['data_erogazione'].df.year
-    df['quadrimestre'] = df['data_erogazione'].df.quarter
+    df['data_erogazione'] = pd.to_datetime(df['data_erogazione'], utc=True, errors='coerce')
+    df['anno'] = df['data_erogazione'].dt.year
+    df['quadrimestre'] = df['data_erogazione'].dt.quarter
 
     return df
 
@@ -284,14 +285,14 @@ def feature_selection_execution(df:pd.DataFrame) -> pd.DataFrame:
     correlations = calculate_correlation_matrix(df, corr_cols)
     visualize_correlation_matrix(correlations)
 
-
+    # Remove highly correlated columns
     columns_to_remove = [
             'comune_residenza', 'asl_residenza', 'provincia_residenza', 'regione_erogazione', 'asl_erogazione', 'provincia_erogazione', 'struttura_erogazione'
     ]
-
+    # Remove the highly correlated columns
     df = remove_highly_correlated_columns(df, columns_to_remove)
 
-
+    # Update the list of columns pairs removing the ones that have been removed
     new_corr_cols = ['sesso', 
         'regione_residenza', 
         # 'asl_residenza', 
@@ -305,7 +306,8 @@ def feature_selection_execution(df:pd.DataFrame) -> pd.DataFrame:
         'tipologia_struttura_erogazione',
         'tipologia_professionista_sanitario',
         'eta']
-
+    
+    # Calculate the correlation matrix
     correlations = calculate_correlation_matrix(df, new_corr_cols)
     visualize_correlation_matrix(correlations)
 
