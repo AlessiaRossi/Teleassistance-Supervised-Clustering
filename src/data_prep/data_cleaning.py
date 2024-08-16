@@ -34,7 +34,7 @@ def imputate_comune_residenza(df):
     return df, codice_comune_to_nome
 
 
-
+# TODO: ridondante potrebbe essere unita alla funzione precedente 
 def fill_missing_comune_residenza(df, codice_comune_to_nome) -> pd.DataFrame:
       """
       Fills missing values in the 'comune_residenza' column using a mapping.
@@ -69,7 +69,7 @@ def remove_comune_residenza(df:pd.DataFrame) -> pd.DataFrame:
     df = df.dropna(subset=['comune_residenza'])
     return df
 
-# NOT USED
+# NOT USED: non ha senso disabilitato da ignazio metodo inclosionale, dopo l'imputaizone creda dei valori assurdi dovuto da tipi di visita diversi 
 def impute_ora_inizio_and_fine_erogazione(df:pd.DataFrame) -> pd.DataFrame:
     """
     Imputes missing values for 'ora_inizio_erogazione' and 'ora_fine_erogazione' using the mean duration of the activity.

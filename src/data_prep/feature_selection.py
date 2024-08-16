@@ -5,9 +5,7 @@ from scipy.stats import chi2_contingency
 import seaborn as sns
 import matplotlib.pyplot as plt
 
-# Load the dataset
-file_path = '../../data/processed/feature_selected_data.parquet'
-df = pd.read_parquet(file_path, engine='pyarrow')
+
 # List of tuples containing the code-description column pairs to be compared.
 columns_pairs = [
     ('codice_provincia_residenza', 'provincia_residenza'),
