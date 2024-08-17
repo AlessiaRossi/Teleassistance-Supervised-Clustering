@@ -196,7 +196,7 @@ def calculate_correlation_matrix(df, corr_cols):
     return correlations
 
 
-def visualize_correlation_matrix(correlations):
+def visualize_correlation_matrix(correlations, name):
     '''
     This function visualizes the correlation matrix using a heatmap.
 
@@ -213,7 +213,7 @@ def visualize_correlation_matrix(correlations):
     plt.yticks(fontsize=12)
     plt.tight_layout()
 
-    plt.show()
+    plt.savefig(name)
 
 
 def remove_highly_correlated_columns(df, columns_to_remove):
@@ -285,7 +285,7 @@ def feature_selection_execution(df:pd.DataFrame) -> pd.DataFrame:
     ]
 
     correlations = calculate_correlation_matrix(df, corr_cols)
-    visualize_correlation_matrix(correlations)
+    visualize_correlation_matrix(correlations, name = 'data/graph/Heatmap_1.png')
 
     # Remove highly correlated columns
     columns_to_remove = [
@@ -311,7 +311,7 @@ def feature_selection_execution(df:pd.DataFrame) -> pd.DataFrame:
     
     # Calculate the correlation matrix
     correlations = calculate_correlation_matrix(df, new_corr_cols)
-    visualize_correlation_matrix(correlations)
+    visualize_correlation_matrix(correlations, name = 'data/graph/Heatmap_2.png')
 
     '''
         End of remove highly correlated columns
