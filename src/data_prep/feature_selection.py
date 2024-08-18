@@ -5,8 +5,8 @@ from scipy.stats import chi2_contingency
 import seaborn as sns
 import matplotlib.pyplot as plt
 
-import matplotlib
-matplotlib.use('Agg')
+# import matplotlib
+# matplotlib.use('Agg')
 
 # List of tuples containing the code-description column pairs to be compared.
 columns_pairs = [
@@ -122,7 +122,7 @@ def colonna_durata_erogazione(df:pd.DataFrame) -> pd.DataFrame:
     df['ora_inizio_erogazione'] = pd.to_datetime(df['ora_inizio_erogazione'], utc=True, errors='coerce')
     df['ora_fine_erogazione'] = pd.to_datetime(df['ora_fine_erogazione'], utc=True, errors='coerce')
 
-    df['durata_erogazione_sec'] = (df['ora_fine_erogazione'] - df['ora_inizio_erogazione']).dt.total_seconds()
+    df['durata_erogazione_sec'] = (df['ora_fine_erogazione'] - df['ora_inizio_erogazione']).dt.total_seconds().astype(int)
     
     return df
 
