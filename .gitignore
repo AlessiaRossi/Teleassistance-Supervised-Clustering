@@ -4,3 +4,5 @@ _pycache_/*
 .DS_Store
 .venv/*
 venv
+data/*
+src/*
