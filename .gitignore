@@ -4,4 +4,4 @@ env_FIA/*
 .DS_Store
 venv/*
 .venv/*
-data/*
+data/*/*
