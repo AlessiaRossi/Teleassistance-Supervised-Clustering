@@ -1,5 +1,5 @@
 # Teleassistance-Supervised-Clustering
-This project explores the integration of teleassistance services with supervised clustering techniques.
+To read the README.md in Italian, click [here](README_ita.md).
 
 ## Index
 - [Enviroment set up](#enviroment-set-up)
@@ -23,6 +23,7 @@ Before running the code, it's important to take some precautions and set up your
 Once you've set up your virtual environment and installed the dependencies, you're ready to run the application. Simply navigate to the `main.py` file and execute it.
 
 ## Overview
+This project explores the integration of teleassistance services with supervised clustering techniques.
 - **Objective**: Profile patients to understand their contribution to the increase in teleassistance services.
 - **Key Focus**: Identify common patterns and behaviors among patients that are linked to the rise in teleassistance usage.
 - **Approach**:
