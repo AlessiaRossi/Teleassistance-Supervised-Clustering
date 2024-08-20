@@ -122,7 +122,7 @@ def colonna_durata_erogazione(df:pd.DataFrame) -> pd.DataFrame:
     df['ora_inizio_erogazione'] = pd.to_datetime(df['ora_inizio_erogazione'], utc=True, errors='coerce')
     df['ora_fine_erogazione'] = pd.to_datetime(df['ora_fine_erogazione'], utc=True, errors='coerce')
 
-    df['durata_erogazione_sec'] = (df['ora_fine_erogazione'] - df['ora_inizio_erogazione']).dt.total_seconds().astype(int)
+    df['durata_erogazione_sec'] = (df['ora_fine_erogazione'] - df['ora_inizio_erogazione']).dt.total_seconds()
     
     return df
 
@@ -136,14 +136,25 @@ def remove_ora_inizio_fine_erogazione(df:pd.DataFrame) -> pd.DataFrame:
     return df
 
 
-def colonna_eta(df:pd.DataFrame) -> pd.DataFrame:
+def colonna_fascia_eta(df:pd.DataFrame) -> pd.DataFrame:
     '''
     This function creates a new column 'eta' which is the difference between 'ora_fine_erogazione' and 'ora_inizio_erogazione'
     '''
 
     df['data_nascita'] = pd.to_datetime(df['data_nascita'], utc=True, errors='coerce')
+
+    print(df.shape) #dim: (460509, 21)
     
-    df['eta'] = (pd.to_datetime('today', utc=True) - df['data_nascita']).dt.days // 365
+    eta = (pd.to_datetime('today', utc=True) - df['data_nascita']).dt.days // 365
+    
+    print(eta.shape) #dim: (460509,)
+
+    age_labels = ['0-11', '12-23', '24-35', '36-47', '48-59', '60-69', '70+']
+    eta = pd.cut(eta, bins=[0, 12, 24, 36, 48, 60, 70, 120], labels=age_labels)
+    print(eta)
+    
+    df['fascia_eta'] = eta
+
     return df
 
 def colonne_anno_e_quadrimestre(df:pd.DataFrame) -> pd.DataFrame:    
@@ -270,7 +281,7 @@ def feature_selection_execution(df:pd.DataFrame) -> pd.DataFrame:
     df, columns_pairs = remove_columns_with_unique_correlation(df, columns_pairs)
 
     # Create 'eta' column
-    df = colonna_eta(df)
+    df = colonna_fascia_eta(df)
     df = colonne_anno_e_quadrimestre(df)
 
 
@@ -281,7 +292,7 @@ def feature_selection_execution(df:pd.DataFrame) -> pd.DataFrame:
     corr_cols = [
         'sesso', 'regione_residenza', 'asl_residenza', 'provincia_residenza', 'comune_residenza',
         'descrizione_attivita', 'regione_erogazione', 'asl_erogazione', 'provincia_erogazione',
-        'struttura_erogazione', 'tipologia_struttura_erogazione', 'tipologia_professionista_sanitario', 'eta'
+        'struttura_erogazione', 'tipologia_struttura_erogazione', 'tipologia_professionista_sanitario', 'fascia_eta'
     ]
 
     correlations = calculate_correlation_matrix(df, corr_cols)
@@ -307,7 +318,7 @@ def feature_selection_execution(df:pd.DataFrame) -> pd.DataFrame:
         # 'struttura_erogazione',
         'tipologia_struttura_erogazione',
         'tipologia_professionista_sanitario',
-        'eta']
+        'fascia_eta']
     
     # Calculate the correlation matrix
     correlations = calculate_correlation_matrix(df, new_corr_cols)
