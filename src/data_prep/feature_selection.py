@@ -153,7 +153,7 @@ def colonna_fascia_eta(df:pd.DataFrame) -> pd.DataFrame:
     eta = pd.cut(eta, bins=[0, 12, 24, 36, 48, 60, 70, 120], labels=age_labels)
     print(eta)
     
-    df['fascia_eta'] = eta
+    df['fascia_eta'] = eta.astype(str)
 
     return df
 
