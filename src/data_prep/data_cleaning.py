@@ -208,14 +208,23 @@ def impute_durata_erogazione(df:pd.DataFrame) -> pd.DataFrame:
 
     return df
 
+def missing_values(df:pd.DataFrame, missing_threshold) -> pd.DataFrame:
+    escluded_column = 'data_disdetta'
+    data_disdetta = df[escluded_column]
+
+    df_filtered = df.loc[:, df.columns != escluded_column]
+    df_filtered = df_filtered.loc[:, df_filtered.isnull().mean() < missing_threshold]
+    df_filtered[escluded_column] = data_disdetta
+
+    return df_filtered
+
+
 
 
 def data_cleaning_execution(df:pd.DataFrame, missing_threshold) -> pd.DataFrame:
 
     # Drop columns with more than 60% missing values
-    logging.info('Columns with more than 70% missing values will be dropped:', (df.loc[:, df.columns != 'data_disdetta'].isnull().mean() < missing_threshold))
-    df = df.loc[:, (df.loc[:, df.columns != 'data_disdetta'].isnull().mean() < missing_threshold)]
-    logging.info('DataFrame shape:', df.shape) 
+    df = missing_values(df, missing_threshold)
 
     # Apply the function to imputate missing values for 'comune_residenza'
     df, codice_comune_to_nome = imputate_comune_residenza(df)
