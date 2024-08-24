@@ -1,5 +1,6 @@
 import pandas as pd
 import numpy as np
+import logging
 
 def imputate_comune_residenza(df):
     """
@@ -209,7 +210,13 @@ def impute_durata_erogazione(df:pd.DataFrame) -> pd.DataFrame:
 
 
 
-def data_cleaning_execution(df:pd.DataFrame) -> pd.DataFrame:
+def data_cleaning_execution(df:pd.DataFrame, missing_threshold) -> pd.DataFrame:
+
+    # Drop columns with more than 60% missing values
+    logging.info('Columns with more than 70% missing values will be dropped:', (df.loc[:, df.columns != 'data_disdetta'].isnull().mean() < missing_threshold))
+    df = df.loc[:, (df.loc[:, df.columns != 'data_disdetta'].isnull().mean() < missing_threshold)]
+    logging.info('DataFrame shape:', df.shape) 
+
     # Apply the function to imputate missing values for 'comune_residenza'
     df, codice_comune_to_nome = imputate_comune_residenza(df)
 
@@ -219,23 +226,21 @@ def data_cleaning_execution(df:pd.DataFrame) -> pd.DataFrame:
     df = remove_comune_residenza(df)
 
     # Impute missing values for 'ora_inizio_erogazione' and 'ora_fine_erogazione'
-    # DISABLED
+    # NOTE: DEPRECATED
     # df = impute_ora_inizio_and_fine_erogazione(df)  
 
     # Remove rows where 'data_disdetta' is not null
     df = remove_disdette(df)
 
     # Identify and remove outliers using the z-score method
-    # DISABLED
+    # NOTE: DEPRECATED
     # df = identify_and_remove_outliers_boxplot(df, ['ora_inizio_erogazione', 'ora_fine_erogazione'])
 
     # Smooth noisy data using moving average
-    # DISABLED
+    # NOTE: DEPRECATED
     # df = smooth_noisy_data(df, 'ora_inizio_erogazione')
 
     # Remove duplicates from the dataset
     df = remove_duplicates(df)
-
-    df.to_parquet('data/processed/challenge_campus_biomedico_2024_cleaned.parquet', index=False)
 
     return df
