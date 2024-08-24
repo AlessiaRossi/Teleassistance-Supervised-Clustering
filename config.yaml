@@ -1,0 +1,18 @@
+data:
+  file_path: "data/raw/challenge_campus_biomedico_2024.parquet"
+  istat_ds_path: "data/raw/Codici-statistici-e-denominazioni-al-30_06_2024.xlsx"
+  cleaned_file_path: "data/processed/cleaned_data.parquet"
+  feature_selected_file_path: "data/processed/feature_selected_data.parquet"
+
+cleaning:
+  cleaning_enabled: True
+  missing_threshold: 0.6 # Drop columns with more than 60% missing values
+
+
+feature_selection:
+  selection_enabled: True
+
+
+general:
+  logging_level: "INFO" # can be: DEBUG, INFO, WARNING, ERROR, CRITICAL
+  output_model_path: "models/" # Path to save model
