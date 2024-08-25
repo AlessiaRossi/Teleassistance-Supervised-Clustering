@@ -63,11 +63,11 @@ def main():
             dtype: int64
         '''
 
-        cleaned_file_path = config['data']['cleaned_file_path']
+        cleaned_file_path = config['cleaning']['cleaned_file_path']
         df.to_parquet(cleaned_file_path)
 
     else:
-        cleaned_file_path = config['data']['cleaned_file_path']
+        cleaned_file_path = config['cleaning']['cleaned_file_path']
         df = pd.read_parquet(cleaned_file_path)
 
 
@@ -81,13 +81,17 @@ def main():
             comune_residenza                      130
         '''
 
-        feature_selected_file_path = config['data']['selected_file_path']
+        feature_selected_file_path = config['feature_selection']['feature_selected_file_path']
         df.to_parquet(feature_selected_file_path)
 
     else:
-        feature_selected_file_path = config['data']['selected_file_path']
+        feature_selected_file_path = config['feature_selection']['feature_selected_file_path']
         df = pd.read_parquet(feature_selected_file_path)
 
+
+    # Phase 3: Feature Engineering
+    if config['feature_engineering']['engineering_enabled']:
+        pass
 
 if __name__ == '__main__':
     main()
