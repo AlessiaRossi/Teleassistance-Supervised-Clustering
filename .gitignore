@@ -6,3 +6,4 @@ venv/*
 .venv/*
 data/*/*
 INFO
+graph/*
