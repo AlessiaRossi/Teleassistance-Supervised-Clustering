@@ -13,6 +13,7 @@ feature_selection:
 
 feature_engineering:
   engineering_enabled: True
+  cols_grouped: ['anno', 'quadrimestre', 'regione_residenza', 'fascia_eta']
   feature_engineering_path: "data/processed/feature_engineered_data.parquet"
 
 general:

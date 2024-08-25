@@ -79,6 +79,7 @@ def feature_engineering_execution(df: pd.DataFrame, cols_grouped: list) -> pd.Da
 
     # questo è un TODO definito nel file feature_selection.py ma ancora non fatto
     df.drop(columns=['codice_struttura_erogazione'], inplace=True)
+    df['durata_erogazione_sec'] =  df.durata_erogazione_sec.astype(int)
 
     incremento_percentuale_medio, df_cols_no_anno = incremento_labelling(df, cols_grouped)
 

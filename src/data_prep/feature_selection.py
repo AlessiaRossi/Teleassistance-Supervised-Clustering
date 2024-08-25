@@ -122,7 +122,7 @@ def colonna_durata_erogazione(df:pd.DataFrame) -> pd.DataFrame:
     df['ora_inizio_erogazione'] = pd.to_datetime(df['ora_inizio_erogazione'], utc=True, errors='coerce')
     df['ora_fine_erogazione'] = pd.to_datetime(df['ora_fine_erogazione'], utc=True, errors='coerce')
 
-    df['durata_erogazione_sec'] = (df['ora_fine_erogazione'] - df['ora_inizio_erogazione']).dt.total_seconds().astype(int)
+    df['durata_erogazione_sec'] = (df['ora_fine_erogazione'] - df['ora_inizio_erogazione']).dt.total_seconds()
     
     return df
 
@@ -296,7 +296,7 @@ def feature_selection_execution(df:pd.DataFrame) -> pd.DataFrame:
     ]
 
     correlations = calculate_correlation_matrix(df, corr_cols)
-    visualize_correlation_matrix(correlations, name = 'data/graph/Heatmap_1.png')
+    visualize_correlation_matrix(correlations, name = 'graphs/Heatmap_1.png')
 
     # Remove highly correlated columns
     columns_to_remove = [
@@ -322,7 +322,7 @@ def feature_selection_execution(df:pd.DataFrame) -> pd.DataFrame:
     
     # Calculate the correlation matrix
     correlations = calculate_correlation_matrix(df, new_corr_cols)
-    visualize_correlation_matrix(correlations, name = 'data/graph/Heatmap_2.png')
+    visualize_correlation_matrix(correlations, name = 'graphs/Heatmap_2.png')
 
     '''
         End of remove highly correlated columns

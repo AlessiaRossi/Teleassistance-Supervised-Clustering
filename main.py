@@ -1,6 +1,7 @@
 import pandas as pd
 from src.data_prep.data_cleaning import data_cleaning_execution
 from src.data_prep.feature_selection import feature_selection_execution
+from src.data_prep.feature_engineering import feature_engineering_execution
 import yaml
 import logging
 
@@ -91,7 +92,17 @@ def main():
 
     # Phase 3: Feature Engineering
     if config['feature_engineering']['engineering_enabled']:
-        pass
+        cols_grouped = config['feature_engineering']['cols_grouped']
+
+        df = feature_engineering_execution(df, cols_grouped)
+
+        logging.info('Head of the DataFrame after Feature Engineering\n', df.head())
+
+        feature_engineered_file_path = config['feature_engineering']['feature_engineering_path']
+        df.to_parquet(feature_engineered_file_path)
+    else:
+        feature_engineered_file_path = config['feature_engineering']['feature_engineering_path']
+        df = pd.read_parquet(feature_engineered_file_path)
 
 if __name__ == '__main__':
     main()
