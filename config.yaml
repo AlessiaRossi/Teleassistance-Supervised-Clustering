@@ -4,24 +4,24 @@ data:
 
 # Phase 1
 cleaning:
-  cleaning_enabled: True
+  cleaning_enabled: False
   missing_threshold: 0.6 # Drop columns with more than 60% missing values
   cleaned_file_path: "data/processed/cleaned_data.parquet"
 
 # Phase 2
 feature_selection:
-  selection_enabled: True
+  selection_enabled: False
   feature_selected_file_path: "data/processed/feature_selected_data.parquet"
 
 # Phase 3
 feature_engineering:
-  engineering_enabled: True
+  engineering_enabled: False
   cols_grouped: ['anno', 'quadrimestre', 'regione_residenza', 'fascia_eta']
   feature_engineering_path: "data/processed/feature_engineered_data.parquet"
 
 # Phase 4
 modelling_clustering:
-  clustering_enabled: True
+  clustering_enabled: False
   elbow_enabled: False
   prediction_enabled: True
   max_clusters: 13

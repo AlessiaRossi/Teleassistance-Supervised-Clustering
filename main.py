@@ -3,6 +3,7 @@ from src.data_prep.data_cleaning import data_cleaning_execution
 from src.data_prep.feature_selection import feature_selection_execution
 from src.data_prep.feature_engineering import feature_engineering_execution
 from src.modelling_clustering import clustering_execution
+from src.metrics_evaluation import metrics_execution
 import yaml
 import logging
 
@@ -139,7 +140,12 @@ def main():
     logging.info('Metrics Calculation Started')
     
     if config['metrics']['metrics_enabled']:
-        pass
+        purity_score, silhouette_score, final_metric = metrics_execution(df, config)
+
+        with open('metrics.txt', 'w') as file:
+            file.write(f'Purity score: {purity_score}\n')
+            file.write(f'Mean normalized silhouette score: {silhouette_score}\n')
+            file.write(f'Final metric: {final_metric}\n')
 
     logging.info('Metrics Calculation Completed')
 

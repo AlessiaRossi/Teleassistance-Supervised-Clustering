@@ -7,7 +7,7 @@ from sklearn.preprocessing import LabelEncoder
 from sklearn.preprocessing import StandardScaler
 
 
-def purity_score(true_labels, clusters):
+def purity_score(true_labels:pd.Series, clusters:pd.Series) -> float:
     """Calculate the purity score."""
     
     N = len(true_labels) # number of data points
@@ -34,7 +34,7 @@ def purity_score(true_labels, clusters):
     return purity
 
 
-def silhouette_score(features, clusters):
+def silhouette_score(features, clusters) -> float:
     # Calculate the silhouette scores for each sample
     silhouette_vals = silhouette_samples(features, clusters)
     
@@ -53,7 +53,7 @@ def silhouette_score(features, clusters):
     return np.mean(normalized_silhouette_vals)
 
 
-def label_encoding(df:pd.DataFrame) -> pd.DataFrame:
+def label_encoding(df:pd.DataFrame):
     """Label encoding of the categorical columns."""
 
     # Extract clusters and true labels
@@ -77,7 +77,7 @@ def label_encoding(df:pd.DataFrame) -> pd.DataFrame:
     return X_standardized_df, clusters
 
 
-def metrics_execution(df:pd.DataFrame, config:dict) -> None:
+def metrics_execution(df:pd.DataFrame, config:dict) -> float:
     """Execution of metrics calculation."""
     
     purity_score = purity_score(df['incremento_teleassistenze'], df['cluster'])
@@ -85,11 +85,11 @@ def metrics_execution(df:pd.DataFrame, config:dict) -> None:
 
     X_standardized_df, clusters = label_encoding(df)
 
-    mean_normalized_silhouette_vals = silhouette_score(X_standardized_df, clusters)
-    logging.info(f'Mean normalized silhouette score: {mean_normalized_silhouette_vals}')
+    silhouette_score = silhouette_score(X_standardized_df, clusters)
+    logging.info(f'Mean normalized silhouette score: {silhouette_score}')
 
     # Calculate the final metrics with a penalty for the number of clusters
-    final_metrics = ((purity_score + mean_normalized_silhouette_vals) / 2) - (0.05 * config['modelling_clustering']['n_clusters'])
+    final_metric = ((purity_score + silhouette_score) / 2) - (0.05 * config['modelling_clustering']['n_clusters'])
 
-    return final_metrics
+    return purity_score, silhouette_score, final_metric
     
