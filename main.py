@@ -49,6 +49,8 @@ def main():
     '''
 
     # Phase 1: Data Cleaning
+    logging.info('Data Cleaning Execution Started')
+
     if config['cleaning']['cleaning_enabled']:
         missing_threshold = config['cleaning']['missing_threshold']
 
@@ -72,8 +74,12 @@ def main():
         cleaned_file_path = config['cleaning']['cleaned_file_path']
         df = pd.read_parquet(cleaned_file_path)
 
+    logging.info('Data Cleaning Execution Completed')
+
 
     # Phase 2: Feature Selection
+    logging.info('Feature Selection Execution Started')
+
     if config['feature_selection']['selection_enabled']:
         df = feature_selection_execution(df)
 
@@ -90,8 +96,12 @@ def main():
         feature_selected_file_path = config['feature_selection']['feature_selected_file_path']
         df = pd.read_parquet(feature_selected_file_path)
 
+    logging.info('Feature Selection Execution Completed')
+
 
     # Phase 3: Feature Engineering
+    logging.info('Feature Engineering Execution Started')
+
     if config['feature_engineering']['engineering_enabled']:
         cols_grouped = config['feature_engineering']['cols_grouped']
 
@@ -105,8 +115,12 @@ def main():
         feature_engineered_file_path = config['feature_engineering']['feature_engineering_path']
         df = pd.read_parquet(feature_engineered_file_path)
 
+    logging.info('Feature Engineering Execution Completed')
+
 
     # Phase 4: Clustering
+    logging.info('Clustering Execution Started')
+    
     if config['modelling_clustering']['clustering_enabled']:
         df = clustering_execution(df, config)
 
@@ -117,6 +131,18 @@ def main():
     else:
         clustering_file_path = config['modelling_clustering']['clustering_file_path']
         df = pd.read_parquet(clustering_file_path)
+
+    logging.info('Clustering Execution Completed')
+
+    
+    # Phase 5: Metrics
+    logging.info('Metrics Calculation Started')
+    
+    if config['metrics']['metrics_enabled']:
+        pass
+
+    logging.info('Metrics Calculation Completed')
+
 
 if __name__ == '__main__':
     main()
