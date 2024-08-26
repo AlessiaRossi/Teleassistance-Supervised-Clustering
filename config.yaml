@@ -2,19 +2,33 @@ data:
   file_path: "data/raw/challenge_campus_biomedico_2024.parquet"
   istat_ds_path: "data/raw/Codici-statistici-e-denominazioni-al-30_06_2024.xlsx"
 
+# Phase 1
 cleaning:
   cleaning_enabled: True
   missing_threshold: 0.6 # Drop columns with more than 60% missing values
   cleaned_file_path: "data/processed/cleaned_data.parquet"
 
+# Phase 2
 feature_selection:
   selection_enabled: True
   feature_selected_file_path: "data/processed/feature_selected_data.parquet"
 
+# Phase 3
 feature_engineering:
   engineering_enabled: True
   cols_grouped: ['anno', 'quadrimestre', 'regione_residenza', 'fascia_eta']
   feature_engineering_path: "data/processed/feature_engineered_data.parquet"
+
+# Phase 4
+modelling_clustering:
+  clustering_enabled: True
+  elbow_enabled: True
+  prediction_enabled: True
+  max_clusters: 13
+  n_clusters: 4
+  list_cols_to_drop: [0,1,2,3,5,7,9,11,12,14,15]
+  model_pkl_file: "models/clustering_model.pkl"
+  clustering_file_path: "data/processed/clustered_data.parquet"
 
 general:
   logging_level: "INFO" # can be: DEBUG, INFO, WARNING, ERROR, CRITICAL

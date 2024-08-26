@@ -2,6 +2,7 @@ import pandas as pd
 from src.data_prep.data_cleaning import data_cleaning_execution
 from src.data_prep.feature_selection import feature_selection_execution
 from src.data_prep.feature_engineering import feature_engineering_execution
+from src.modelling_clustering import clustering_execution
 import yaml
 import logging
 
@@ -103,6 +104,19 @@ def main():
     else:
         feature_engineered_file_path = config['feature_engineering']['feature_engineering_path']
         df = pd.read_parquet(feature_engineered_file_path)
+
+
+    # Phase 4: Clustering
+    if config['modelling_clustering']['clustering_enabled']:
+        df = clustering_execution(df, config)
+
+        logging.info('Head of the DataFrame after Clustering\n', df.head())
+
+        clustering_file_path = config['modelling_clustering']['clustering_file_path']
+        df.to_parquet(clustering_file_path)
+    else:
+        clustering_file_path = config['modelling_clustering']['clustering_file_path']
+        df = pd.read_parquet(clustering_file_path)
 
 if __name__ == '__main__':
     main()
