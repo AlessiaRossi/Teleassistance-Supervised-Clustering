@@ -142,7 +142,7 @@ def main():
     if config['metrics']['metrics_enabled']:
         purity_score, silhouette_score, final_metric = metrics_execution(df, config)
 
-        with open('metrics.txt', 'w') as file:
+        with open(config['metrics']['metrics_file_path'], 'w') as file:
             file.write(f'Purity score: {purity_score}\n')
             file.write(f'Mean normalized silhouette score: {silhouette_score}\n')
             file.write(f'Final metric: {final_metric}\n')

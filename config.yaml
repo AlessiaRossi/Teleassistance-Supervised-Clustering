@@ -32,7 +32,7 @@ modelling_clustering:
 
 metrics:
   metrics_enabled: True
-  metrics_file_path: "data/results.txt"
+  metrics_file_path: "metrics.txt"
 
 general:
   logging_level: "INFO" # can be: DEBUG, INFO, WARNING, ERROR, CRITICAL
