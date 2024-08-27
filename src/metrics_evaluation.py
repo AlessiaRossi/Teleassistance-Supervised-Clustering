@@ -5,6 +5,7 @@ import logging
 from sklearn.metrics import silhouette_samples
 from sklearn.preprocessing import LabelEncoder
 from sklearn.preprocessing import StandardScaler
+import matplotlib.pyplot as plt
 
 
 def purity_score(true_labels:pd.Series, clusters:pd.Series) -> float:
@@ -50,7 +51,7 @@ def silhouette_score(features, clusters) -> float:
     # NOTE, OPTIMIZE: the code work, but the mean silhouette can be calulated in a more efficient way. "np.mean(normalized_silhouette_vals)" is enough
     # normalized_mean_silhouette = (mean_silhouette - silhouette_vals.min()) / (silhouette_vals.max() - silhouette_vals.min())
 
-    return np.mean(normalized_silhouette_vals)
+    return np.mean(normalized_silhouette_vals), silhouette_vals
 
 
 def label_encoding(df:pd.DataFrame):
@@ -77,19 +78,40 @@ def label_encoding(df:pd.DataFrame):
     return X_standardized_df, clusters
 
 
+def plot_silhouette(silhouette_vals, clusters):
+    # Plot the silhouette values for each sample
+    plt.figure(figsize=(10, 7))
+    y_lower = 10
+    for i in np.unique(clusters):
+        ith_cluster_silhouette_vals = silhouette_vals[clusters == i]
+        ith_cluster_silhouette_vals.sort()
+        size_cluster_i = ith_cluster_silhouette_vals.shape[0]
+        y_upper = y_lower + size_cluster_i
+
+        plt.fill_betweenx(np.arange(y_lower, y_upper), 0, ith_cluster_silhouette_vals, alpha=0.7)
+        plt.text(-0.05, y_lower + 0.5 * size_cluster_i, str(i))
+
+        y_lower = y_upper + 10
+
+    plt.savefig('graphs/silhouette_plot.png')
+
+
 def metrics_execution(df:pd.DataFrame, config:dict) -> float:
     """Execution of metrics calculation."""
     
-    purity_score = purity_score(df['incremento_teleassistenze'], df['cluster'])
-    logging.info(f'Purity score: {purity_score}')
+    purity = purity_score(df['incremento_teleassistenze'], df['cluster'])
+    logging.info(f'Purity score: {purity}')
 
     X_standardized_df, clusters = label_encoding(df)
 
-    silhouette_score = silhouette_score(X_standardized_df, clusters)
-    logging.info(f'Mean normalized silhouette score: {silhouette_score}')
+    mean_normalized_silhouette_vals, silhouette_vals = silhouette_score(X_standardized_df, clusters)
+    logging.info(f'Mean normalized silhouette score: {mean_normalized_silhouette_vals}')
+
+    # Plot the silhouette values for each sample
+    plot_silhouette(silhouette_vals, clusters)
 
     # Calculate the final metrics with a penalty for the number of clusters
-    final_metric = ((purity_score + silhouette_score) / 2) - (0.05 * config['modelling_clustering']['n_clusters'])
+    final_metric = ((purity + mean_normalized_silhouette_vals) / 2) - (0.05 * config['modelling_clustering']['n_clusters'])
 
-    return purity_score, silhouette_score, final_metric
+    return purity, mean_normalized_silhouette_vals, final_metric
     
