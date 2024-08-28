@@ -40,7 +40,9 @@ def clustering_execution(df_labeled:pd.DataFrame, config:dict) -> pd.DataFrame:
     list_cols_to_drop = config['modelling_clustering']['list_cols_to_drop']
     
     cols_to_drop = df_labeled.columns[list_cols_to_drop]
+    logging.info(f'Columns to drop: {cols_to_drop}')
     df = df_labeled.drop(columns=cols_to_drop)
+    logging.info(f'Columns after dropping: {df.columns}')
 
     # Elbow method
     if config['modelling_clustering']['elbow_enabled']:

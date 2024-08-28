@@ -160,8 +160,8 @@ def identify_and_remove_outliers_boxplot(df, columns, threshold=3):
         IQR = Q3 - Q1
         lower_bound = Q1 - 1.5 * IQR
         upper_bound = Q3 + 1.5 * IQR
-        print('lower_bound:', lower_bound)
-        print('upper_bound:', upper_bound)
+        # print('lower_bound:', lower_bound)
+        # print('upper_bound:', upper_bound)
         df = df[(df[column] >= lower_bound) & (df[column] <= upper_bound)]
 
         logging.info(f'Number of outliers in {column}: {len((df[column] >= lower_bound) & (df[column] <= upper_bound))}')
