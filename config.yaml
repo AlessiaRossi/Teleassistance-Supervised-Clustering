@@ -22,7 +22,7 @@ feature_extraction:
 # Phase 4
 modelling_clustering:
   clustering_enabled: True
-  elbow_enabled: False
+  elbow_enabled: True
   prediction_enabled: True
   max_clusters: 13
   n_clusters: 4

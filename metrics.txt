@@ -1,3 +1,3 @@
-Purity score: 0.7542957900931361
-Mean normalized silhouette score: 0.5817783244970017
-Final metric: 0.4680370572950689
+Purity score: 0.6629707562718644
+Mean normalized silhouette score: 0.5545709909114226
+Final metric: 0.4087708735916435
