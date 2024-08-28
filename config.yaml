@@ -15,13 +15,13 @@ feature_selection:
 
 # Phase 3
 feature_extraction:
-  extraction_enabled: False
+  extraction_enabled: True
   cols_grouped: ['anno', 'quadrimestre', 'regione_residenza', 'fascia_eta']
   feature_extraction_path: "data/processed/feature_engineered_data.parquet"
 
 # Phase 4
 modelling_clustering:
-  clustering_enabled: False
+  clustering_enabled: True
   elbow_enabled: False
   prediction_enabled: True
   max_clusters: 13
