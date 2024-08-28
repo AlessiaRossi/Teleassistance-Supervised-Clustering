@@ -224,7 +224,7 @@ def missing_values(df:pd.DataFrame, missing_threshold) -> pd.DataFrame:
 
 
 
-def data_cleaning_execution(df:pd.DataFrame, missing_threshold, config) -> pd.DataFrame:
+def data_cleaning_execution(df:pd.DataFrame, missing_threshold:float, config:dict) -> pd.DataFrame:
 
     logging.basicConfig(filename=config['general']['logging_level'], format='%(asctime)s - %(message)s', level=logging.INFO)
 

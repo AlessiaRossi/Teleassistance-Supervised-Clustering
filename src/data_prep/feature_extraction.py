@@ -75,7 +75,7 @@ def boxplot_avg_incremento_distribution(incremento_percentuale_medio: pd.DataFra
     plt.savefig('graphs/avg_incremento_percentuale_boxplot.png')
     
 
-def feature_extraction_execution(df: pd.DataFrame, cols_grouped: list) -> pd.DataFrame:
+def feature_extraction_execution(df: pd.DataFrame, cols_grouped: list, config:dict) -> pd.DataFrame:
 
     logging.basicConfig(filename=config['general']['logging_level'], format='%(asctime)s - %(message)s', level=logging.INFO)
 
