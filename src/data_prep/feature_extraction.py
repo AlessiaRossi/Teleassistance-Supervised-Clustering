@@ -75,7 +75,7 @@ def boxplot_avg_incremento_distribution(incremento_percentuale_medio: pd.DataFra
     plt.savefig('graphs/avg_incremento_percentuale_boxplot.png')
     
 
-def feature_engineering_execution(df: pd.DataFrame, cols_grouped: list) -> pd.DataFrame:
+def feature_extraction_execution(df: pd.DataFrame, cols_grouped: list) -> pd.DataFrame:
 
     # questo è un TODO definito nel file feature_selection.py ma ancora non fatto
     df.drop(columns=['codice_struttura_erogazione'], inplace=True)

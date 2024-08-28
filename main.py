@@ -1,7 +1,7 @@
 import pandas as pd
 from src.data_prep.data_cleaning import data_cleaning_execution
 from src.data_prep.feature_selection import feature_selection_execution
-from src.data_prep.feature_engineering import feature_engineering_execution
+from src.data_prep.feature_extraction import feature_extraction_execution
 from src.modelling_clustering import clustering_execution
 from src.metrics_evaluation import metrics_execution
 import yaml
@@ -100,23 +100,23 @@ def main():
     logging.info('Feature Selection Execution Completed')
 
 
-    # Phase 3: Feature Engineering
-    logging.info('Feature Engineering Execution Started')
+    # Phase 3: Feature Extraction
+    logging.info('Feature Extraction Execution Started')
 
-    if config['feature_engineering']['engineering_enabled']:
-        cols_grouped = config['feature_engineering']['cols_grouped']
+    if config['feature_extraction']['extraction_enabled']:
+        cols_grouped = config['feature_extraction']['cols_grouped']
 
-        df = feature_engineering_execution(df, cols_grouped)
+        df = feature_extraction_execution(df, cols_grouped)
 
-        logging.info('Head of the DataFrame after Feature Engineering\n', df.head())
+        logging.info('Head of the DataFrame after Feature Extraction\n', df.head())
 
-        feature_engineered_file_path = config['feature_engineering']['feature_engineering_path']
-        df.to_parquet(feature_engineered_file_path)
+        feature_extraction_file_path = config['feature_extraction']['feature_extraction_path']
+        df.to_parquet(feature_extraction_file_path)
     else:
-        feature_engineered_file_path = config['feature_engineering']['feature_engineering_path']
-        df = pd.read_parquet(feature_engineered_file_path)
+        feature_extraction_file_path = config['feature_extraction']['feature_extraction_path']
+        df = pd.read_parquet(feature_extraction_file_path)
 
-    logging.info('Feature Engineering Execution Completed')
+    logging.info('Feature Extraction Execution Completed')
 
 
     # Phase 4: Clustering

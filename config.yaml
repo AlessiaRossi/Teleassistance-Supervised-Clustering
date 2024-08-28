@@ -14,10 +14,10 @@ feature_selection:
   feature_selected_file_path: "data/processed/feature_selected_data.parquet"
 
 # Phase 3
-feature_engineering:
-  engineering_enabled: False
+feature_extraction:
+  extraction_enabled: False
   cols_grouped: ['anno', 'quadrimestre', 'regione_residenza', 'fascia_eta']
-  feature_engineering_path: "data/processed/feature_engineered_data.parquet"
+  feature_extraction_path: "data/processed/feature_engineered_data.parquet"
 
 # Phase 4
 modelling_clustering:
