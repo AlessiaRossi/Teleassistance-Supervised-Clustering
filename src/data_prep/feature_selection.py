@@ -4,6 +4,7 @@ import numpy as np
 from scipy.stats import chi2_contingency
 import seaborn as sns
 import matplotlib.pyplot as plt
+import logging
 
 # import matplotlib
 # matplotlib.use('Agg')
@@ -251,7 +252,10 @@ def remove_highly_correlated_columns(df, columns_to_remove):
 # DONE - TODO: aggiungere colonna eta
 # DONE - TODO: rimuovere colonne ora inizio e fine erogazione e aggiungere durata
 # DONE - TODO: imputare in valori mancanti in durata erogazione con la media della durata per attività
-def feature_selection_execution(df:pd.DataFrame) -> pd.DataFrame:
+def feature_selection_execution(df:pd.DataFrame, config) -> pd.DataFrame:
+
+    logging.basicConfig(filename=config['general']['logging_level'], format='%(asctime)s - %(message)s', level=logging.INFO)
+
     '''
     This function executes the feature selection process
 

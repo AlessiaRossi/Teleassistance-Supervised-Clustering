@@ -209,6 +209,9 @@ def impute_durata_erogazione(df:pd.DataFrame) -> pd.DataFrame:
     return df
 
 def missing_values(df:pd.DataFrame, missing_threshold) -> pd.DataFrame:
+
+    logging.info('Missing Values...')
+
     escluded_column = 'data_disdetta'
     data_disdetta = df[escluded_column]
 
@@ -221,7 +224,9 @@ def missing_values(df:pd.DataFrame, missing_threshold) -> pd.DataFrame:
 
 
 
-def data_cleaning_execution(df:pd.DataFrame, missing_threshold) -> pd.DataFrame:
+def data_cleaning_execution(df:pd.DataFrame, missing_threshold, config) -> pd.DataFrame:
+
+    logging.basicConfig(filename=config['general']['logging_level'], format='%(asctime)s - %(message)s', level=logging.INFO)
 
     # Drop columns with more than 60% missing values
     df = missing_values(df, missing_threshold)

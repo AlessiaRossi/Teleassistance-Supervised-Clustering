@@ -37,7 +37,7 @@ def main():
     logging.info(f"The DataFrame has {num_rows} rows and {num_columns} columns.\n")
 
 
-    logging.info('\nNULLS BEFORE DATA CLEANING\n', df.isnull().sum().sort_values(ascending=False))
+    logging.info(f'NULLS BEFORE DATA CLEANING \n {df.isnull().sum().sort_values(ascending=False)[df.isnull().sum().sort_values(ascending=False) > 0]}')
     '''
         NULLS BEFORE DATA CLEANING
 
@@ -55,9 +55,9 @@ def main():
     if config['cleaning']['cleaning_enabled']:
         missing_threshold = config['cleaning']['missing_threshold']
 
-        df = data_cleaning_execution(df, missing_threshold)
+        df = data_cleaning_execution(df, missing_threshold, config)
 
-        logging.info('\nNULLS AFTER DATA CLEANING\n', df.isnull().sum().sort_values(ascending=False))
+        logging.info(f'NULLS AFTER DATA CLEANING \n {df.isnull().sum().sort_values(ascending=False)[df.isnull().sum().sort_values(ascending=False) > 0]}' )
         '''
             NULLS AFTER DATA CLEANING
 
@@ -82,9 +82,9 @@ def main():
     logging.info('Feature Selection Execution Started')
 
     if config['feature_selection']['selection_enabled']:
-        df = feature_selection_execution(df)
+        df = feature_selection_execution(df, config)
 
-        logging.info('\nNULLS AFTER FEATURE SELECTION\n', df.isnull().sum().sort_values(ascending=False))
+        logging.info(f'NULLS AFTER FEATURE SELECTION \n {df.isnull().sum().sort_values(ascending=False)[df.isnull().sum().sort_values(ascending=False) > 0]}')
         '''
             NULLS AFTER FEATURE SELECTION
             comune_residenza                      130
@@ -106,9 +106,9 @@ def main():
     if config['feature_extraction']['extraction_enabled']:
         cols_grouped = config['feature_extraction']['cols_grouped']
 
-        df = feature_extraction_execution(df, cols_grouped)
+        df = feature_extraction_execution(df, cols_grouped, config)
 
-        logging.info('Head of the DataFrame after Feature Extraction\n', df.head())
+        logging.info(f'Head of the DataFrame after Feature Extraction \n {df.head()}')
 
         feature_extraction_file_path = config['feature_extraction']['feature_extraction_path']
         df.to_parquet(feature_extraction_file_path)
@@ -125,7 +125,7 @@ def main():
     if config['modelling_clustering']['clustering_enabled']:
         df = clustering_execution(df, config)
 
-        logging.info('Head of the DataFrame after Clustering\n', df.head())
+        logging.info(f'Head of the DataFrame after Clustering \n {df.head()}')
 
         clustering_file_path = config['modelling_clustering']['clustering_file_path']
         df.to_parquet(clustering_file_path)

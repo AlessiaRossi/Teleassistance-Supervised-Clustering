@@ -3,6 +3,7 @@ import numpy as np
 from kmodes.kmodes import KModes
 import matplotlib.pyplot as plt
 import pickle
+import logging
 
 
 def _elbow_method(df:pd.DataFrame, max_clusters:int) -> None:
@@ -33,6 +34,8 @@ def _kmodes_clustering(kmodes:KModes, df:pd.DataFrame) -> pd.DataFrame:
 
 
 def clustering_execution(df_labeled:pd.DataFrame, config:dict) -> pd.DataFrame:
+
+    logging.basicConfig(filename=config['general']['logging_level'], format='%(asctime)s - %(message)s', level=logging.INFO)
 
     list_cols_to_drop = config['modelling_clustering']['list_cols_to_drop']
     

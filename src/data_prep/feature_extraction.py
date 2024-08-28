@@ -77,6 +77,8 @@ def boxplot_avg_incremento_distribution(incremento_percentuale_medio: pd.DataFra
 
 def feature_extraction_execution(df: pd.DataFrame, cols_grouped: list) -> pd.DataFrame:
 
+    logging.basicConfig(filename=config['general']['logging_level'], format='%(asctime)s - %(message)s', level=logging.INFO)
+
     # questo è un TODO definito nel file feature_selection.py ma ancora non fatto
     df.drop(columns=['codice_struttura_erogazione'], inplace=True)
     df['durata_erogazione_sec'] =  df.durata_erogazione_sec.astype(int)
