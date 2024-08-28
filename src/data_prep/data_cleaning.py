@@ -152,6 +152,7 @@ def identify_and_remove_outliers_boxplot(df, columns, threshold=3):
     #     df = df[z_scores <= threshold]
     # return df
 
+    logging.info('Identifying and removing outliers using the boxplot method...')
 
     for column in columns:
         Q1 = df[column].quantile(0.25)
@@ -162,6 +163,9 @@ def identify_and_remove_outliers_boxplot(df, columns, threshold=3):
         print('lower_bound:', lower_bound)
         print('upper_bound:', upper_bound)
         df = df[(df[column] >= lower_bound) & (df[column] <= upper_bound)]
+
+        logging.info(f'Number of outliers in {column}: {len((df[column] >= lower_bound) & (df[column] <= upper_bound))}')
+
     return df
 
 
@@ -210,6 +214,8 @@ def impute_durata_erogazione(df:pd.DataFrame) -> pd.DataFrame:
     '''
     Imputes missing values for 'durata_erogazione' using the mean duration of the activity.
     '''
+
+    logging.info('Imputating durata_erogazione...')
 
 
     # Convert 'ora_inizio_erogazione' and 'ora_fine_erogazione' to datetime

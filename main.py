@@ -29,7 +29,7 @@ def main():
     log_file_path = config['general']['log_file_path']
     open(log_file_path, 'w').close() # Clear the log file
     logging.basicConfig(filename=log_file_path, format='%(asctime)s - %(message)s', level=logging.INFO)
-    
+
     logging.info("Data Preparation Started")
 
     # Load the data
@@ -122,6 +122,9 @@ def main():
         feature_extraction_file_path = config['feature_extraction']['feature_extraction_path']
         df = pd.read_parquet(feature_extraction_file_path)
 
+
+    logging.info('Data Preparation Completed')
+    
 
     # Phase 4: Clustering
     if config['modelling_clustering']['clustering_enabled']:

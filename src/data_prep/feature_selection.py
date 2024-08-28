@@ -40,23 +40,22 @@ def print_details_corrections (df, code, description, code_groups, description_g
             None
     '''
 
-
     not_unique = False
 
     for cod, desc_count in code_groups.items():
         if desc_count > 1:
             associated_descriptions = df[df[code] == cod][description].unique()
-            print(f"The {cod} code is associated with {desc_count} descriptions: {associated_descriptions}")
+            logging.info(f"The {cod} code is associated with {desc_count} descriptions: {associated_descriptions}")
             not_unique = True
             
     for desc, code_count in description_groups.items():
         if code_count > 1:
             associated_codes =df[df[description] == desc][code].unique()
-            print(f"The {desc} description is associated with {code_count} codes: {associated_codes}")
+            logging.info(f"The {desc} description is associated with {code_count} codes: {associated_codes}")
             not_unique = True
 
     if not_unique:
-        print(f"--> NOT unique correlation between {code} and {description}\n")
+        logging.info(f"--> NOT unique correlation between {code} and {description}\n")
 
 
 
@@ -72,6 +71,8 @@ def remove_columns_with_unique_correlation(df, columns_pairs) -> pd.DataFrame:
         The DataFrame with removed columns
     '''
 
+    logging.info('Removing columns with unique correlation')
+
     pairs_removed = []
 
     for code, description in columns_pairs:
@@ -86,10 +87,10 @@ def remove_columns_with_unique_correlation(df, columns_pairs) -> pd.DataFrame:
 
             if unique_correlation_code_description and unique_correlation_description_code:
                 df.drop(columns=[code], inplace=True)
-                print(f'Unique correlation between {code} and {description}. Column {code} removed.')
+                logging.info(f'Unique correlation between {code} and {description}. Column {code} removed.')
                 pairs_removed.append((code, description))
         else:
-            print(f'Columns {code} or {description} not found in the dataframe.')
+            logging.info(f'Columns {code} or {description} not found in the dataframe.')
             pairs_removed.append((code, description))
 
     # Update the list of columns pairs removing the ones that have been removed
@@ -102,6 +103,8 @@ def clean_codice_struttura_erogazione(df, column = 'codice_struttura_erogazione'
     This function cleans the 'codice_struttura_erogazione' column by converting it to an integer type
     '''
 
+    logging.info(f"Cleaning {column} column")
+
     df[column] = df[column].astype(int)
     return df
 
@@ -111,6 +114,8 @@ def remove_data_disdetta(df) -> pd.DataFrame:
     This function remove data_disdetta column from the DataFrame
     '''
 
+    logging.info('Removing data_disdetta column')
+
     df.drop(columns=['data_disdetta'], inplace=True)
     return df
 
@@ -119,6 +124,9 @@ def colonna_durata_erogazione(df:pd.DataFrame) -> pd.DataFrame:
     '''
     This function creates a new column 'durata_erogazione' which is the difference between 'ora_fine_erogazione' and 'ora_inizio_erogazione'
     '''
+
+    logging.info('Creating durata_erogazione column')
+
     # Convert 'ora_inizio_erogazione' and 'ora_fine_erogazione' to datetime
     df['ora_inizio_erogazione'] = pd.to_datetime(df['ora_inizio_erogazione'], utc=True, errors='coerce')
     df['ora_fine_erogazione'] = pd.to_datetime(df['ora_fine_erogazione'], utc=True, errors='coerce')
@@ -133,6 +141,8 @@ def remove_ora_inizio_fine_erogazione(df:pd.DataFrame) -> pd.DataFrame:
     This function removes 'ora_inizio_erogazione' and 'ora_fine_erogazione' columns from the DataFrame
     '''
 
+    logging.info('Removing ora_inizio_erogazione and ora_fine_erogazione columns')
+
     df.drop(columns=['ora_inizio_erogazione', 'ora_fine_erogazione'], inplace=True)
     return df
 
@@ -142,23 +152,28 @@ def colonna_fascia_eta(df:pd.DataFrame) -> pd.DataFrame:
     This function creates a new column 'eta' which is the difference between 'ora_fine_erogazione' and 'ora_inizio_erogazione'
     '''
 
+    logging.info('Creating fascia_eta column')
+
     df['data_nascita'] = pd.to_datetime(df['data_nascita'], utc=True, errors='coerce')
 
-    print(df.shape) #dim: (460509, 21)
+    # print(df.shape) #dim: (460509, 21)
     
     eta = (pd.to_datetime('today', utc=True) - df['data_nascita']).dt.days // 365
     
-    print(eta.shape) #dim: (460509,)
+    # print(eta.shape) #dim: (460509,)
 
     age_labels = ['0-11', '12-23', '24-35', '36-47', '48-59', '60-69', '70+']
     eta = pd.cut(eta, bins=[0, 12, 24, 36, 48, 60, 70, 120], labels=age_labels)
-    print(eta)
+    # print(eta)
     
     df['fascia_eta'] = eta.astype(str)
 
     return df
 
-def colonne_anno_e_quadrimestre(df:pd.DataFrame) -> pd.DataFrame:    
+def colonne_anno_e_quadrimestre(df:pd.DataFrame) -> pd.DataFrame: 
+    
+    logging.info('Creating anno and quadrimestre columns')
+
     df['data_erogazione'] = pd.to_datetime(df['data_erogazione'], utc=True, errors='coerce')
     df['anno'] = df['data_erogazione'].dt.year
     df['quadrimestre'] = df['data_erogazione'].dt.quarter
@@ -198,6 +213,9 @@ def calculate_correlation_matrix(df, corr_cols):
     Returns:
         DataFrame containing the correlation matrix.
     '''
+
+    logging.info('Calculating correlation matrix using Cramér\'s V')
+
     correlations = pd.DataFrame(index=corr_cols, columns=corr_cols)
     for col1 in corr_cols:
         for col2 in corr_cols:
@@ -240,6 +258,8 @@ def remove_highly_correlated_columns(df, columns_to_remove):
         DataFrame with the specified columns removed.
     '''
 
+    logging.info('Removing highly correlated columns: {columns_to_remove}')
+
     df.drop(columns=columns_to_remove, inplace=True)
     return df
 
@@ -276,10 +296,12 @@ def feature_selection_execution(df:pd.DataFrame, config:dict) -> pd.DataFrame:
     df = remove_data_disdetta(df)
 
     # Create 'durata_erogazione' column, and remove outliers
+    logging.info('Pipeline for durata_erogazione column')
     df = colonna_durata_erogazione(df)
     df = impute_durata_erogazione(df)
     df = identify_and_remove_outliers_boxplot(df, ['durata_erogazione_sec'])
     df = remove_ora_inizio_fine_erogazione(df)
+    logging.info('End of pipeline for durata_erogazione column')
 
     # Remove code columns with unique correlation
     df, columns_pairs = remove_columns_with_unique_correlation(df, columns_pairs)
@@ -302,7 +324,7 @@ def feature_selection_execution(df:pd.DataFrame, config:dict) -> pd.DataFrame:
     correlations = calculate_correlation_matrix(df, corr_cols)
     visualize_correlation_matrix(correlations, name = 'graphs/Heatmap_1.png')
 
-    # Remove highly correlated columns
+    # After analyzing the heatmap, we decide to remove the following columns
     columns_to_remove = [
             'comune_residenza', 'asl_residenza', 'provincia_residenza', 'regione_erogazione', 'asl_erogazione', 'provincia_erogazione', 'struttura_erogazione'
     ]
