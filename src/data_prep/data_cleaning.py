@@ -13,6 +13,8 @@ def imputate_comune_residenza(df):
         The DataFrame with imputed values.
     """
 
+    logging.info('Imputate comune residenza...')
+
     # Load ISTAT data
     istat_data = pd.read_excel('data/raw/Codici-statistici-e-denominazioni-al-30_06_2024.xlsx')
     
@@ -67,6 +69,9 @@ def remove_comune_residenza(df:pd.DataFrame) -> pd.DataFrame:
         The DataFrame with removed rows.
     """
 
+    logging.info('Removing rows where \'comune_residenza\' is missing...')
+    logging.info(f'Number of comune_residenza samples nulls: {df["comune_residenza"].isnull().value_counts()}')
+
     df = df.dropna(subset=['comune_residenza'])
     return df
 
@@ -115,10 +120,14 @@ def impute_ora_inizio_and_fine_erogazione(df:pd.DataFrame) -> pd.DataFrame:
 
 
 def remove_disdette(df) -> pd.DataFrame: 
+    logging.info('Removing rows where \'data_disdetta\' is not null...')
+    logging.info(f'Number of data_disdetta samples nulls: {df["data_disdetta"].isnull().value_counts()}')
+
     # Remove rows where 'data_disdetta' is not null
     df = df[df['data_disdetta'].isnull()]
     # # Drop columns with more than 50% missing values
     # df = df.loc[:, df.isnull().mean() < 0.5]
+
     return df
 
 
@@ -189,7 +198,11 @@ def remove_duplicates(df:pd.DataFrame) -> pd.DataFrame:
     :param df:
     :return:
     """
+
+    logging.info('Removing duplicates...')
+    logging.info(f'Number of duplicates removed: {df.duplicated().sum()}')
     df.drop_duplicates(inplace=True)
+
     return df
 
 
@@ -218,8 +231,8 @@ def missing_values(df:pd.DataFrame, missing_threshold) -> pd.DataFrame:
     df_filtered = df.loc[:, df.columns != escluded_column]
     df_filtered = df_filtered.loc[:, df_filtered.isnull().mean() < missing_threshold]
     df_filtered[escluded_column] = data_disdetta
-    
-    logging.info(f'Cols dropped after missing_values with threshold {df.shape[1] - df_filtered.shape[1]}')
+
+    logging.info(f'Cols dropped after missing_values with threshold: {df.shape[1] - df_filtered.shape[1]}')
 
     return df_filtered
 

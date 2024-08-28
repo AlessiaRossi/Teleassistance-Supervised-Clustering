@@ -5,6 +5,5 @@ env_FIA/*
 venv/*
 .venv/*
 data/processed/*
-INFO
-graphs/*
+INFO.txt
 setup.py
