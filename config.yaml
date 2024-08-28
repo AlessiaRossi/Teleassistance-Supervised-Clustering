@@ -35,5 +35,6 @@ metrics:
   metrics_file_path: "metrics.txt"
 
 general:
+  log_file_path: "INFO.txt"
   logging_level: "INFO" # can be: DEBUG, INFO, WARNING, ERROR, CRITICAL
   output_model_path: "models/" # Path to save model

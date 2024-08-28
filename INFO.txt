@@ -1,0 +1,22 @@
+2024-08-28 16:01:08,375 - Data Preparation Started
+2024-08-28 16:01:10,981 - The DataFrame has 484291 rows and 33 columns.
+
+2024-08-28 16:01:12,357 - NULLS BEFORE DATA CLEANING 
+ data_disdetta                  460639
+codice_provincia_erogazione     28776
+codice_provincia_residenza      28380
+ora_fine_erogazione             28181
+ora_inizio_erogazione           28181
+comune_residenza                  135
+dtype: int64
+2024-08-28 16:01:12,357 - Data Cleaning Execution Started
+2024-08-28 16:01:12,357 - Missing Values...
+2024-08-28 16:01:13,932 - Cols dropped after missing_values with threshold 0
+2024-08-28 16:01:20,786 - NULLS AFTER DATA CLEANING 
+ data_disdetta                  460509
+codice_provincia_erogazione     27396
+codice_provincia_residenza      27016
+ora_fine_erogazione              4527
+ora_inizio_erogazione            4527
+dtype: int64
+2024-08-28 16:01:23,269 - Data Cleaning Execution Completed

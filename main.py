@@ -26,7 +26,10 @@ def main():
     config = load_config('config.yaml')
 
     # Set up logging
-    logging.basicConfig(filename=config['general']['logging_level'], format='%(asctime)s - %(message)s', level=logging.INFO)
+    log_file_path = config['general']['log_file_path']
+    open(log_file_path, 'w').close() # Clear the log file
+    logging.basicConfig(filename=log_file_path, format='%(asctime)s - %(message)s', level=logging.INFO)
+    
     logging.info("Data Preparation Started")
 
     # Load the data
@@ -79,9 +82,9 @@ def main():
 
 
     # Phase 2: Feature Selection
-    logging.info('Feature Selection Execution Started')
-
     if config['feature_selection']['selection_enabled']:
+        logging.info('Feature Selection Execution Started')
+
         df = feature_selection_execution(df, config)
 
         logging.info(f'NULLS AFTER FEATURE SELECTION \n {df.isnull().sum().sort_values(ascending=False)[df.isnull().sum().sort_values(ascending=False) > 0]}')
@@ -93,17 +96,18 @@ def main():
         feature_selected_file_path = config['feature_selection']['feature_selected_file_path']
         df.to_parquet(feature_selected_file_path)
 
+        logging.info('Feature Selection Execution Completed')
     else:
         feature_selected_file_path = config['feature_selection']['feature_selected_file_path']
         df = pd.read_parquet(feature_selected_file_path)
 
-    logging.info('Feature Selection Execution Completed')
+
 
 
     # Phase 3: Feature Extraction
-    logging.info('Feature Extraction Execution Started')
-
     if config['feature_extraction']['extraction_enabled']:
+        logging.info('Feature Extraction Execution Started')
+
         cols_grouped = config['feature_extraction']['cols_grouped']
 
         df = feature_extraction_execution(df, cols_grouped, config)
@@ -112,34 +116,34 @@ def main():
 
         feature_extraction_file_path = config['feature_extraction']['feature_extraction_path']
         df.to_parquet(feature_extraction_file_path)
+
+        logging.info('Feature Extraction Execution Completed')
     else:
         feature_extraction_file_path = config['feature_extraction']['feature_extraction_path']
         df = pd.read_parquet(feature_extraction_file_path)
 
-    logging.info('Feature Extraction Execution Completed')
-
 
     # Phase 4: Clustering
-    logging.info('Clustering Execution Started')
-    
     if config['modelling_clustering']['clustering_enabled']:
+        logging.info('Clustering Execution Started')
+
         df = clustering_execution(df, config)
 
         logging.info(f'Head of the DataFrame after Clustering \n {df.head()}')
 
         clustering_file_path = config['modelling_clustering']['clustering_file_path']
         df.to_parquet(clustering_file_path)
+
+        logging.info('Clustering Execution Completed')
     else:
         clustering_file_path = config['modelling_clustering']['clustering_file_path']
         df = pd.read_parquet(clustering_file_path)
 
-    logging.info('Clustering Execution Completed')
-
     
     # Phase 5: Metrics
-    logging.info('Metrics Calculation Started')
-    
     if config['metrics']['metrics_enabled']:
+        logging.info('Metrics Calculation Started')
+
         purity_score, silhouette_score, final_metric = metrics_execution(df, config)
 
         with open(config['metrics']['metrics_file_path'], 'w') as file:
@@ -147,7 +151,7 @@ def main():
             file.write(f'Mean normalized silhouette score: {silhouette_score}\n')
             file.write(f'Final metric: {final_metric}\n')
 
-    logging.info('Metrics Calculation Completed')
+        logging.info('Metrics Calculation Completed')
 
 
 if __name__ == '__main__':

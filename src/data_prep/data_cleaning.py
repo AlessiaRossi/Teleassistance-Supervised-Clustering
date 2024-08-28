@@ -218,6 +218,8 @@ def missing_values(df:pd.DataFrame, missing_threshold) -> pd.DataFrame:
     df_filtered = df.loc[:, df.columns != escluded_column]
     df_filtered = df_filtered.loc[:, df_filtered.isnull().mean() < missing_threshold]
     df_filtered[escluded_column] = data_disdetta
+    
+    logging.info(f'Cols dropped after missing_values with threshold {df.shape[1] - df_filtered.shape[1]}')
 
     return df_filtered
 
