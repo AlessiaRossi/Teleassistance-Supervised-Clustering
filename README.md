@@ -1,5 +1,5 @@
 # Teleassistance-Supervised-Clustering
-To read the README.md in Italian, click [here](README_ita.md).
+To read the README.md in Italian, click [here](myLib/README_ita.md)
 
 ## Index
 - [Enviroment set up](#enviroment-set-up)
