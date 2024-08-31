@@ -22,7 +22,7 @@ The project structure of the application is organized into the following directo
 
     - **`raw/`**: Stores the raw data files that are used as input for data processing.
     - **`processed/`**: Contains the data that has been cleaned and processed, ready for use in model training or analysis.
-    - **`README.md`**: Provides documentation about the data, including descriptions of the files, data sources, and any other relevant information. You can find the data description in the [here](../data/README.md).
+    - **`README.md`**: Provides documentation about the data, including descriptions of the files, data sources, and any other relevant information. You can find the detailed description of the data directory [here](../data/README.md).
 
     ### `notebooks/`
     This directory holds Jupyter Notebooks used for various stages of the project.
