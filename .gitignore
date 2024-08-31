@@ -5,6 +5,5 @@ env_FIA/*
 venv/*
 .venv/*
 data/processed/*
-INFO.txt
 setup.py
 src/teleassistance_ml_project.egg-info/

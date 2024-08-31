@@ -32,9 +32,9 @@ modelling_clustering:
 
 metrics:
   metrics_enabled: True
-  metrics_file_path: "metrics.txt"
+  metrics_file_path: "logs&metrics/metrics.txt"
 
 general:
-  log_file_path: "INFO.txt"
+  log_file_path: "logs&metrics/INFO.txt"
   logging_level: "INFO" # can be: DEBUG, INFO, WARNING, ERROR, CRITICAL
   output_model_path: "models/" # Path to save model
