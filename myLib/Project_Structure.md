@@ -22,7 +22,7 @@ The project structure of the application is organized into the following directo
 
     - **`raw/`**: Stores the raw data files that are used as input for data processing.
     - **`processed/`**: Contains the data that has been cleaned and processed, ready for use in model training or analysis.
-    - **`README.md`**: Provides documentation about the data, including descriptions of the files, data sources, and any other relevant information.
+    - **`README.md`**: Provides documentation about the data, including descriptions of the files, data sources, and any other relevant information. You can find the data description in the [here](../data/README.md).
 
     ### `notebooks/`
     This directory holds Jupyter Notebooks used for various stages of the project.
@@ -89,7 +89,7 @@ The project structure of the application is organized into the following directo
     - **Process**: The `metrics_execution` function in [src/metrics_evaluation.py](../src/metrics_evaluation.py) calculates key performance metrics such as the Purity Score and the Silhouette Score, which help assess the quality and coherence of the clusters formed during modeling.
     - **Output**: These metrics are written to a file as specified in the [config.yaml](../config.yaml), typically within the [models/](../models/) folder. This step provides valuable feedback on the effectiveness of the clustering model and guides any necessary adjustments.
 
-    ### 6. **Storytelling and Visualization**
+    ### 6. **Storytelling and Visualization** _TODO_
     The final phase of the pipeline focuses on visualizing the results and communicating the findings in an accessible format.
 
     - **Process**: The `storytelling.py` script in `src/storytelling.py` is dedicated to creating visualizations and narratives that make the data insights clear and understandable. This can include charts, graphs, and other forms of data representation.
