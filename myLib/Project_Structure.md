@@ -1,6 +1,33 @@
 # **Project Structure**
 In this section, we will discuss the project structure of the application. The project structure refers to the organization of files and folders within the application. It plays a crucial role in maintaining the application, adding new features, and facilitating collaboration. A well-defined project structure enhances code readability and navigation.
 
+
+```plaintext
+├── data/                           # Contains all datasets used in the project
+│   ├── processed/                  # Processed datasets (cleaned, transformed)
+│   ├── raw/                        # Raw datasets (original, unprocessed)
+│   └── README.md                   # Documentation for the datasets
+├── graphs/                         # Visualizations generated during analysis
+├── logs&metrics/                   # Logs and metrics recorded during model training and evaluation
+├── models/                         # Saved models for future use or deployment
+├── myLib/                          # Documentation and utility files for the project
+├── notebooks/                      # Jupyter notebooks for exploratory data analysis, development, and experiments
+│   ├── development/                # Notebooks related to model development
+│   ├── EDA/                        # Notebooks for Exploratory Data Analysis
+│   └── experiments/                # Experimental notebooks for testing ideas
+├── src/                            # Source code for data preparation, model training, and evaluation
+│   ├── data_prep/                  # Scripts for data cleaning, feature extraction, and selection
+│   ├── __init__.py                 # Initialization script for the source package
+├── .gitattributes                  # Git attributes file for configuring repository behavior
+├── .gitignore                      # Specifies files and directories to be ignored by Git
+├── config.yaml                     # Configuration file for the project
+├── main.py                         # Main script to run the project
+├── README.md                       # Overview and documentation of the project
+├── requirements.txt                # List of Python dependencies
+└── setup.py                        # Script for setting up the project package
+```
+
+
 ## Index
 1. [Overview](#1-overview)
     - [Directory Descriptions](#directory-descriptions)
@@ -24,6 +51,18 @@ The project structure of the application is organized into the following directo
     - **`processed/`**: Contains the data that has been cleaned and processed, ready for use in model training or analysis.
     - **`README.md`**: Provides documentation about the data, including descriptions of the files, data sources, and any other relevant information. You can find the detailed description of the data directory [here](../data/README.md).
 
+    ### `graphs/`
+    This [directory](../graphs/) stores the visualizations generated during the analysis and modeling phases.
+
+    ### `logs&metrics/`
+    This directory contains [log files](../logs&metrics/INFO.txt) and [metrics](../logs&metrics/metrics.txt) generated during the execution of the pipeline.
+
+    ### `models/`
+    This [directory](../models/) stores the trained machine learning models, usually in `.pkl` format.
+
+    ### `myLib/`
+    This [directory](../myLib/) contains additional documentation and resources related to the project.
+
     ### `notebooks/`
     This directory holds Jupyter Notebooks used for various stages of the project.
 
@@ -43,8 +82,6 @@ The project structure of the application is organized into the following directo
     - **`metrics_evaluation.py`**: Contains functions and classes for evaluating model performance.
     - **`storytelling.py`**: Focuses on data visualization and storytelling to present the results of the analysis or modeling in an understandable way.
 
-    ### `models/`
-    This directory stores the trained machine learning models, usually in `.pkl` format.
 
 - ## Pipeline Description
     This project follows a structured pipeline that guides the process from raw data to model evaluation and visualization. Below is a detailed description of each phase, with references to the relevant files and folders.
@@ -65,7 +102,7 @@ The project structure of the application is organized into the following directo
     Data preparation is a crucial phase where the raw data is transformed into a cleaner and more structured format suitable for modeling. This phase is divided into several steps, each handled by specific scripts within the [src/data_prep/](../src/data_prep/) directory.
 
     - **Data Cleaning**:
-        - **Process**: The first step in data preparation is cleaning the dataset to remove or correct any errors, handle missing values, and ensure consistency. This is done using the `data_cleaning_execution` function located in [src/data_prep/data_cleaning.py](../src/data_prep/data_cleaning.py).
+        - **Process**: The first step in data preparation is cleaning the dataset to remove or correct any errors, value imputing, handle missing values, and remove duplicates. This is done using the `data_cleaning_execution` function located in [src/data_prep/data_cleaning.py](../src/data_prep/data_cleaning.py).
         - **Output**: The cleaned data is then saved to the [data/processed/](../data/processed/) folder, making it ready for the next stages of processing.
 
     - **Feature Selection**:
@@ -80,14 +117,14 @@ The project structure of the application is organized into the following directo
     ### 4. **Modeling - Clustering**
     With the data prepared, the pipeline moves on to the modeling phase, where clustering is performed.
 
-    - **Process**: The `clustering_execution` function in [src/modelling_clustering.py](../src/modelling_clustering.py) applies clustering algorithms to group the data into distinct clusters based on the patterns identified in the features.
-    - **Output**: The clustered data is saved in the [models/](../models/) folder, ready for evaluation and further analysis. This step is essential for understanding the natural groupings within the data and forms the basis for later evaluation.
+    - **Process**: The `clustering_execution` function in [src/modelling_clustering.py](../src/modelling_clustering.py) applies clustering algorithms _"**KModes Clustering"**_ to group the data into distinct clusters based on the patterns identified in the features.
+    - **Output**: The model is saved in the [models/](../models/) folder. The clustered data is saved in the [data/processed](../data/processed/) folder, ready for evaluation and further analysis. This step is essential for understanding the natural groupings within the data and forms the basis for later evaluation.
 
     ### 5. **Model Evaluation - Metrics**
     After clustering, the pipeline evaluates the performance of the model using various metrics.
 
     - **Process**: The `metrics_execution` function in [src/metrics_evaluation.py](../src/metrics_evaluation.py) calculates key performance metrics such as the Purity Score and the Silhouette Score, which help assess the quality and coherence of the clusters formed during modeling.
-    - **Output**: These metrics are written to a file as specified in the [config.yaml](../config.yaml), typically within the [models/](../models/) folder. This step provides valuable feedback on the effectiveness of the clustering model and guides any necessary adjustments.
+    - **Output**: These metrics are written to a file as specified in the [config.yaml](../config.yaml), saved in [logs&metrics/](../logs&metrics/) folder. This step provides valuable feedback on the effectiveness of the clustering model and guides any necessary adjustments.
 
     ### 6. **Storytelling and Visualization** _TODO_
     The final phase of the pipeline focuses on visualizing the results and communicating the findings in an accessible format.

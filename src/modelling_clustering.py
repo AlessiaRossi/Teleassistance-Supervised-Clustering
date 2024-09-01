@@ -63,5 +63,6 @@ def clustering_execution(df_labeled:pd.DataFrame, config:dict) -> pd.DataFrame:
 
         df = _kmodes_clustering(kmodes, df)
 
+        df_labeled['cluster'] = df['cluster']
 
-    return df
+    return df_labeled

@@ -2,6 +2,12 @@
 
 This repository contains data used for analysis and modeling in the context of a biomedical challenge. The data is organized into two main subdirectories: `raw` for the unprocessed original data and `processed` for the data that has undergone various preprocessing steps. This document provides a detailed overview of the files within these directories, including their purpose and structure.
 
+## Index
+1. [raw/](#1-raw-directory)
+2. [processed/](#2-processed-directory)
+
+- [Return to README](../README.md)
+
 ## Directory Structure
 
 ```plaintext
@@ -49,3 +55,6 @@ This folder contains data that has been processed or transformed in some way fro
 ## Notes
 - The Parquet format is used for its efficiency in storage and processing, especially for large datasets. It allows for faster data reading and writing compared to traditional formats like CSV.
 - Ensure that any code referencing these files correctly points to the appropriate directory and filename to avoid errors during execution.
+
+
+[Quickly return to the top](#data-directory)

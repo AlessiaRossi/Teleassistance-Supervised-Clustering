@@ -58,9 +58,9 @@ def main():
     if config['cleaning']['cleaning_enabled']:
         missing_threshold = config['cleaning']['missing_threshold']
 
-        df = data_cleaning_execution(df, missing_threshold, config)
+        df_cleaning = data_cleaning_execution(df, missing_threshold, config)
 
-        logging.info(f'NULLS AFTER DATA CLEANING \n {df.isnull().sum().sort_values(ascending=False)[df.isnull().sum().sort_values(ascending=False) > 0]}' )
+        logging.info(f'NULLS AFTER DATA CLEANING \n {df_cleaning.isnull().sum().sort_values(ascending=False)[df_cleaning.isnull().sum().sort_values(ascending=False) > 0]}' )
         '''
             NULLS AFTER DATA CLEANING
 
@@ -72,11 +72,11 @@ def main():
         '''
 
         cleaned_file_path = config['cleaning']['cleaned_file_path']
-        df.to_parquet(cleaned_file_path)
+        df_cleaning.to_parquet(cleaned_file_path)
 
     else:
         cleaned_file_path = config['cleaning']['cleaned_file_path']
-        df = pd.read_parquet(cleaned_file_path)
+        df_cleaning = pd.read_parquet(cleaned_file_path)
 
     logging.info('Data Cleaning Execution Completed')
 
@@ -85,21 +85,21 @@ def main():
     if config['feature_selection']['selection_enabled']:
         logging.info('Feature Selection Execution Started')
 
-        df = feature_selection_execution(df, config)
+        df_selection = feature_selection_execution(df_cleaning, config)
 
-        logging.info(f'NULLS AFTER FEATURE SELECTION \n {df.isnull().sum().sort_values(ascending=False)[df.isnull().sum().sort_values(ascending=False) > 0]}')
+        logging.info(f'NULLS AFTER FEATURE SELECTION \n {df_selection.isnull().sum().sort_values(ascending=False)[df_selection.isnull().sum().sort_values(ascending=False) > 0]}')
         '''
             NULLS AFTER FEATURE SELECTION
             comune_residenza                      130
         '''
 
         feature_selected_file_path = config['feature_selection']['feature_selected_file_path']
-        df.to_parquet(feature_selected_file_path)
+        df_selection.to_parquet(feature_selected_file_path)
 
         logging.info('Feature Selection Execution Completed')
     else:
         feature_selected_file_path = config['feature_selection']['feature_selected_file_path']
-        df = pd.read_parquet(feature_selected_file_path)
+        df_selection = pd.read_parquet(feature_selected_file_path)
 
 
 
@@ -110,17 +110,17 @@ def main():
 
         cols_grouped = config['feature_extraction']['cols_grouped']
 
-        df = feature_extraction_execution(df, cols_grouped, config)
+        df_extraction = feature_extraction_execution(df_selection, cols_grouped, config)
 
-        logging.info(f'Head of the DataFrame after Feature Extraction \n {df.head()}')
+        logging.info(f'Head of the DataFrame after Feature Extraction \n {df_extraction.head()}')
 
         feature_extraction_file_path = config['feature_extraction']['feature_extraction_path']
-        df.to_parquet(feature_extraction_file_path)
+        df_extraction.to_parquet(feature_extraction_file_path)
 
         logging.info('Feature Extraction Execution Completed')
     else:
         feature_extraction_file_path = config['feature_extraction']['feature_extraction_path']
-        df = pd.read_parquet(feature_extraction_file_path)
+        df_extraction = pd.read_parquet(feature_extraction_file_path)
 
 
     logging.info('Data Preparation Completed')
@@ -130,24 +130,24 @@ def main():
     if config['modelling_clustering']['clustering_enabled']:
         logging.info('Clustering Execution Started')
 
-        df = clustering_execution(df, config)
+        df_clustered = clustering_execution(df_extraction, config)
 
-        logging.info(f'Head of the DataFrame after Clustering \n {df.head()}')
+        logging.info(f'Head of the DataFrame after Clustering \n {df_extraction.head()}')
 
         clustering_file_path = config['modelling_clustering']['clustering_file_path']
-        df.to_parquet(clustering_file_path)
+        df_clustered.to_parquet(clustering_file_path)
 
         logging.info('Clustering Execution Completed')
     else:
         clustering_file_path = config['modelling_clustering']['clustering_file_path']
-        df = pd.read_parquet(clustering_file_path)
+        df_clustered = pd.read_parquet(clustering_file_path)
 
     
     # Phase 5: Metrics
     if config['metrics']['metrics_enabled']:
         logging.info('Metrics Calculation Started')
 
-        purity_score, silhouette_score, final_metric = metrics_execution(df, config)
+        purity_score, silhouette_score, final_metric = metrics_execution(df_clustered, config)
 
         with open(config['metrics']['metrics_file_path'], 'w') as file:
             file.write(f'Purity score: {purity_score}\n')
