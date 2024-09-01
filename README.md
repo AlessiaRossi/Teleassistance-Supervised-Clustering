@@ -6,7 +6,8 @@ To read the README.md in Italian, click [here](myLib/README_ita.md)
 1. [Overview](#1-overview)
    - [Project Structure](./myLib/Project_Structure.md)
 2. [Enviroment setup](#2-enviroment-setup)
-
+3. [Data Directory](./data/README.md)
+4. [Outputs Program](./myLib/Outputs_Program.md)
 
 
 ## **1. Overview**

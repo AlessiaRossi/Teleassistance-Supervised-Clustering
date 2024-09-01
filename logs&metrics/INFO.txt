@@ -1,7 +1,7 @@
-2024-08-28 19:42:31,740 - Data Preparation Started
-2024-08-28 19:42:35,458 - The DataFrame has 484291 rows and 33 columns.
+2024-09-01 11:46:19,980 - Data Preparation Started
+2024-09-01 11:46:28,918 - The DataFrame has 484291 rows and 33 columns.
 
-2024-08-28 19:42:36,717 - NULLS BEFORE DATA CLEANING 
+2024-09-01 11:46:29,975 - NULLS BEFORE DATA CLEANING 
  data_disdetta                  460639
 codice_provincia_erogazione     28776
 codice_provincia_residenza      28380
@@ -9,15 +9,25 @@ ora_fine_erogazione             28181
 ora_inizio_erogazione           28181
 comune_residenza                  135
 dtype: int64
-2024-08-28 19:42:36,717 - Data Cleaning Execution Started
-2024-08-28 19:42:41,504 - Data Cleaning Execution Completed
-2024-08-28 19:42:44,299 - Data Preparation Completed
-2024-08-28 19:42:44,300 - Clustering Execution Started
-2024-08-28 19:42:44,308 - Columns to drop: Index(['id_prenotazione', 'id_paziente', 'data_nascita', 'sesso',
+2024-09-01 11:46:29,976 - Data Cleaning Execution Started
+2024-09-01 11:46:35,417 - Data Cleaning Execution Completed
+2024-09-01 11:46:39,892 - Data Preparation Completed
+2024-09-01 11:46:39,893 - Clustering Execution Started
+2024-09-01 11:46:39,903 - Columns to drop: Index(['id_prenotazione', 'id_paziente', 'data_nascita', 'sesso',
        'tipologia_servizio', 'data_contatto', 'id_professionista_sanitario',
        'data_erogazione', 'durata_erogazione_sec', 'anno', 'quadrimestre'],
       dtype='object')
-2024-08-28 19:42:44,366 - Columns after dropping: Index(['regione_residenza', 'descrizione_attivita',
+2024-09-01 11:46:39,967 - Columns after dropping: Index(['regione_residenza', 'descrizione_attivita',
        'tipologia_struttura_erogazione', 'tipologia_professionista_sanitario',
        'fascia_eta', 'incremento_teleassistenze'],
       dtype='object')
+2024-09-01 11:52:58,482 - Head of the DataFrame after Clustering 
+    id_prenotazione       id_paziente              data_nascita   sesso regione_residenza  ... fascia_eta  anno quadrimestre incremento_teleassistenze cluster
+0  JUOCPQCUG1H96QO  LCWFXF28X79P382V 1980-04-24 00:00:00+00:00    male          Piemonte  ...      36-47  2019            1            high_increment       1
+1  XDP99NXRHPOYFYU  LRFZOI94E58U012I 1972-01-30 00:00:00+00:00  female           Toscana  ...      48-59  2019            1            high_increment       0
+2  6VYI0AK57ECO5WU  JOBCGJ98A04B765H 1986-06-27 00:00:00+00:00    male    Emilia romagna  ...      36-47  2019            1            high_increment       1
+3  VLFS5J9E3Q74Q2W  TKROSE51Z77Q065E 1967-10-21 00:00:00+00:00  female          Campania  ...      48-59  2019            1            high_increment       0
+4  XD8SZX9JOVCMEXW  WRRVSK73Z45L640S 1963-08-24 00:00:00+00:00    male           Abruzzo  ...      60-69  2019            1            high_increment       1
+
+[5 rows x 18 columns]
+2024-09-01 11:52:59,629 - Clustering Execution Completed
