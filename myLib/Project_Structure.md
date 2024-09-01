@@ -99,9 +99,12 @@ The project structure of the application is organized into the following directo
 
     This pipeline is designed to be modular, with each phase building on the previous one to transform raw data into meaningful insights. By following this structure, the project ensures a clear and efficient workflow from data preparation to final visualization.
 
-
+[Quickly return to the top](#project-structure)
 
 ## **2. Flow Chart**
+
+
+[Quickly return to the top](#project-structure)
 
 
 ## **3. Branching Strategy**
