@@ -94,5 +94,56 @@ def scatter_map(data):
     return max_cluster_per_region, max_percentage_per_region,fig
 
 
+def age_group_bar_chart(data):
+    ''' Analysis of the age group distribution (fascia_eta) by cluster, using a bar chart. '''
+
+    # Calculate the percentage of each age group belonging to each cluster
+    df_crosstab = pd.crosstab(data['fascia_eta'], data['cluster'], normalize='index') * 100
+
+    # Find the cluster with the highest percentage for each age group
+    df_max_cluster = df_crosstab.idxmax(axis=1)
+
+    # Extract the corresponding highest percentages for each age group
+    df_max_percentage = df_crosstab.max(axis=1)
+
+    # Create a DataFrame for the bar chart
+    pie_data = pd.DataFrame({
+        'age_group': df_max_cluster.index,
+        'percentage': df_max_percentage,
+        'cluster': df_max_cluster.values
+    })
+
+    # Define a color map for clusters
+    cluster_colors = {
+        0: 'skyblue',
+        1: 'lightgreen',
+        2: 'lightcoral',
+        3: 'gold',
+        # Add more colors if there are more clusters
+    }
+
+    # Create a bar chart using Plotly
+    fig = px.bar(
+        pie_data,
+        x='age_group',
+        y='percentage',
+        color='cluster',
+        color_discrete_map=cluster_colors,
+        title='Distribuzione delle fasce d\'età per cluster',
+        labels={'age_group': 'fascia età', 'percentage': 'Percentuale massima di appartenenza al cluster (%)',
+                'cluster': 'Cluster'},
+    )
+
+    # Customize the chart
+    fig.update_layout(
+        xaxis_title='Fascia d\'età',
+        yaxis_title='Percentuale (%)',
+        legend_title='Cluster',
+        xaxis_tickangle=-45,
+        width=900  # Increase the width of the chart
+    )
+
+    return df_max_cluster, df_max_percentage, df_crosstab, fig
+
 
 
