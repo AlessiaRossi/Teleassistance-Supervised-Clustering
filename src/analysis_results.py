@@ -146,4 +146,31 @@ def age_group_bar_chart(data):
     return df_max_cluster, df_max_percentage, df_crosstab, fig
 
 
+def teleassistance_variation_bar_chart(data):
+    ''' Analysis of the teleassistance variation distribution (incremento_teleassistenze) by cluster, using a bar chart. '''
+
+    # Calculate the frequency of each 'incremento_teleassistenze' category per cluster
+    cluster_counts = data.groupby(['cluster', 'incremento_teleassistenze']).size().reset_index(name='count')
+
+    # Create an interactive bar chart with Plotly
+    fig = px.bar(
+        cluster_counts,
+        x='cluster',
+        y='count',
+        color='incremento_teleassistenze',
+        title='Distribuzione delle variazioni delle teleassistenze per cluster',
+        labels={'cluster': 'Cluster', 'count': 'Numero di occorrenze',
+                'incremento_teleassistenze': 'Teleassistance Variation'},
+        barmode='group',
+        color_discrete_sequence=px.colors.qualitative.Pastel
+    )
+
+    # Customize the chart
+    fig.update_layout(
+        xaxis_title='Cluster',
+        yaxis_title='Numero di occorrenze',
+        legend_title='Variazione Teleassistenza',
+    )
+
+    return fig
 
