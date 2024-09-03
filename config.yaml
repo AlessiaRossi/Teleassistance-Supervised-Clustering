@@ -15,8 +15,8 @@ feature_selection:
 
 # Phase 3
 feature_extraction:
-  extraction_enabled: True
-  cols_grouped: ['anno', 'quadrimestre', 'regione_residenza', 'descrizione_attivita']
+  extraction_enabled: False
+  cols_grouped: ['anno', 'quadrimestre', 'regione_residenza', 'fascia_eta']
   feature_extraction_path: "data/processed/feature_extracted_data.parquet"
 
 # Phase 4
