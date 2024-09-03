@@ -1,7 +1,7 @@
-2024-09-01 11:46:19,980 - Data Preparation Started
-2024-09-01 11:46:28,918 - The DataFrame has 484291 rows and 33 columns.
+2024-09-03 12:26:46,021 - Data Preparation Started
+2024-09-03 12:26:47,837 - The DataFrame has 484291 rows and 33 columns.
 
-2024-09-01 11:46:29,975 - NULLS BEFORE DATA CLEANING 
+2024-09-03 12:26:48,914 - NULLS BEFORE DATA CLEANING 
  data_disdetta                  460639
 codice_provincia_erogazione     28776
 codice_provincia_residenza      28380
@@ -9,25 +9,84 @@ ora_fine_erogazione             28181
 ora_inizio_erogazione           28181
 comune_residenza                  135
 dtype: int64
-2024-09-01 11:46:29,976 - Data Cleaning Execution Started
-2024-09-01 11:46:35,417 - Data Cleaning Execution Completed
-2024-09-01 11:46:39,892 - Data Preparation Completed
-2024-09-01 11:46:39,893 - Clustering Execution Started
-2024-09-01 11:46:39,903 - Columns to drop: Index(['id_prenotazione', 'id_paziente', 'data_nascita', 'sesso',
+2024-09-03 12:26:48,915 - Data Cleaning Execution Started
+2024-09-03 12:26:50,335 - Data Cleaning Execution Completed
+2024-09-03 12:26:50,967 - Feature Extraction Execution Started
+2024-09-03 12:26:51,846 -        anno  quadrimestre regione_residenza                               descrizione_attivita  num_servizi
+117    2019             1          Calabria  Azioni educative nei confronti del paziente e/...            1
+74     2019             1        Basilicata                      Colloquio psicologico clinico            1
+75     2019             1        Basilicata  Educazione del famigliare e/o del paziente a v...            1
+77     2019             1        Basilicata  Educazione del paziente alla raccolta di espet...            1
+83     2019             1        Basilicata  Informazioni al paziente e/o ai suoi familiari...            1
+...     ...           ...               ...                                                ...          ...
+11211  2021             1         Lombardia                           Psicoterapia individuale          264
+11189  2021             1         Lombardia                           Intervento fisioterapico          268
+9770   2020             4         Lombardia                          Intervento di prevenzione          272
+8358   2020             3         Lombardia                      Colloquio psicologico clinico          281
+9744   2020             4         Lombardia                      Colloquio psicologico clinico          288
+
+[21523 rows x 5 columns]
+2024-09-03 12:26:51,899 -       quadrimestre     regione_residenza                               descrizione_attivita  incremento_percentuale
+294              1        Emilia romagna                   Educare alla gestione del dolore              804.121212
+870              1  Prov. auton. bolzano  Formazione del paziente e/o della famiglia all...              800.000000
+340              1        Emilia romagna  Prestazione infermieristica relativa alla nece...              799.586207
+5744             4                Umbria  Insegnamento al paziente e/o alla sua famiglia...              670.000000
+2350             2  Prov. auton. bolzano  Indagine alimentare (colloquio per rilevare ab...              655.000000
+...            ...                   ...                                                ...                     ...
+5828             4         Valle d'aosta  Prestazione infermieristica relativa alla funz...                     NaN
+5832             4         Valle d'aosta  Prestazione infermieristica relativa alla nece...                     NaN
+5843             4         Valle d'aosta  Relazione di aiuto terapeutico relativa ai pro...                     NaN
+5847             4         Valle d'aosta  Valutazione del livello di conoscenze, delle c...                     NaN
+5848             4         Valle d'aosta  Valutazione della durata e della qualità del r...                     NaN
+
+[5921 rows x 4 columns]
+2024-09-03 12:26:51,916 - count    5723.000000
+mean       49.585928
+std        75.807280
+min       -87.500000
+25%         6.450104
+50%        29.166667
+75%        70.964313
+max       804.121212
+Name: incremento_percentuale, dtype: float64
+2024-09-03 12:26:52,500 - incremento_teleassistenze
+high_increment        2379
+low_increment         1534
+medium_increment      1348
+constant_increment     462
+decrement              198
+Name: count, dtype: int64
+2024-09-03 12:26:52,635 - Head of the DataFrame after Feature Extraction 
+    id_prenotazione       id_paziente              data_nascita   sesso regione_residenza  ... durata_erogazione_sec fascia_eta  anno quadrimestre incremento_teleassistenze
+0  JUOCPQCUG1H96QO  LCWFXF28X79P382V 1980-04-24 00:00:00+00:00    male          Piemonte  ...                  2925      36-47  2019            1          medium_increment
+1  XDP99NXRHPOYFYU  LRFZOI94E58U012I 1972-01-30 00:00:00+00:00  female           Toscana  ...                  1895      48-59  2019            1            high_increment
+2  6VYI0AK57ECO5WU  JOBCGJ98A04B765H 1986-06-27 00:00:00+00:00    male    Emilia romagna  ...                  1165      36-47  2019            1            high_increment
+3  VLFS5J9E3Q74Q2W  TKROSE51Z77Q065E 1967-10-21 00:00:00+00:00  female          Campania  ...                  1969      48-59  2019            1            high_increment
+4  XD8SZX9JOVCMEXW  WRRVSK73Z45L640S 1963-08-24 00:00:00+00:00    male           Abruzzo  ...                  3099      60-69  2019            1            high_increment
+
+[5 rows x 17 columns]
+2024-09-03 12:26:53,400 - Feature Extraction Execution Completed
+2024-09-03 12:26:53,400 - Data Preparation Completed
+2024-09-03 12:26:53,400 - Clustering Execution Started
+2024-09-03 12:26:53,401 - Columns to drop: Index(['id_prenotazione', 'id_paziente', 'data_nascita', 'sesso',
        'tipologia_servizio', 'data_contatto', 'id_professionista_sanitario',
        'data_erogazione', 'durata_erogazione_sec', 'anno', 'quadrimestre'],
       dtype='object')
-2024-09-01 11:46:39,967 - Columns after dropping: Index(['regione_residenza', 'descrizione_attivita',
+2024-09-03 12:26:53,415 - Columns after dropping: Index(['regione_residenza', 'descrizione_attivita',
        'tipologia_struttura_erogazione', 'tipologia_professionista_sanitario',
        'fascia_eta', 'incremento_teleassistenze'],
       dtype='object')
-2024-09-01 11:52:58,482 - Head of the DataFrame after Clustering 
+2024-09-03 12:31:10,513 - Head of the DataFrame after Clustering 
     id_prenotazione       id_paziente              data_nascita   sesso regione_residenza  ... fascia_eta  anno quadrimestre incremento_teleassistenze cluster
-0  JUOCPQCUG1H96QO  LCWFXF28X79P382V 1980-04-24 00:00:00+00:00    male          Piemonte  ...      36-47  2019            1            high_increment       1
-1  XDP99NXRHPOYFYU  LRFZOI94E58U012I 1972-01-30 00:00:00+00:00  female           Toscana  ...      48-59  2019            1            high_increment       0
-2  6VYI0AK57ECO5WU  JOBCGJ98A04B765H 1986-06-27 00:00:00+00:00    male    Emilia romagna  ...      36-47  2019            1            high_increment       1
+0  JUOCPQCUG1H96QO  LCWFXF28X79P382V 1980-04-24 00:00:00+00:00    male          Piemonte  ...      36-47  2019            1          medium_increment       3
+1  XDP99NXRHPOYFYU  LRFZOI94E58U012I 1972-01-30 00:00:00+00:00  female           Toscana  ...      48-59  2019            1            high_increment       1
+2  6VYI0AK57ECO5WU  JOBCGJ98A04B765H 1986-06-27 00:00:00+00:00    male    Emilia romagna  ...      36-47  2019            1            high_increment       2
 3  VLFS5J9E3Q74Q2W  TKROSE51Z77Q065E 1967-10-21 00:00:00+00:00  female          Campania  ...      48-59  2019            1            high_increment       0
-4  XD8SZX9JOVCMEXW  WRRVSK73Z45L640S 1963-08-24 00:00:00+00:00    male           Abruzzo  ...      60-69  2019            1            high_increment       1
+4  XD8SZX9JOVCMEXW  WRRVSK73Z45L640S 1963-08-24 00:00:00+00:00    male           Abruzzo  ...      60-69  2019            1            high_increment       2
 
 [5 rows x 18 columns]
-2024-09-01 11:52:59,629 - Clustering Execution Completed
+2024-09-03 12:31:11,538 - Clustering Execution Completed
+2024-09-03 12:31:11,538 - Metrics Calculation Started
+2024-09-03 12:31:11,602 - Purity score: 0.7124486166394142
+2024-09-03 13:12:09,502 - Mean normalized silhouette score: 0.6149034163519272
+2024-09-03 13:12:10,350 - Metrics Calculation Completed

@@ -1,3 +1,16 @@
+# 1 TODO: quando costruiamo incremento_teleassistenza, oltre a raggruppare per queste colonne  ['anno', 'quadrimestre', 'regione_residenza', 'fascia_eta'], aggiungiamo anche
+#       "descrizione_attivita" 
+# 2 TODO: confrontare KProposity con KModes
+# 2.1 TODO: confrontare gli n_init del modello scelto (es usare un for con 3 valori [5, 10, 15] e vedere quale è il migliore)
+# 4 TODO: PPT
+# 5 TODO: fare l'introduzione del progetto nel README.dm
+# 6 TODO: aggiungere qualche commento
+
+# NOTE: IL TODO 2.1 è da studiare con un DS piu piccolo (es. 20% del DS originale). 
+# NOTE: per il TODO 2 va fatto il 2.1 prima per un modello e poi per un altro modello e confrontarli
+
+
+
 import pandas as pd
 from src.data_prep.data_cleaning import data_cleaning_execution
 from src.data_prep.feature_selection import feature_selection_execution
@@ -6,6 +19,7 @@ from src.modelling_clustering import clustering_execution
 from src.metrics_evaluation import metrics_execution
 import yaml
 import logging
+
 
 def load_config(config_file):
     """Load the configuration file."""
@@ -130,12 +144,14 @@ def main():
     if config['modelling_clustering']['clustering_enabled']:
         logging.info('Clustering Execution Started')
 
-        df_clustered = clustering_execution(df_extraction, config)
+        complete_df_clustered, df_clustered = clustering_execution(df_extraction, config)
 
         logging.info(f'Head of the DataFrame after Clustering \n {df_extraction.head()}')
 
         clustering_file_path = config['modelling_clustering']['clustering_file_path']
+        clustering_file_path_all_feature = config['modelling_clustering']['clustering_file_path_all_feature']
         df_clustered.to_parquet(clustering_file_path)
+        complete_df_clustered.to_parquet(clustering_file_path_all_feature)
 
         logging.info('Clustering Execution Completed')
     else:

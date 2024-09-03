@@ -258,7 +258,7 @@ def remove_highly_correlated_columns(df, columns_to_remove):
         DataFrame with the specified columns removed.
     '''
 
-    logging.info('Removing highly correlated columns: {columns_to_remove}')
+    logging.info(f'Removing highly correlated columns: {columns_to_remove}')
 
     df.drop(columns=columns_to_remove, inplace=True)
     return df

@@ -10,9 +10,12 @@ def _elbow_method(df:pd.DataFrame, max_clusters:int) -> None:
     """Elbow method to determine the optimal number of clusters."""
     
     cost = []
-    K = range(max_clusters) # Number of clusters
+    K = range(1, max_clusters) # Number of clusters
+    # print(K)
+    print(df.head())
 
     for numero_cluster in K:
+        print(numero_cluster)
         kmodes = KModes(n_clusters=numero_cluster, init='Huang', n_init=5, verbose=1)
         kmodes.fit_predict(df)
         cost.append(kmodes.cost_) # Cost of the model
@@ -47,6 +50,7 @@ def clustering_execution(df_labeled:pd.DataFrame, config:dict) -> pd.DataFrame:
     # Elbow method
     if config['modelling_clustering']['elbow_enabled']:
         max_clusters = config['modelling_clustering']['max_clusters']
+        # print('max_clusters', max_clusters, type(max_clusters))
         _elbow_method(df, max_clusters)
 
 
@@ -65,4 +69,4 @@ def clustering_execution(df_labeled:pd.DataFrame, config:dict) -> pd.DataFrame:
 
         df_labeled['cluster'] = df['cluster']
 
-    return df_labeled
+    return df_labeled, df

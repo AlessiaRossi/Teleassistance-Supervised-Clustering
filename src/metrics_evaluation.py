@@ -61,6 +61,7 @@ def label_encoding(df:pd.DataFrame):
     clusters = df['cluster'].to_numpy()
     # Remove the cluster column to get the feature data
     feature_columns = df.drop(columns=['cluster'])
+    print(feature_columns.columns)
     
    # Convert non-numeric columns to numeric using LabelEncoder
     for column in feature_columns.columns:

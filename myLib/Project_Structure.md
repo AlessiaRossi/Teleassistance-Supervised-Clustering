@@ -117,7 +117,7 @@ The project structure of the application is organized into the following directo
     ### 4. **Modeling - Clustering**
     With the data prepared, the pipeline moves on to the modeling phase, where clustering is performed.
 
-    - **Process**: The `clustering_execution` function in [src/modelling_clustering.py](../src/modelling_clustering.py) applies clustering algorithms _"**KModes Clustering"**_ to group the data into distinct clusters based on the patterns identified in the features.
+    - **Process**: The `clustering_execution` function in [src/modelling_clustering.py](../src/modelling_clustering.py) applies **_"Elbow method"_** to determine the optimal number of clusters and then uses one of the clustering algorithms _"**KModes Clustering"**_ to group the data into distinct clusters based on the patterns identified in the features.
     - **Output**: The model is saved in the [models/](../models/) folder. The clustered data is saved in the [data/processed](../data/processed/) folder, ready for evaluation and further analysis. This step is essential for understanding the natural groupings within the data and forms the basis for later evaluation.
 
     ### 5. **Model Evaluation - Metrics**
