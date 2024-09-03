@@ -17,6 +17,7 @@ from src.data_prep.feature_selection import feature_selection_execution
 from src.data_prep.feature_extraction import feature_extraction_execution
 from src.modelling_clustering import clustering_execution
 from src.metrics_evaluation import metrics_execution
+from src.analysis_results import age_group_bar_chart, teleassistance_variation_bar_chart, healthcare_professional_bar_chart, gender_distribution_chart
 import yaml
 import logging
 
@@ -171,6 +172,28 @@ def main():
             file.write(f'Final metric: {final_metric}\n')
 
         logging.info('Metrics Calculation Completed')
+
+        # Phase 6: Analysis Results
+        logging.info('Analysis Results Started')
+
+        # Age Group Bar Chart
+        df_max_cluster, df_max_percentage, df_crosstab, age_group_fig = age_group_bar_chart(df_clustered)
+        age_group_fig.show()
+
+        # Teleassistance Variation Bar Chart
+        teleassistance_fig = teleassistance_variation_bar_chart(df_clustered)
+        teleassistance_fig.show()
+
+        # Healthcare Professional Bar Chart
+        healthcare_fig = healthcare_professional_bar_chart(df_clustered)
+        healthcare_fig.show()
+
+        # Gender Distribution Bar Chart
+        sex_crosstab, max_sex_per_cluster, max_percentage_per_cluster, gender_fig = gender_distribution_chart(df_clustered)
+        gender_fig.show()
+
+        logging.info('Analysis Results Completed')
+
 
 
 if __name__ == '__main__':
