@@ -207,3 +207,39 @@ def healthcare_professional_bar_chart(data):
 
     return fig
 
+
+def create_gender_distribution_chart(data):
+    ''' Analysis of the gender distribution (sesso) by cluster, using a bar chart. '''
+
+    # Calculate the percentage of each gender within each cluster
+    sex_crosstab = pd.crosstab(data['sesso'], data['cluster'], normalize='index') * 100
+
+    max_sex_per_cluster = sex_crosstab.idxmax(axis=1)
+
+    # Extract the corresponding highest percentages for each cluster
+    max_percentage_per_cluster = sex_crosstab.max(axis=1)
+
+    # Melt the crosstab DataFrame for easier plotting
+    melted_gender_data = sex_crosstab.reset_index().melt(id_vars='sesso', var_name='cluster', value_name='percentage')
+
+    # Create a bar chart using Plotly
+    fig = px.bar(
+        melted_gender_data,
+        x='cluster',
+        y='percentage',
+        color='sesso',
+        title='Distribuzione di uomini e donne per cluster',
+        labels={'cluster': 'Cluster', 'percentage': 'Percentuale (%)', 'sesso': 'Sesso'},
+        barmode='group',
+        color_discrete_map={'female': '#FF69B4', 'male': '#1E90FF'}
+    )
+
+    # Customize the chart
+    fig.update_layout(
+        xaxis_title='Cluster',
+        yaxis_title='Percentuale',
+        legend_title='Sesso',
+        bargap=0.4
+    )
+
+    return sex_crosstab, max_sex_per_cluster, max_percentage_per_cluster, fig
