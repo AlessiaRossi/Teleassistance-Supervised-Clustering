@@ -5,6 +5,8 @@ import matplotlib.pyplot as plt
 import pickle
 import logging
 
+from metrics_evaluation import metrics_execution
+
 
 def _elbow_method(df:pd.DataFrame, max_clusters:int) -> None:
     """Elbow method to determine the optimal number of clusters."""
@@ -57,15 +59,28 @@ def clustering_execution(df_labeled:pd.DataFrame, config:dict) -> pd.DataFrame:
     # Clustering
     if config['modelling_clustering']['prediction_enabled']:
         n_clusters = config['modelling_clustering']['n_clusters']
-        kmodes = KModes(n_clusters=n_clusters, init='Huang', n_init=10, verbose=1)
 
-        model_pkl_file = config['modelling_clustering']['model_pkl_file']
+        for num_init in [5,10,15,20]:
+            kmodes = KModes(n_clusters=n_clusters, init='Huang', n_init=num_init, verbose=1)
 
-        with open(model_pkl_file, 'wb') as file:
-            pickle.dump(kmodes, file)
+            model_pkl_file = config['modelling_clustering']['model_pkl_file']
+
+            with open(f'models/{str(num_init)}_clustering_model.pkl', 'wb') as file:
+                pickle.dump(kmodes, file)
 
 
-        df = _kmodes_clustering(kmodes, df)
+            df = _kmodes_clustering(kmodes, df)
+
+            # NOTE: START STUDYING INITIALIZATION
+            purity_score, silhouette_score, final_metric = metrics_execution(df, config, num_init)
+
+            with open(config['metrics']['metrics_file_path'], 'a') as file:
+                file.write(f'\n\nNumber of initializations: {num_init}\n')
+                file.write(f'Purity score: {purity_score}\n')
+                file.write(f'Mean normalized silhouette score: {silhouette_score}\n')
+                file.write(f'Final metric: {final_metric}\n')
+
+            ### NOTE: END OF STUDYING INITIALIZATION
 
         df_labeled['cluster'] = df['cluster']
 

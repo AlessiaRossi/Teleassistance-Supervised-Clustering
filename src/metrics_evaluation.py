@@ -79,7 +79,7 @@ def label_encoding(df:pd.DataFrame):
     return X_standardized_df, clusters
 
 
-def plot_silhouette(silhouette_vals, clusters):
+def plot_silhouette(silhouette_vals, clusters, num_init):
     # Plot the silhouette values for each sample
     plt.figure(figsize=(10, 7))
     y_lower = 10
@@ -94,10 +94,10 @@ def plot_silhouette(silhouette_vals, clusters):
 
         y_lower = y_upper + 10
 
-    plt.savefig('graphs/silhouette_plot.png')
+    plt.savefig(f'graphs/{num_init}_silhouette_plot.png')
 
 
-def metrics_execution(df:pd.DataFrame, config:dict) -> float:
+def metrics_execution(df:pd.DataFrame, config:dict, num_init:str) -> float:
     """Execution of metrics calculation."""
     
     purity = purity_score(df['incremento_teleassistenze'], df['cluster'])
@@ -109,7 +109,7 @@ def metrics_execution(df:pd.DataFrame, config:dict) -> float:
     logging.info(f'Mean normalized silhouette score: {mean_normalized_silhouette_vals}')
 
     # Plot the silhouette values for each sample
-    plot_silhouette(silhouette_vals, clusters)
+    plot_silhouette(silhouette_vals, clusters, num_init)
 
     # Calculate the final metrics with a penalty for the number of clusters
     final_metric = ((purity + mean_normalized_silhouette_vals) / 2) - (0.05 * config['modelling_clustering']['n_clusters'])

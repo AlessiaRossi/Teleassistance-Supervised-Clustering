@@ -1,3 +1,27 @@
 Purity score: 0.8768601699423898
 Mean normalized silhouette score: 0.7387083146709421
 Final metric: 0.607784242306666
+
+
+Number of initializations: 5
+Purity score: 0.7168806689988686
+Mean normalized silhouette score: 0.5436105732684715
+Final metric: 0.43024562113367
+
+
+Number of initializations: 10
+Purity score: 0.7349997502763247
+Mean normalized silhouette score: 0.5549751070015316
+Final metric: 0.4449874286389281
+
+
+Number of initializations: 15
+Purity score: 0.7349997502763247
+Mean normalized silhouette score: 0.5550271289155108
+Final metric: 0.4450134395959177
+
+
+Number of initializations: 20
+Purity score: 0.7347435120703396
+Mean normalized silhouette score: 0.5739477736426016
+Final metric: 0.45434564285647067

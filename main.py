@@ -148,15 +148,15 @@ def main():
 
         logging.info(f'Head of the DataFrame after Clustering \n {df_extraction.head()}')
 
-        clustering_file_path = config['modelling_clustering']['clustering_file_path']
-        clustering_file_path_all_feature = config['modelling_clustering']['clustering_file_path_all_feature']
-        df_clustered.to_parquet(clustering_file_path)
-        complete_df_clustered.to_parquet(clustering_file_path_all_feature)
+        # clustering_file_path = config['modelling_clustering']['clustering_file_path']
+        # clustering_file_path_all_feature = config['modelling_clustering']['clustering_file_path_all_feature']
+        # df_clustered.to_parquet(clustering_file_path)
+        # complete_df_clustered.to_parquet(clustering_file_path_all_feature)
 
         logging.info('Clustering Execution Completed')
-    else:
-        clustering_file_path = config['modelling_clustering']['clustering_file_path']
-        df_clustered = pd.read_parquet(clustering_file_path)
+    # else:
+    #     clustering_file_path = config['modelling_clustering']['clustering_file_path']
+    #     df_clustered = pd.read_parquet(clustering_file_path)
 
     
     # Phase 5: Metrics
