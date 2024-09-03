@@ -1,0 +1,41 @@
+data:
+  file_path: "data/raw/challenge_campus_biomedico_2024.parquet"
+  istat_ds_path: "data/raw/Codici-statistici-e-denominazioni-al-30_06_2024.xlsx"
+
+# Phase 1
+cleaning:
+  cleaning_enabled: False
+  missing_threshold: 0.6 # Drop columns with more than 60% missing values
+  cleaned_file_path: "data/processed/cleaned_data.parquet"
+
+# Phase 2
+feature_selection:
+  selection_enabled: False
+  feature_selected_file_path: "data/processed/feature_selected_data.parquet"
+
+# Phase 3
+feature_extraction:
+  extraction_enabled: False
+  cols_grouped: ['anno', 'quadrimestre', 'regione_residenza', 'fascia_eta']
+  feature_extraction_path: "data/processed/feature_extracted_data.parquet"
+
+# Phase 4
+modelling_clustering:
+  clustering_enabled: True
+  elbow_enabled: False
+  prediction_enabled: True
+  max_clusters: 13
+  n_clusters: 4
+  list_cols_to_drop: [0,1,2,3,5,7,9,11,12,14,15]
+  model_pkl_file: "models/clustering_model.pkl"
+  clustering_file_path: "data/processed/clustered_data.parquet"
+  clustering_file_path_all_feature: "data/processed/clustered_data_all_feature.parquet"
+
+metrics:
+  metrics_enabled: True
+  metrics_file_path: "logs&metrics/metrics.txt"
+
+general:
+  log_file_path: "logs&metrics/INFO.txt"
+  logging_level: "INFO" # can be: DEBUG, INFO, WARNING, ERROR, CRITICAL
+  output_model_path: "models/" # Path to save model

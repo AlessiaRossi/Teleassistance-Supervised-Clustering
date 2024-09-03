@@ -1,8 +1,9 @@
 env_FIA/*
-_pycache_/*
+**/__pycache__/*
 .idea/*
 .DS_Store
+venv/*
 .venv/*
-venv
-data/*
-src/*
+data/processed/*
+setup.py
+src/teleassistance_ml_project.egg-info/
