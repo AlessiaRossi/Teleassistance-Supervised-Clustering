@@ -174,3 +174,36 @@ def teleassistance_variation_bar_chart(data):
 
     return fig
 
+
+def healthcare_professional_bar_chart(data):
+    ''' Analysis of the healthcare professional distribution (tipologia_professionista_sanitario) by cluster, using a bar chart. '''
+
+    # Calculate the frequency of each type of healthcare professional per cluster
+    cluster_counts = data.groupby(['cluster', 'tipologia_professionista_sanitario']).size().reset_index(name='count')
+
+    # Create an interactive bar chart with Plotly
+    fig = px.bar(
+        cluster_counts,
+        x='cluster',
+        y='count',
+        color='tipologia_professionista_sanitario',
+        title='Distribuzione dei professionisti sanitari per cluster',
+        labels={'cluster': 'Cluster', 'count': 'Numero di professionisti', 'tipologia_professionista_sanitario': 'Tipo di Professionista'},
+        barmode='group',
+        color_discrete_sequence=px.colors.qualitative.Pastel
+    )
+
+    # Customize the chart
+    fig.update_layout(
+        xaxis_title='Cluster',
+        yaxis_title='Numero di professionisti',
+        legend_title='Tipo di Professionista',
+        legend=dict(
+            x=1.05,  # Horizontal position of the legend
+            y=1,     # Vertical position of the legend
+            traceorder='normal'  # Order of items in the legend
+        )
+    )
+
+    return fig
+
