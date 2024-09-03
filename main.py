@@ -17,7 +17,7 @@ from src.data_prep.feature_selection import feature_selection_execution
 from src.data_prep.feature_extraction import feature_extraction_execution
 from src.modelling_clustering import clustering_execution
 from src.metrics_evaluation import metrics_execution
-from src.analysis_results import age_group_bar_chart, teleassistance_variation_bar_chart, healthcare_professional_bar_chart, gender_distribution_chart
+from src.analysis_results import age_group_bar_chart, teleassistance_variation_bar_chart, healthcare_professional_bar_chart, gender_distribution_chart,scatter_map
 import yaml
 import logging
 
@@ -191,6 +191,10 @@ def main():
         # Gender Distribution Bar Chart
         sex_crosstab, max_sex_per_cluster, max_percentage_per_cluster, gender_fig = gender_distribution_chart(df_clustered)
         gender_fig.show()
+
+        # Scatter Map
+        scatter_map_fig = scatter_map(df_clustered)
+        scatter_map_fig.show()
 
         logging.info('Analysis Results Completed')
 
