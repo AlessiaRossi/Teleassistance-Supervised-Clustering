@@ -208,7 +208,7 @@ def healthcare_professional_bar_chart(data):
     return fig
 
 
-def create_gender_distribution_chart(data):
+def gender_distribution_chart(data):
     ''' Analysis of the gender distribution (sesso) by cluster, using a bar chart. '''
 
     # Calculate the percentage of each gender within each cluster
