@@ -5,7 +5,7 @@ import matplotlib.pyplot as plt
 import pickle
 import logging
 
-from metrics_evaluation import metrics_execution
+from MetricsEvaluation import metrics_execution
 
 
 def _elbow_method(df:pd.DataFrame, max_clusters:int) -> None:

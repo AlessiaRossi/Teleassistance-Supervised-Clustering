@@ -1,5 +1,5 @@
 import pandas as pd
-from src.data_prep.data_cleaning import identify_and_remove_outliers_boxplot, impute_durata_erogazione
+from src.data_prep.DataCleaning import identify_and_remove_outliers_boxplot, impute_durata_erogazione
 import numpy as np
 from scipy.stats import chi2_contingency
 import seaborn as sns

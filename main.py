@@ -12,12 +12,12 @@
 
 
 import pandas as pd
-from src.data_prep.data_cleaning import data_cleaning_execution
-from src.data_prep.feature_selection import feature_selection_execution
-from src.data_prep.feature_extraction import feature_extraction_execution
-from src.modelling_clustering import clustering_execution
-from src.metrics_evaluation import metrics_execution
-from src.analysis_results import age_group_bar_chart, teleassistance_variation_bar_chart, healthcare_professional_bar_chart, gender_distribution_chart,scatter_map
+from src.data_prep.DataCleaning import data_cleaning_execution
+from data_prep.FeatureSelection import feature_selection_execution
+from data_prep.FeatureExtraction import feature_extraction_execution
+from ModellingClustering import clustering_execution
+from MetricsEvaluation import metrics_execution
+from AnalysisResults import age_group_bar_chart, teleassistance_variation_bar_chart, healthcare_professional_bar_chart, gender_distribution_chart,scatter_map
 import yaml
 import logging
 
