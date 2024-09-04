@@ -6,9 +6,6 @@ import seaborn as sns
 import matplotlib.pyplot as plt
 import logging
 
-# import matplotlib
-# matplotlib.use('Agg')
-
 # List of tuples containing the code-description column pairs to be compared.
 columns_pairs = [
     ('codice_provincia_residenza', 'provincia_residenza'),
@@ -25,19 +22,19 @@ columns_pairs = [
 ]
 
 
-def print_details_corrections (df, code, description, code_groups, description_groups):
+def print_details_corrections (df:pd.DataFrame, code:str, description:str, code_groups:dict, description_groups):
     '''
         This function prints details if there are codes with multiple descriptions or vice versa
 
-        Args:
-            df: DataFrame to operate on
-            code: Code column to analyze
-            description: Description column to be parsed
-            code_groups: Code groups with unique description counts
-            description_groups: Groups of descriptions with unique code counts
+        Parameters:
+        - df: DataFrame to operate on
+        - code: Code column to analyze
+        - description: Description column to be parsed
+        - code_groups: Code groups with unique description counts
+        - description_groups: Groups of descriptions with unique code counts
         
         Returns:
-            None
+        - None
     '''
 
     not_unique = False
@@ -59,7 +56,7 @@ def print_details_corrections (df, code, description, code_groups, description_g
 
 
 
-def remove_columns_with_unique_correlation(df, columns_pairs) -> pd.DataFrame:
+def remove_columns_with_unique_correlation(df:pd.DataFrame, columns_pairs:list) -> pd.DataFrame:
     '''
     This function removes columns (column code) with unique correlation
 
@@ -98,7 +95,7 @@ def remove_columns_with_unique_correlation(df, columns_pairs) -> pd.DataFrame:
     return df, columns_pairs_updated
 
             
-def clean_codice_struttura_erogazione(df, column = 'codice_struttura_erogazione'):
+def clean_codice_struttura_erogazione(df:pd.DataFrame, column='codice_struttura_erogazione') -> pd.DataFrame:
     '''
     This function cleans the 'codice_struttura_erogazione' column by converting it to an integer type
     '''
@@ -109,7 +106,7 @@ def clean_codice_struttura_erogazione(df, column = 'codice_struttura_erogazione'
     return df
 
 
-def remove_data_disdetta(df) -> pd.DataFrame:
+def remove_data_disdetta(df:pd.DataFrame) -> pd.DataFrame:
     '''
     This function remove data_disdetta column from the DataFrame
     '''
@@ -138,7 +135,13 @@ def colonna_durata_erogazione(df:pd.DataFrame) -> pd.DataFrame:
 
 def remove_ora_inizio_fine_erogazione(df:pd.DataFrame) -> pd.DataFrame:
     '''
-    This function removes 'ora_inizio_erogazione' and 'ora_fine_erogazione' columns from the DataFrame
+        This function removes 'ora_inizio_erogazione' and 'ora_fine_erogazione' columns from the DataFrame
+
+        Parameters:
+        - df: DataFrame containing the data.
+
+        Returns:
+        - df: DataFrame with the columns removed.
     '''
 
     logging.info('Removing ora_inizio_erogazione and ora_fine_erogazione columns')
@@ -149,7 +152,13 @@ def remove_ora_inizio_fine_erogazione(df:pd.DataFrame) -> pd.DataFrame:
 
 def colonna_fascia_eta(df:pd.DataFrame) -> pd.DataFrame:
     '''
-    This function creates a new column 'eta' which is the difference between 'ora_fine_erogazione' and 'ora_inizio_erogazione'
+        This function creates a new column 'fascia_eta' which is the age range of the patient
+
+        Parameters:
+        - df: DataFrame containing the data.
+
+        Returns:
+        - df: DataFrame with the 'fascia_eta' column added.
     '''
 
     logging.info('Creating fascia_eta column')
@@ -170,7 +179,16 @@ def colonna_fascia_eta(df:pd.DataFrame) -> pd.DataFrame:
 
     return df
 
-def colonne_anno_e_quadrimestre(df:pd.DataFrame) -> pd.DataFrame: 
+def colonne_anno_e_quadrimestre(df:pd.DataFrame) -> pd.DataFrame:
+    '''
+        This function creates the 'anno' and 'quadrimestre' columns from the 'data_erogazione' column.
+
+        Parameters:
+        - df: DataFrame containing the data.
+
+        Returns:
+        - df: DataFrame with the 'anno' and 'quadrimestre' columns added.
+    '''
     
     logging.info('Creating anno and quadrimestre columns')
 
@@ -180,16 +198,17 @@ def colonne_anno_e_quadrimestre(df:pd.DataFrame) -> pd.DataFrame:
 
     return df
 
+
 def cramer_v(x, y):
     '''
-    This function calculates Cramér's V for two categorical variables.
+        This function calculates Cramér's V for two categorical variables.
 
-    Args:
-        x: First categorical variable.
-        y: Second categorical variable.
+        Parameters:
+        - x: First categorical variable.
+        - y: Second categorical variable.
 
-    Returns:
-        Cramér's V statistic.
+        Returns:
+        - Cramér's V statistic.
     '''
     # Create a contingency table
     contingency = pd.crosstab(x, y)
@@ -202,21 +221,24 @@ def cramer_v(x, y):
     # Calculate Cramér's V
     return np.sqrt(chi2 / (n * min_dim))
 
-def calculate_correlation_matrix(df, corr_cols):
+
+def calculate_correlation_matrix(df:pd.DataFrame, corr_cols:list):
     '''
-    This function calculates the correlation matrix using Cramér's V.
+        This function calculates the correlation matrix using Cramér's V.
 
-    Args:
-        df: DataFrame containing the data.
-        corr_cols: List of columns to calculate the correlation matrix for.
+        Parameters:
+        - df: DataFrame containing the data.
+        - corr_cols: List of columns to calculate the correlation matrix for.
 
-    Returns:
-        DataFrame containing the correlation matrix.
+        Returns:
+        - DataFrame containing the correlation matrix.
     '''
 
     logging.info('Calculating correlation matrix using Cramér\'s V')
 
     correlations = pd.DataFrame(index=corr_cols, columns=corr_cols)
+
+    # Calculate Cramér's V for each pair of columns
     for col1 in corr_cols:
         for col2 in corr_cols:
             if col1 != col2:
@@ -226,15 +248,15 @@ def calculate_correlation_matrix(df, corr_cols):
     return correlations
 
 
-def visualize_correlation_matrix(correlations, name):
+def visualize_correlation_matrix(correlations:pd.DataFrame, name:str):
     '''
-    This function visualizes the correlation matrix using a heatmap.
+        This function visualizes the correlation matrix using a heatmap.
 
-    Args:
-        correlations: DataFrame containing the correlation matrix.
+        Parameters:
+        - correlations: DataFrame containing the correlation matrix.
 
-    Returns:
-        None
+        Returns:
+        - None
     '''
     plt.figure(figsize=(16, 12))
     sns.heatmap(correlations.astype(float), annot=True, cmap="coolwarm", fmt=".2f", linewidths=0.5, square=True)
@@ -246,16 +268,16 @@ def visualize_correlation_matrix(correlations, name):
     plt.savefig(name)
 
 
-def remove_highly_correlated_columns(df, columns_to_remove):
+def remove_highly_correlated_columns(df:pd.DataFrame, columns_to_remove:list) -> pd.DataFrame:
     '''
-    This function removes columns based on the correlation analysis.
+        This function removes columns based on the correlation analysis.
 
-    Args:
-        df: DataFrame containing the data.
-        columns_to_remove: List of columns to be removed.
+        Parameters:
+        - df: DataFrame containing the data.
+        - columns_to_remove: List of columns to be removed.
 
-    Returns:
-        DataFrame with the specified columns removed.
+        Returns:
+        - DataFrame with the specified columns removed.
     '''
 
     logging.info(f'Removing highly correlated columns: {columns_to_remove}')
@@ -277,13 +299,13 @@ def feature_selection_execution(df:pd.DataFrame, config:dict) -> pd.DataFrame:
     logging.basicConfig(filename=config['general']['logging_level'], format='%(asctime)s - %(message)s', level=logging.INFO)
 
     '''
-    This function executes the feature selection process
+        This function executes the feature selection process
 
-    Args:
-        df: The DataFrame containing the data.
+        Parameters:
+        - df: The DataFrame containing the data.
 
-    Returns:
-        The DataFrame with removed columns
+        Returns:
+        - The DataFrame with removed columns
     '''
 
     global columns_pairs
