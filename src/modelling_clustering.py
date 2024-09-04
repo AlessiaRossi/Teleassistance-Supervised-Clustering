@@ -60,7 +60,7 @@ def clustering_execution(df_labeled:pd.DataFrame, config:dict) -> pd.DataFrame:
     if config['modelling_clustering']['prediction_enabled']:
         n_clusters = config['modelling_clustering']['n_clusters']
 
-        for num_init in [5,10,15,20]:
+        for num_init in [5,10,15,20,25,30]:
             kmodes = KModes(n_clusters=n_clusters, init='Huang', n_init=num_init, verbose=1)
 
             model_pkl_file = config['modelling_clustering']['model_pkl_file']
