@@ -4,8 +4,9 @@ import logging
 
 class DataCleaning:
 
-    def __init__(self):
-        pass
+    def __init__(self, df:pd.DataFrame):
+        self.df = df.copy()
+
 
     def __imputate_comune_residenza(self, df:pd.DataFrame) -> pd.DataFrame:
         '''
@@ -280,14 +281,13 @@ class DataCleaning:
 
 
 
-    def data_cleaning_execution(self, df:pd.DataFrame, missing_threshold:float, config:dict) -> pd.DataFrame:
+    def data_cleaning_execution(self, missing_threshold:float, config:dict) -> pd.DataFrame:
         '''
             Executes the data cleaning process based on the provided configuration.
 
             This function performs data cleaning operations such as imputing missing values, removing duplicates, and identifying outliers.
 
             Parameters:
-            - df: DataFrame containing the data to be cleaned.
             - missing_threshold: The threshold for missing values.
             - config: Dictionary containing configuration settings for the data cleaning process.
 
@@ -299,7 +299,7 @@ class DataCleaning:
         logging.basicConfig(filename=config['general']['logging_level'], format='%(asctime)s - %(message)s', level=logging.INFO)
 
         # Drop columns with more than 60% missing values
-        df = self.__missing_values(df, missing_threshold)
+        df = self.__missing_values(self.df, missing_threshold)
 
         # Apply the function to imputate missing values for 'comune_residenza'
         df, codice_comune_to_nome = self.__imputate_comune_residenza(df)

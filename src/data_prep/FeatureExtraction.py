@@ -5,8 +5,8 @@ import logging
 
 class FeatureExtraction:
 
-    def __init__(self):
-        pass
+    def __init__(self, df: pd.DataFrame):
+        self.df = df.copy()
 
 
     def __incremento_labelling(self, df: pd.DataFrame, cols_grouped: list) -> pd.DataFrame:
@@ -115,12 +115,11 @@ class FeatureExtraction:
         plt.savefig('graphs/avg_incremento_percentuale_boxplot.png')
         
 
-    def feature_extraction_execution(self, df: pd.DataFrame, cols_grouped: list, config:dict) -> pd.DataFrame:
+    def feature_extraction_execution(self, cols_grouped: list, config:dict) -> pd.DataFrame:
         '''
             This function performs the feature extraction process on the DataFrame.
 
             Parameters:
-            - df: DataFrame containing the data to be processed.
             - cols_grouped: List of columns to be grouped together.
             - config: Dictionary containing configuration settings for the feature extraction process.
 
@@ -131,10 +130,10 @@ class FeatureExtraction:
         logging.basicConfig(filename=config['general']['logging_level'], format='%(asctime)s - %(message)s', level=logging.INFO)
 
         # This is a TODO defined in the feature_selection.py but not yet implemented
-        df.drop(columns=['codice_struttura_erogazione'], inplace=True)
-        df['durata_erogazione_sec'] =  df.durata_erogazione_sec.astype(int)
+        self.df.drop(columns=['codice_struttura_erogazione'], inplace=True)
+        self.df['durata_erogazione_sec'] =  self.df.durata_erogazione_sec.astype(int)
 
-        incremento_percentuale_medio, df_cols_no_anno = self.__incremento_labelling(df, cols_grouped)
+        incremento_percentuale_medio, df_cols_no_anno = self.__incremento_labelling(self.df, cols_grouped)
 
         logging.info(incremento_percentuale_medio['incremento_percentuale'].describe())
 
@@ -143,6 +142,6 @@ class FeatureExtraction:
         self.__boxplot_avg_incremento_distribution(incremento_percentuale_medio)
 
         # Apply the classification of the average percentage increment
-        df = self.__sample_cassification(incremento_percentuale_medio, df, df_cols_no_anno)
+        df = self.__sample_cassification(incremento_percentuale_medio, self.df, df_cols_no_anno)
 
         return df

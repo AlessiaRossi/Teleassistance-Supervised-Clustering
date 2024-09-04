@@ -8,12 +8,10 @@ import logging
 
 class FeatureSelection:
 
-    columns_pairs = []
-
-    def __init__(self):
+    def __init__(self,  df:pd.DataFrame):
         # List of tuples containing the code-description column pairs to be compared.
         self.columns_pairs = [
-             ('codice_provincia_residenza', 'provincia_residenza'),
+            ('codice_provincia_residenza', 'provincia_residenza'),
             ('codice_provincia_erogazione', 'provincia_erogazione'),
             ('codice_regione_residenza', 'regione_residenza'),
             ('codice_asl_residenza', 'asl_residenza'),
@@ -27,6 +25,7 @@ class FeatureSelection:
         ]
 
         self.dataCleaning = DataCleaning()
+        self.df = df.copy()
 
 
     def __print_details_corrections (self, df:pd.DataFrame, code:str, description:str, code_groups:dict, description_groups):
@@ -301,7 +300,7 @@ class FeatureSelection:
     # DONE - TODO: aggiungere colonna eta
     # DONE - TODO: rimuovere colonne ora inizio e fine erogazione e aggiungere durata
     # DONE - TODO: imputare in valori mancanti in durata erogazione con la media della durata per attività
-    def feature_selection_execution(self, df:pd.DataFrame, config:dict) -> pd.DataFrame:
+    def feature_selection_execution(self, config:dict) -> pd.DataFrame:
 
         logging.basicConfig(filename=config['general']['logging_level'], format='%(asctime)s - %(message)s', level=logging.INFO)
 
@@ -319,7 +318,7 @@ class FeatureSelection:
 
 
         # Clean 'codice_struttura_erogazione' column
-        df = self.__clean_codice_struttura_erogazione(df)
+        df = self.__clean_codice_struttura_erogazione(self.df)
 
         # Remove 'data_disdetta' column cause all the data is null
         df = self.__remove_data_disdetta(df)
