@@ -4,9 +4,14 @@ import plotly.express as px
 
 
 def scatter_map(data):
-    ''' Analysis of the geographical distribution (region_residence) by cluster, using a scatter map. '''
 
-    # Add latitude and longitude for each region
+    '''
+    Analyzes the geographical distribution of clusters by region (regione_residenza) in Italy using a scatter map.
+    This function identifies the dominant cluster in each region and visualizes the result on an interactive map.
+    '''
+
+    # Define latitude and longitude for each region in Italy
+    # These coordinates are used to accurately place each region on the map
     region_coords = {
         'Abruzzo': (42.351221, 13.398438),
         'Basilicata': (40.639470, 15.805148),
@@ -30,33 +35,35 @@ def scatter_map(data):
         'Veneto': (45.434904, 12.338452)
     }
 
-    # Convert the dictionary to a DataFrame
-    coords_df = pd.DataFrame.from_dict(region_coords, orient='index', columns=['latitude', 'longitude']).reset_index()
-    coords_df.rename(columns={'index': 'regione_residenza'}, inplace=True)
+    # Convert the dictionary to a DataFrame for easier manipulatio
+    coords_df = pd.DataFrame.from_dict(region_coords, orient='index', columns=['latitude', 'longitude']).reset_index()  # Reset the index, so 'regione_residenza' becomes a column
+    coords_df.rename(columns={'index': 'regione_residenza'}, inplace=True) # Rename the columns
 
-    # Merge the data with the coordinates
+    # Merge the data with the coordinates based on the region of residence
+    # This step adds latitude and longitude to the main data for each region
     data = pd.merge(data, coords_df, on='regione_residenza')
 
-    # Calculate the percentage of each cluster for each region
+    # Calculate the percentage distribution of clusters within each region
+    # The result is a crosstab that shows the percentage of each cluster in each region
     region_cluster_crosstab = pd.crosstab(data['regione_residenza'], data['cluster'], normalize='index') * 100
 
     # Identify the cluster with the highest percentage for each region
     max_cluster_per_region = region_cluster_crosstab.idxmax(axis=1)
 
-    # Extract the corresponding highest percentages for each region
+    # Extract the max percentages for each region
     max_percentage_per_region = region_cluster_crosstab.max(axis=1)
 
-    # Create a DataFrame for the map
+    # Create a DataFrame for visualization containing the region, dominant cluster, and percentage
     map_data = pd.DataFrame({
         'regione_residenza': max_cluster_per_region.index,
         'cluster': max_cluster_per_region.values,
         'percentage': max_percentage_per_region.values
     })
 
-    # Merge with coordinates
+    # Merge with coordinates to plot the map
     map_data = pd.merge(map_data, coords_df, on='regione_residenza')
 
-    # Create a scatter map with Plotly
+    # Create a scatter map using Plotly
     fig = px.scatter_mapbox(
         map_data,
         lat='latitude',
@@ -71,7 +78,7 @@ def scatter_map(data):
         zoom=5
     )
 
-    # Customize the map
+    # Customize the map layout, including centering on Italy and adjusting the legend
     fig.update_layout(
         mapbox=dict(
             center=dict(lat=41.8719, lon=12.5674),  # Centered on Italy
@@ -95,9 +102,13 @@ def scatter_map(data):
 
 
 def age_group_bar_chart(data):
-    ''' Analysis of the age group distribution (fascia_eta) by cluster, using a bar chart. '''
+    '''
+    Analysis of the age group distribution (fascia_eta) by cluster, using a bar chart.
+    This function identifies the dominant cluster within each age group and visualizes the results.
+    '''
 
     # Calculate the percentage of each age group belonging to each cluster
+    # The result is a crosstab that shows the percentage distribution of clusters within each age group
     df_crosstab = pd.crosstab(data['fascia_eta'], data['cluster'], normalize='index') * 100
 
     # Find the cluster with the highest percentage for each age group
@@ -106,7 +117,7 @@ def age_group_bar_chart(data):
     # Extract the corresponding highest percentages for each age group
     df_max_percentage = df_crosstab.max(axis=1)
 
-    # Create a DataFrame for the bar chart
+    # Create a DataFrame for plotting the bar chart with age group, cluster, and percentage
     pie_data = pd.DataFrame({
         'age_group': df_max_cluster.index,
         'percentage': df_max_percentage,
@@ -122,7 +133,7 @@ def age_group_bar_chart(data):
         # Add more colors if there are more clusters
     }
 
-    # Create a bar chart using Plotly
+    # Create a bar chart using Plotly to visualize the age group distribution by cluster
     fig = px.bar(
         pie_data,
         x='age_group',
@@ -134,7 +145,7 @@ def age_group_bar_chart(data):
                 'cluster': 'Cluster'},
     )
 
-    # Customize the chart
+    # Customize the chart layout, including the axis labels and chart width
     fig.update_layout(
         xaxis_title='Fascia d\'età',
         yaxis_title='Percentuale (%)',
@@ -147,12 +158,16 @@ def age_group_bar_chart(data):
 
 
 def teleassistance_variation_bar_chart(data):
-    ''' Analysis of the teleassistance variation distribution (incremento_teleassistenze) by cluster, using a bar chart. '''
+    '''
+    Analysis of the teleassistance variation distribution (incremento_teleassistenze) by cluster, using a bar chart.
+    This function visualizes how teleassistance variations are distributed across different clusters.
+    '''
 
     # Calculate the frequency of each 'incremento_teleassistenze' category per cluster
+    # This groups the data by cluster and teleassistance variation and counts the occurrences
     cluster_counts = data.groupby(['cluster', 'incremento_teleassistenze']).size().reset_index(name='count')
 
-    # Create an interactive bar chart with Plotly
+    # Create an interactive bar chart with Plotly to visualize the distribution of teleassistance variations by cluster
     fig = px.bar(
         cluster_counts,
         x='cluster',
@@ -165,7 +180,7 @@ def teleassistance_variation_bar_chart(data):
         color_discrete_sequence=px.colors.qualitative.Pastel
     )
 
-    # Customize the chart
+    # Customize the chart layout, including the axis labels and legend title
     fig.update_layout(
         xaxis_title='Cluster',
         yaxis_title='Numero di occorrenze',
@@ -176,12 +191,16 @@ def teleassistance_variation_bar_chart(data):
 
 
 def healthcare_professional_bar_chart(data):
-    ''' Analysis of the healthcare professional distribution (tipologia_professionista_sanitario) by cluster, using a bar chart. '''
+    '''
+    Analysis of the healthcare professional distribution (tipologia_professionista_sanitario) by cluster, using a bar chart.
+    This function visualizes the distribution of different types of healthcare professionals across clusters.
+    '''
 
     # Calculate the frequency of each type of healthcare professional per cluster
+    # This groups the data by cluster and type of healthcare professional and counts the occurrences
     cluster_counts = data.groupby(['cluster', 'tipologia_professionista_sanitario']).size().reset_index(name='count')
 
-    # Create an interactive bar chart with Plotly
+    # Create an interactive bar chart with Plotly to visualize the distribution of healthcare professionals by cluster
     fig = px.bar(
         cluster_counts,
         x='cluster',
@@ -193,7 +212,7 @@ def healthcare_professional_bar_chart(data):
         color_discrete_sequence=px.colors.qualitative.Pastel
     )
 
-    # Customize the chart
+    # Customize the chart layout, including the axis labels and legend title
     fig.update_layout(
         xaxis_title='Cluster',
         yaxis_title='Numero di professionisti',
@@ -209,9 +228,13 @@ def healthcare_professional_bar_chart(data):
 
 
 def gender_distribution_chart(data):
-    ''' Analysis of the gender distribution (sesso) by cluster, using a bar chart. '''
+    '''
+    Analysis of the gender distribution (sesso) by cluster, using a bar chart.
+    This function visualizes the percentage distribution of genders across different clusters.
+    '''
 
     # Calculate the percentage of each gender within each cluster
+    # The result is a crosstab that shows the gender distribution within each cluster
     sex_crosstab = pd.crosstab(data['sesso'], data['cluster'], normalize='index') * 100
 
     max_sex_per_cluster = sex_crosstab.idxmax(axis=1)
