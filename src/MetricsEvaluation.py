@@ -111,7 +111,7 @@ def label_encoding(df:pd.DataFrame):
     return X_standardized_df, clusters
 
 
-def plot_silhouette(silhouette_vals, clusters, num_init):
+def plot_silhouette(silhouette_vals, clusters):
     '''
         This function plots the silhouette values for each sample, grouped by cluster.
 
@@ -138,10 +138,10 @@ def plot_silhouette(silhouette_vals, clusters, num_init):
         # Compute the new y_lower for the next plot
         y_lower = y_upper + 10
 
-    plt.savefig(f'graphs/{num_init}_silhouette_plot.png')
+    plt.savefig(f'graphs/silhouette_plot.png')
 
 
-def metrics_execution(df:pd.DataFrame, config:dict, num_init:str) -> float:
+def metrics_execution(df:pd.DataFrame, config:dict) -> float:
     '''
         This function calculates the purity and silhouette scores of a clustering algorithm.
 
@@ -164,8 +164,8 @@ def metrics_execution(df:pd.DataFrame, config:dict, num_init:str) -> float:
     logging.info(f'Mean normalized silhouette score: {mean_normalized_silhouette_vals}')
 
     # Plot the silhouette values for each sample
-    plot_silhouette(silhouette_vals, clusters, num_init)
-    logging.info(f'Silhouette plot saved as {num_init}_silhouette_plot.png')
+    plot_silhouette(silhouette_vals, clusters)
+    logging.info(f'Silhouette plot saved as silhouette_plot.png')
 
     # Calculate the final metrics with a penalty for the number of clusters
     final_metric = ((purity + mean_normalized_silhouette_vals) / 2) - (0.05 * config['modelling_clustering']['n_clusters'])

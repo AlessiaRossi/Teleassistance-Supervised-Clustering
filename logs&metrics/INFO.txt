@@ -1,7 +1,7 @@
-2024-09-04 11:06:43,997 - Data Preparation Started
-2024-09-04 11:06:51,661 - The DataFrame has 484291 rows and 33 columns.
+2024-09-04 22:22:32,643 - Data Preparation Started
+2024-09-04 22:22:34,395 - The DataFrame has 484291 rows and 33 columns.
 
-2024-09-04 11:06:53,213 - NULLS BEFORE DATA CLEANING 
+2024-09-04 22:22:35,281 - NULLS BEFORE DATA CLEANING 
  data_disdetta                  460639
 codice_provincia_erogazione     28776
 codice_provincia_residenza      28380
@@ -9,37 +9,5 @@ ora_fine_erogazione             28181
 ora_inizio_erogazione           28181
 comune_residenza                  135
 dtype: int64
-2024-09-04 11:06:53,213 - Data Cleaning Execution Started
-2024-09-04 11:06:59,022 - Data Cleaning Execution Completed
-2024-09-04 11:07:02,935 - Data Preparation Completed
-2024-09-04 11:07:02,935 - Clustering Execution Started
-2024-09-04 11:07:02,940 - Columns to drop: Index(['id_prenotazione', 'id_paziente', 'data_nascita', 'sesso',
-       'tipologia_servizio', 'data_contatto', 'id_professionista_sanitario',
-       'data_erogazione', 'durata_erogazione_sec', 'anno', 'quadrimestre'],
-      dtype='object')
-2024-09-04 11:07:02,994 - Columns after dropping: Index(['regione_residenza', 'descrizione_attivita',
-       'tipologia_struttura_erogazione', 'tipologia_professionista_sanitario',
-       'fascia_eta', 'incremento_teleassistenze'],
-      dtype='object')
-2024-09-04 11:10:39,085 - Purity score: 0.6643561797923602
-2024-09-04 11:51:58,609 - Mean normalized silhouette score: 0.6458957378218086
-2024-09-04 11:59:51,160 - Purity score: 0.6643561797923602
-2024-09-04 15:04:43,909 - Mean normalized silhouette score: 0.6458957378218086
-2024-09-04 15:16:48,352 - Purity score: 0.6643561797923602
-2024-09-04 16:00:20,058 - Mean normalized silhouette score: 0.6458957378218086
-2024-09-04 16:12:05,437 - Purity score: 0.6643561797923602
-2024-09-04 16:53:18,038 - Mean normalized silhouette score: 0.6458957378218086
-2024-09-04 17:08:46,761 - Purity score: 0.6643561797923602
-2024-09-04 17:49:34,981 - Mean normalized silhouette score: 0.6458957378218086
-2024-09-04 18:08:58,217 - Purity score: 0.6643561797923602
-2024-09-04 18:48:34,998 - Mean normalized silhouette score: 0.6458957378218086
-2024-09-04 18:48:35,660 - Head of the DataFrame after Clustering 
-    id_prenotazione       id_paziente              data_nascita   sesso regione_residenza  ... fascia_eta  anno quadrimestre incremento_teleassistenze cluster
-0  JUOCPQCUG1H96QO  LCWFXF28X79P382V 1980-04-24 00:00:00+00:00    male          Piemonte  ...      36-47  2019            1            high_increment       2
-1  XDP99NXRHPOYFYU  LRFZOI94E58U012I 1972-01-30 00:00:00+00:00  female           Toscana  ...      48-59  2019            1            high_increment       2
-2  6VYI0AK57ECO5WU  JOBCGJ98A04B765H 1986-06-27 00:00:00+00:00    male    Emilia romagna  ...      36-47  2019            1            high_increment       2
-3  VLFS5J9E3Q74Q2W  TKROSE51Z77Q065E 1967-10-21 00:00:00+00:00  female          Campania  ...      48-59  2019            1            high_increment       1
-4  XD8SZX9JOVCMEXW  WRRVSK73Z45L640S 1963-08-24 00:00:00+00:00    male           Abruzzo  ...      60-69  2019            1            high_increment       2
-
-[5 rows x 18 columns]
-2024-09-04 18:48:35,660 - Clustering Execution Completed
+2024-09-04 22:22:35,281 - Data Cleaning Execution Started
+2024-09-04 22:22:36,760 - Data Cleaning Execution Completed

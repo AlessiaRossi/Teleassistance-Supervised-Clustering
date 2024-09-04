@@ -24,7 +24,7 @@ class FeatureSelection:
             ('codice_tipologia_professionista_sanitario', 'tipologia_professionista_sanitario')
         ]
 
-        self.dataCleaning = DataCleaning()
+        self.dataCleaning = DataCleaning(df.copy())
         self.df = df.copy()
 
 
@@ -314,8 +314,6 @@ class FeatureSelection:
             - The DataFrame with removed columns
         '''
 
-        global columns_pairs
-
 
         # Clean 'codice_struttura_erogazione' column
         df = self.__clean_codice_struttura_erogazione(self.df)
@@ -332,7 +330,7 @@ class FeatureSelection:
         logging.info('End of pipeline for durata_erogazione column')
 
         # Remove code columns with unique correlation
-        df, columns_pairs = self.__remove_columns_with_unique_correlation(df, columns_pairs)
+        df, columns_pairs = self.__remove_columns_with_unique_correlation(df, self.columns_pairs)
 
         # Create 'eta' column
         df = self.__colonna_fascia_eta(df)
