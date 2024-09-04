@@ -84,7 +84,7 @@ class FeatureExtraction:
         '''
 
         # Apply the function to classify the average percentage increment
-        incremento_percentuale_medio['incremento_teleassistenze'] = incremento_percentuale_medio['incremento_percentuale'].apply(classify_increment)
+        incremento_percentuale_medio['incremento_teleassistenze'] = incremento_percentuale_medio['incremento_percentuale'].apply(self.__classify_increment)
 
         logging.info(incremento_percentuale_medio['incremento_teleassistenze'].value_counts())
 
