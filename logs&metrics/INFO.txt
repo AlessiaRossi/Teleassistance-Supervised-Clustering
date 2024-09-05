@@ -1,7 +1,7 @@
-2024-09-03 14:26:33,703 - Data Preparation Started
-2024-09-03 14:26:35,207 - The DataFrame has 484291 rows and 33 columns.
+2024-09-05 12:14:24,459 - Data Preparation Started
+2024-09-05 12:14:26,358 - The DataFrame has 484291 rows and 33 columns.
 
-2024-09-03 14:26:36,172 - NULLS BEFORE DATA CLEANING 
+2024-09-05 12:14:27,595 - NULLS BEFORE DATA CLEANING 
  data_disdetta                  460639
 codice_provincia_erogazione     28776
 codice_provincia_residenza      28380
@@ -9,83 +9,27 @@ ora_fine_erogazione             28181
 ora_inizio_erogazione           28181
 comune_residenza                  135
 dtype: int64
-2024-09-03 14:26:36,172 - Data Cleaning Execution Started
-2024-09-03 14:26:38,419 - Data Cleaning Execution Completed
-2024-09-03 14:26:39,085 - Feature Extraction Execution Started
-2024-09-03 14:26:39,678 -       anno  quadrimestre     regione_residenza fascia_eta  num_servizi
-230   2019             2  Prov. auton. bolzano       0-11            2
-574   2019             4         Valle d'aosta      12-23            2
-252   2019             2              Sardegna      12-23            2
-106   2019             1              Sardegna      12-23            2
-281   2019             2         Valle d'aosta      24-35            3
-...    ...           ...                   ...        ...          ...
-1070  2020             4                 Lazio       0-11         1171
-1232  2021             1             Lombardia      12-23         1331
-1085  2020             4             Lombardia      12-23         1386
-1231  2021             1             Lombardia       0-11         1475
-1084  2020             4             Lombardia       0-11         1656
-
-[2351 rows x 5 columns]
-2024-09-03 14:26:39,722 -      quadrimestre     regione_residenza fascia_eta  incremento_percentuale
-253             2              Sardegna      12-23              349.033816
-546             4              Sardegna       0-11              330.667305
-575             4         Valle d'aosta      12-23              311.688312
-106             1              Sardegna      12-23              268.412698
-231             2  Prov. auton. bolzano       0-11              249.128540
-..            ...                   ...        ...                     ...
-304             3            Basilicata      36-47              -11.524029
-361             3                Marche      48-59              -12.944559
-219             2                Molise      24-35              -13.930976
-432             3         Valle d'aosta      60-69              -28.333333
-433             3         Valle d'aosta        70+              -28.492063
-
-[588 rows x 4 columns]
-2024-09-03 14:26:39,756 - count    588.000000
-mean      39.783704
-std       46.175426
-min      -28.492063
-25%        8.076211
-50%       24.901597
-75%       58.349567
-max      349.033816
-Name: incremento_percentuale, dtype: float64
-2024-09-03 14:26:40,361 - incremento_teleassistenze
-high_increment        235
-low_increment         177
-medium_increment      122
-constant_increment     54
-Name: count, dtype: int64
-2024-09-03 14:26:40,482 - Head of the DataFrame after Feature Extraction 
-    id_prenotazione       id_paziente              data_nascita   sesso regione_residenza  ... durata_erogazione_sec fascia_eta  anno quadrimestre incremento_teleassistenze
-0  JUOCPQCUG1H96QO  LCWFXF28X79P382V 1980-04-24 00:00:00+00:00    male          Piemonte  ...                  2925      36-47  2019            1            high_increment
-1  XDP99NXRHPOYFYU  LRFZOI94E58U012I 1972-01-30 00:00:00+00:00  female           Toscana  ...                  1895      48-59  2019            1            high_increment
-2  6VYI0AK57ECO5WU  JOBCGJ98A04B765H 1986-06-27 00:00:00+00:00    male    Emilia romagna  ...                  1165      36-47  2019            1            high_increment
-3  VLFS5J9E3Q74Q2W  TKROSE51Z77Q065E 1967-10-21 00:00:00+00:00  female          Campania  ...                  1969      48-59  2019            1            high_increment
-4  XD8SZX9JOVCMEXW  WRRVSK73Z45L640S 1963-08-24 00:00:00+00:00    male           Abruzzo  ...                  3099      60-69  2019            1            high_increment
-
-[5 rows x 17 columns]
-2024-09-03 14:26:41,148 - Feature Extraction Execution Completed
-2024-09-03 14:26:41,148 - Data Preparation Completed
-2024-09-03 14:26:41,148 - Clustering Execution Started
-2024-09-03 14:26:41,149 - Columns to drop: Index(['id_prenotazione', 'id_paziente', 'data_nascita', 'sesso',
+2024-09-05 12:14:27,595 - Data Cleaning Execution Started
+2024-09-05 12:14:29,556 - Data Cleaning Execution Completed
+2024-09-05 12:14:31,667 - Data Preparation Completed
+2024-09-05 12:14:31,667 - Clustering Execution Started
+2024-09-05 12:14:31,667 - Columns to drop: Index(['id_prenotazione', 'id_paziente', 'data_nascita', 'sesso',
        'tipologia_servizio', 'data_contatto', 'id_professionista_sanitario',
        'data_erogazione', 'durata_erogazione_sec', 'anno', 'quadrimestre'],
       dtype='object')
-2024-09-03 14:26:41,163 - Columns after dropping: Index(['regione_residenza', 'descrizione_attivita',
+2024-09-05 12:14:31,694 - Columns after dropping: Index(['regione_residenza', 'descrizione_attivita',
        'tipologia_struttura_erogazione', 'tipologia_professionista_sanitario',
        'fascia_eta', 'incremento_teleassistenze'],
       dtype='object')
-2024-09-03 14:32:11,725 - Head of the DataFrame after Clustering 
+2024-09-05 12:23:45,882 - Head of the DataFrame after Clustering 
     id_prenotazione       id_paziente              data_nascita   sesso regione_residenza  ... fascia_eta  anno quadrimestre incremento_teleassistenze cluster
 0  JUOCPQCUG1H96QO  LCWFXF28X79P382V 1980-04-24 00:00:00+00:00    male          Piemonte  ...      36-47  2019            1            high_increment       1
-1  XDP99NXRHPOYFYU  LRFZOI94E58U012I 1972-01-30 00:00:00+00:00  female           Toscana  ...      48-59  2019            1            high_increment       1
-2  6VYI0AK57ECO5WU  JOBCGJ98A04B765H 1986-06-27 00:00:00+00:00    male    Emilia romagna  ...      36-47  2019            1            high_increment       1
+1  XDP99NXRHPOYFYU  LRFZOI94E58U012I 1972-01-30 00:00:00+00:00  female           Toscana  ...      48-59  2019            1            high_increment       2
+2  6VYI0AK57ECO5WU  JOBCGJ98A04B765H 1986-06-27 00:00:00+00:00    male    Emilia romagna  ...      36-47  2019            1            high_increment       0
 3  VLFS5J9E3Q74Q2W  TKROSE51Z77Q065E 1967-10-21 00:00:00+00:00  female          Campania  ...      48-59  2019            1            high_increment       1
-4  XD8SZX9JOVCMEXW  WRRVSK73Z45L640S 1963-08-24 00:00:00+00:00    male           Abruzzo  ...      60-69  2019            1            high_increment       1
+4  XD8SZX9JOVCMEXW  WRRVSK73Z45L640S 1963-08-24 00:00:00+00:00    male           Abruzzo  ...      60-69  2019            1            high_increment       0
 
 [5 rows x 18 columns]
-2024-09-03 14:32:12,742 - Clustering Execution Completed
-2024-09-03 14:32:12,743 - Metrics Calculation Started
-2024-09-03 14:32:12,797 - Purity score: 0.8768601699423898
-2024-09-03 15:13:09,547 - Mean normalized silhouette score: 0.7387083146709421
-2024-09-03 15:13:10,055 - Metrics Calculation Completed
+2024-09-05 12:23:48,374 - Clustering Execution Completed
+2024-09-05 12:23:48,374 - Metrics Calculation Started
+2024-09-05 12:23:48,526 - Purity score: 0.7341094310860374
