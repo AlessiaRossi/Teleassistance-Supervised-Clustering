@@ -12,12 +12,12 @@
 
 
 import pandas as pd
-from src.data_prep.data_cleaning import data_cleaning_execution
-from src.data_prep.feature_selection import feature_selection_execution
-from src.data_prep.feature_extraction import feature_extraction_execution
-from src.modelling_clustering import clustering_execution
-from src.metrics_evaluation import metrics_execution
-from src.analysis_results import age_group_bar_chart, teleassistance_variation_bar_chart, healthcare_professional_bar_chart, gender_distribution_chart,scatter_map
+from src.data_prep.DataCleaning import DataCleaning
+from src.data_prep.FeatureSelection import FeatureSelection
+from src.data_prep.FeatureExtraction import FeatureExtraction
+from src.ModellingClustering import ModellingClustering
+from MetricsEvaluation import metrics_execution
+from AnalysisResults import age_group_bar_chart, teleassistance_variation_bar_chart, healthcare_professional_bar_chart, gender_distribution_chart,scatter_map
 import yaml
 import logging
 
@@ -50,6 +50,9 @@ def main():
     # Load the data
     df = load_data(config)
 
+    # Create an instance of the DataCleaning class
+    data_cleaning = DataCleaning(df)
+
     # Display the number of rows and columns in the dataset
     num_rows, num_columns = df.shape
     logging.info(f"The DataFrame has {num_rows} rows and {num_columns} columns.\n")
@@ -73,7 +76,7 @@ def main():
     if config['cleaning']['cleaning_enabled']:
         missing_threshold = config['cleaning']['missing_threshold']
 
-        df_cleaning = data_cleaning_execution(df, missing_threshold, config)
+        df_cleaning = data_cleaning.data_cleaning_execution(missing_threshold, config)
 
         logging.info(f'NULLS AFTER DATA CLEANING \n {df_cleaning.isnull().sum().sort_values(ascending=False)[df_cleaning.isnull().sum().sort_values(ascending=False) > 0]}' )
         '''
@@ -96,11 +99,15 @@ def main():
     logging.info('Data Cleaning Execution Completed')
 
 
+    # Create an instance of the FeatureSelection class
+    feature_selection = FeatureSelection(df_cleaning)
+
+
     # Phase 2: Feature Selection
     if config['feature_selection']['selection_enabled']:
         logging.info('Feature Selection Execution Started')
 
-        df_selection = feature_selection_execution(df_cleaning, config)
+        df_selection = feature_selection.feature_selection_execution(config)
 
         logging.info(f'NULLS AFTER FEATURE SELECTION \n {df_selection.isnull().sum().sort_values(ascending=False)[df_selection.isnull().sum().sort_values(ascending=False) > 0]}')
         '''
@@ -116,7 +123,9 @@ def main():
         feature_selected_file_path = config['feature_selection']['feature_selected_file_path']
         df_selection = pd.read_parquet(feature_selected_file_path)
 
-
+    
+    # Create an instance of the FeatureExtraction class
+    feature_extraction = FeatureExtraction(df_selection)
 
 
     # Phase 3: Feature Extraction
@@ -125,7 +134,7 @@ def main():
 
         cols_grouped = config['feature_extraction']['cols_grouped']
 
-        df_extraction = feature_extraction_execution(df_selection, cols_grouped, config)
+        df_extraction = feature_extraction.feature_extraction_execution(cols_grouped, config)
 
         logging.info(f'Head of the DataFrame after Feature Extraction \n {df_extraction.head()}')
 
@@ -140,12 +149,14 @@ def main():
 
     logging.info('Data Preparation Completed')
     
+    # Create an instance of the ModellingClustering class
+    modelling_clustering = ModellingClustering(df_extraction)
 
     # Phase 4: Clustering
     if config['modelling_clustering']['clustering_enabled']:
         logging.info('Clustering Execution Started')
 
-        complete_df_clustered, df_clustered = clustering_execution(df_extraction, config)
+        complete_df_clustered, df_clustered = modelling_clustering.clustering_execution(config)
 
         logging.info(f'Head of the DataFrame after Clustering \n {df_extraction.head()}')
 
