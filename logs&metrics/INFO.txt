@@ -1,7 +1,7 @@
-2024-09-04 22:22:32,643 - Data Preparation Started
-2024-09-04 22:22:34,395 - The DataFrame has 484291 rows and 33 columns.
+2024-09-05 10:17:18,817 - Data Preparation Started
+2024-09-05 10:17:25,871 - The DataFrame has 484291 rows and 33 columns.
 
-2024-09-04 22:22:35,281 - NULLS BEFORE DATA CLEANING 
+2024-09-05 10:17:27,050 - NULLS BEFORE DATA CLEANING 
  data_disdetta                  460639
 codice_provincia_erogazione     28776
 codice_provincia_residenza      28380
@@ -9,5 +9,32 @@ ora_fine_erogazione             28181
 ora_inizio_erogazione           28181
 comune_residenza                  135
 dtype: int64
-2024-09-04 22:22:35,281 - Data Cleaning Execution Started
-2024-09-04 22:22:36,760 - Data Cleaning Execution Completed
+2024-09-05 10:17:27,050 - Data Cleaning Execution Started
+2024-09-05 10:17:35,966 - Data Cleaning Execution Completed
+2024-09-05 10:17:45,639 - Data Preparation Completed
+2024-09-05 10:17:45,951 - Clustering Execution Started
+2024-09-05 10:17:45,967 - Columns to drop: Index(['id_prenotazione', 'id_paziente', 'data_nascita', 'sesso',
+       'tipologia_servizio', 'data_contatto', 'id_professionista_sanitario',
+       'data_erogazione', 'durata_erogazione_sec', 'anno', 'quadrimestre'],
+      dtype='object')
+2024-09-05 10:17:46,083 - Columns after dropping: Index(['regione_residenza', 'descrizione_attivita',
+       'tipologia_struttura_erogazione', 'tipologia_professionista_sanitario',
+       'fascia_eta', 'incremento_teleassistenze'],
+      dtype='object')
+2024-09-05 10:27:23,368 - Head of the DataFrame after Clustering 
+    id_prenotazione       id_paziente              data_nascita   sesso regione_residenza  ... durata_erogazione_sec fascia_eta  anno quadrimestre incremento_teleassistenze
+0  JUOCPQCUG1H96QO  LCWFXF28X79P382V 1980-04-24 00:00:00+00:00    male          Piemonte  ...                  2925      36-47  2019            1            high_increment
+1  XDP99NXRHPOYFYU  LRFZOI94E58U012I 1972-01-30 00:00:00+00:00  female           Toscana  ...                  1895      48-59  2019            1            high_increment
+2  6VYI0AK57ECO5WU  JOBCGJ98A04B765H 1986-06-27 00:00:00+00:00    male    Emilia romagna  ...                  1165      36-47  2019            1            high_increment
+3  VLFS5J9E3Q74Q2W  TKROSE51Z77Q065E 1967-10-21 00:00:00+00:00  female          Campania  ...                  1969      48-59  2019            1            high_increment
+4  XD8SZX9JOVCMEXW  WRRVSK73Z45L640S 1963-08-24 00:00:00+00:00    male           Abruzzo  ...                  3099      60-69  2019            1            high_increment
+
+[5 rows x 17 columns]
+2024-09-05 10:27:29,266 - Clustering Execution Completed
+2024-09-05 10:27:29,272 - Metrics Calculation Started
+2024-09-05 10:27:29,363 - Purity score: 0.8039408567476423
+2024-09-05 11:15:03,411 - Mean normalized silhouette score: 0.6183762168422466
+2024-09-05 11:15:05,341 - Silhouette plot saved as silhouette_plot.png
+2024-09-05 11:15:05,341 - Final metric: 0.5111585367949445
+2024-09-05 11:15:05,346 - Metrics Calculation Completed
+2024-09-05 11:15:05,346 - Analysis Results Started

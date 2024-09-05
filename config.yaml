@@ -22,7 +22,7 @@ feature_extraction:
 # Phase 4
 modelling_clustering:
   clustering_enabled: True
-  elbow_enabled: True
+  elbow_enabled: False
   prediction_enabled: True
   max_clusters: 13
   n_clusters: 4
@@ -32,7 +32,7 @@ modelling_clustering:
   clustering_file_path_all_feature: "data/processed/clustered_data_all_feature.parquet"
 
 metrics:
-  metrics_enabled: False
+  metrics_enabled: True
   metrics_file_path: "logs&metrics/metrics.txt"
 
 general:

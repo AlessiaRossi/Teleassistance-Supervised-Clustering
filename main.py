@@ -160,15 +160,15 @@ def main():
 
         logging.info(f'Head of the DataFrame after Clustering \n {df_extraction.head()}')
 
-        # clustering_file_path = config['modelling_clustering']['clustering_file_path']
-        # clustering_file_path_all_feature = config['modelling_clustering']['clustering_file_path_all_feature']
-        # df_clustered.to_parquet(clustering_file_path)
-        # complete_df_clustered.to_parquet(clustering_file_path_all_feature)
+        clustering_file_path = config['modelling_clustering']['clustering_file_path']
+        clustering_file_path_all_feature = config['modelling_clustering']['clustering_file_path_all_feature']
+        df_clustered.to_parquet(clustering_file_path)
+        complete_df_clustered.to_parquet(clustering_file_path_all_feature)
 
         logging.info('Clustering Execution Completed')
-    # else:
-    #     clustering_file_path = config['modelling_clustering']['clustering_file_path']
-    #     df_clustered = pd.read_parquet(clustering_file_path)
+    else:
+        clustering_file_path = config['modelling_clustering']['clustering_file_path']
+        df_clustered = pd.read_parquet(clustering_file_path)
 
     
     # Phase 5: Metrics
@@ -184,72 +184,72 @@ def main():
 
         logging.info('Metrics Calculation Completed')
 
-    # # Phase 6: Analysis Results
-    # logging.info('Analysis Results Started')
+    # Phase 6: Analysis Results
+    logging.info('Analysis Results Started')
 
-    # # Age Group Bar Chart
-    # df_max_cluster, df_max_percentage, df_crosstab, age_group_fig = age_group_bar_chart(df_clustered)
-    # age_group_fig.show()
+    # Age Group Bar Chart
+    df_max_cluster, df_max_percentage, df_crosstab, age_group_fig = age_group_bar_chart(df_clustered)
+    age_group_fig.show()
 
-    # # Print and log the values
-    # with open(config['analysis']['analysis_file_path'], 'a') as file:
-    #     file.write(f'\nAge Group Bar Chart Analysis:\n')
-    #     file.write(f'Max Cluster per Age Group:\n{df_max_cluster}\n')
-    #     file.write(f'Max Percentage per Age Group:\n{df_max_percentage}\n')
-    #     file.write(f'Crosstab of Age Group and Cluster:\n{df_crosstab}\n')
+    # Print and log the values
+    with open(config['analysis']['analysis_file_path'], 'a') as file:
+        file.write(f'\nAge Group Bar Chart Analysis:\n')
+        file.write(f'Max Cluster per Age Group:\n{df_max_cluster}\n')
+        file.write(f'Max Percentage per Age Group:\n{df_max_percentage}\n')
+        file.write(f'Crosstab of Age Group and Cluster:\n{df_crosstab}\n')
 
-    # print("Age Group Bar Chart Analysis:")
-    # print("Max Cluster per Age Group:")
-    # print(df_max_cluster)
-    # print("Max Percentage per Age Group:")
-    # print(df_max_percentage)
-    # print("Crosstab of Age Group and Cluster:")
-    # print(df_crosstab)
+    print("Age Group Bar Chart Analysis:")
+    print("Max Cluster per Age Group:")
+    print(df_max_cluster)
+    print("Max Percentage per Age Group:")
+    print(df_max_percentage)
+    print("Crosstab of Age Group and Cluster:")
+    print(df_crosstab)
 
-    # # Teleassistance Variation Bar Chart
-    # teleassistance_fig = teleassistance_variation_bar_chart(df_clustered)
-    # teleassistance_fig.show()
+    # Teleassistance Variation Bar Chart
+    teleassistance_fig = teleassistance_variation_bar_chart(df_clustered)
+    teleassistance_fig.show()
 
-    # # Healthcare Professional Bar Chart
-    # healthcare_fig = healthcare_professional_bar_chart(df_clustered)
-    # healthcare_fig.show()
+    # Healthcare Professional Bar Chart
+    healthcare_fig = healthcare_professional_bar_chart(df_clustered)
+    healthcare_fig.show()
 
-    # # Gender Distribution Bar Chart
-    # sex_crosstab, max_sex_per_cluster, max_percentage_per_cluster, gender_fig = gender_distribution_chart(df_clustered)
-    # gender_fig.show()
+    # Gender Distribution Bar Chart
+    sex_crosstab, max_sex_per_cluster, max_percentage_per_cluster, gender_fig = gender_distribution_chart(df_clustered)
+    gender_fig.show()
 
-    # # Print and log the values
-    # with open(config['analysis']['analysis_file_path'], 'a') as file:
-    #     file.write(f'\nGender Distribution Analysis:\n')
-    #     file.write(f'Sex Crosstab:\n{sex_crosstab}\n')
-    #     file.write(f'Max Sex per Cluster:\n{max_sex_per_cluster}\n')
-    #     file.write(f'Max Percentage per Cluster:\n{max_percentage_per_cluster}\n')
+    # Print and log the values
+    with open(config['analysis']['analysis_file_path'], 'a') as file:
+        file.write(f'\nGender Distribution Analysis:\n')
+        file.write(f'Sex Crosstab:\n{sex_crosstab}\n')
+        file.write(f'Max Sex per Cluster:\n{max_sex_per_cluster}\n')
+        file.write(f'Max Percentage per Cluster:\n{max_percentage_per_cluster}\n')
 
-    # print("Gender Distribution Analysis:")
-    # print("Sex Crosstab:")
-    # print(sex_crosstab)
-    # print("Max Sex per Cluster:")
-    # print(max_sex_per_cluster)
-    # print("Max Percentage per Cluster:")
-    # print(max_percentage_per_cluster)
+    print("Gender Distribution Analysis:")
+    print("Sex Crosstab:")
+    print(sex_crosstab)
+    print("Max Sex per Cluster:")
+    print(max_sex_per_cluster)
+    print("Max Percentage per Cluster:")
+    print(max_percentage_per_cluster)
 
-    # # Scatter Map
-    # max_cluster_per_region, max_percentage_per_region, scatter_map_fig = scatter_map(df_clustered)
-    # scatter_map_fig.show()
+    # Scatter Map
+    max_cluster_per_region, max_percentage_per_region, scatter_map_fig = scatter_map(df_clustered)
+    scatter_map_fig.show()
 
-    # # Print and log the values
-    # with open(config['analysis']['analysis_file_path'], 'a') as file:
-    #     file.write(f'\nScatter Map Analysis:\n')
-    #     file.write(f'Max Cluster per Region:\n{max_cluster_per_region}\n')
-    #     file.write(f'Max Percentage per Region:\n{max_percentage_per_region}\n')
+    # Print and log the values
+    with open(config['analysis']['analysis_file_path'], 'a') as file:
+        file.write(f'\nScatter Map Analysis:\n')
+        file.write(f'Max Cluster per Region:\n{max_cluster_per_region}\n')
+        file.write(f'Max Percentage per Region:\n{max_percentage_per_region}\n')
 
-    # print("Scatter Map Analysis:")
-    # print("Max Cluster per Region:")
-    # print(max_cluster_per_region)
-    # print("Max Percentage per Region:")
-    # print(max_percentage_per_region)
+    print("Scatter Map Analysis:")
+    print("Max Cluster per Region:")
+    print(max_cluster_per_region)
+    print("Max Percentage per Region:")
+    print(max_percentage_per_region)
 
-    # logging.info('Analysis Results Completed')
+    logging.info('Analysis Results Completed')
 
 
 
