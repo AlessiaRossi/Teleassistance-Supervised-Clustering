@@ -31,9 +31,17 @@ modelling_clustering:
   clustering_file_path: "data/processed/clustered_data.parquet"
   clustering_file_path_all_feature: "data/processed/clustered_data_all_feature.parquet"
 
+# Phase 5
 metrics:
   metrics_enabled: True
   metrics_file_path: "logs&metrics/metrics.txt"
+
+# Phase 6
+analysis:
+  analysis_enabled: True
+  analysis_file_path: "logs&metrics/analysis_results.txt"
+  charts_output_path: "graphs/"
+
 
 general:
   log_file_path: "logs&metrics/INFO.txt"
