@@ -152,6 +152,19 @@ def teleassistance_variation_bar_chart(data):
     # Calculate the frequency of each 'incremento_teleassistenze' category per cluster
     cluster_counts = data.groupby(['cluster', 'incremento_teleassistenze']).size().reset_index(name='count')
 
+    # Calculate the total count per cluster to compute percentages
+    total_counts_per_cluster = cluster_counts.groupby('cluster')['count'].sum().reset_index(name='total_count')
+
+    # Merge total counts with cluster counts to calculate percentages
+    cluster_counts = cluster_counts.merge(total_counts_per_cluster, on='cluster')
+    cluster_counts['percentage'] = (cluster_counts['count'] / cluster_counts['total_count']) * 100
+
+    # Identify the 'incremento_teleassistenze' category with the highest count for each cluster
+    dominant_increment_per_cluster = cluster_counts.loc[cluster_counts.groupby('cluster')['count'].idxmax()]
+
+    # Extract the cluster, 'incremento_teleassistenze' category, and percentage
+    result = dominant_increment_per_cluster[['cluster', 'incremento_teleassistenze', 'percentage']]
+
     # Create an interactive bar chart with Plotly
     fig = px.bar(
         cluster_counts,
@@ -162,7 +175,6 @@ def teleassistance_variation_bar_chart(data):
         labels={'cluster': 'Cluster', 'count': 'Numero di occorrenze',
                 'incremento_teleassistenze': 'Teleassistance Variation'},
         barmode='group',
-        color_discrete_sequence=px.colors.qualitative.Pastel
     )
 
     # Customize the chart
@@ -172,25 +184,48 @@ def teleassistance_variation_bar_chart(data):
         legend_title='Variazione Teleassistenza',
     )
 
-    return fig
+    return result,fig
 
 
 def healthcare_professional_bar_chart(data):
     ''' Analysis of the healthcare professional distribution (tipologia_professionista_sanitario) by cluster, using a bar chart. '''
 
     # Calculate the frequency of each type of healthcare professional per cluster
-    cluster_counts = data.groupby(['cluster', 'tipologia_professionista_sanitario']).size().reset_index(name='count')
+    cluster_counts = data.groupby(['cluster', 'tipologia_professionista_sanitario','incremento_teleassistenze']).size().reset_index(name='count')
+
+    # Calculate the total for each cluster to obtain percentages
+    total_counts_per_cluster = cluster_counts.groupby('cluster')['count'].sum().reset_index(name='total_count')
+
+    # Merge total counts with clusters to calculate percentages
+    cluster_counts = cluster_counts.merge(total_counts_per_cluster, on='cluster')
+    cluster_counts['percentage'] = (cluster_counts['count'] / cluster_counts['total_count']) * 100
+
+    # Identify the dominant 'incremento_teleassistenze' category for each healthcare professional
+    dominant_increment_per_professional = cluster_counts.loc[
+        cluster_counts.groupby('tipologia_professionista_sanitario')['percentage'].idxmax()]
 
     # Create an interactive bar chart with Plotly
     fig = px.bar(
-        cluster_counts,
-        x='cluster',
-        y='count',
+        dominant_increment_per_professional,
+        y='tipologia_professionista_sanitario',
+        x='percentage',
         color='tipologia_professionista_sanitario',
-        title='Distribuzione dei professionisti sanitari per cluster',
-        labels={'cluster': 'Cluster', 'count': 'Numero di professionisti', 'tipologia_professionista_sanitario': 'Tipo di Professionista'},
-        barmode='group',
-        color_discrete_sequence=px.colors.qualitative.Pastel
+        text='cluster',  # Show the cluster number inside the bars
+        title='Distribuzione dei professionisti sanitari per cluster ed incremento teleassistenza',
+        labels={
+            'tipologia_professionista_sanitario': 'Type of Professional',
+            'percentage': 'Increment Percentage (%)',
+            'cluster': 'Cluster',
+            'incremento_teleassistenze': 'Teleassistance Increment'
+        },
+        color_discrete_sequence=px.colors.qualitative.Set2
+    )
+
+    # Customize the appearance of text labels inside the bars
+    fig.update_traces(
+        textposition='outside',  # Text displayed inside the bars
+        textfont_size=12,
+        textfont_color='white'
     )
 
     # Customize the chart

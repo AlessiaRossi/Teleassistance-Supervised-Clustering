@@ -180,27 +180,25 @@ def main():
         charts_output_path = config['analysis']['charts_output_path']
 
         # Age Group Bar Chart
-        df_max_cluster, df_max_percentage, df_crosstab, age_group_fig = age_group_bar_chart(df_clustered)
+        df_max_cluster,df_max_increment,df_max_percentage_increment, age_group_fig = age_group_bar_chart(df_clustered)
         age_group_fig.savefig(charts_output_path + 'age_group_bar_chart.png')
 
         # Print and log the values
         with open(config['analysis']['analysis_file_path'], 'a') as file:
             file.write(f'\nAge Group Bar Chart Analysis:\n')
-            file.write(f'Max Cluster per Age Group:\n{df_max_cluster}\n')
-            file.write(f'Max Percentage per Age Group:\n{df_max_percentage}\n')
-            file.write(f'Crosstab of Age Group and Cluster:\n{df_crosstab}\n')
+            file.write(f'Cluster with the highest percentage for each age group:\n{df_max_cluster}\n')
+            file.write(f'Highest percentage per age group:\n{df_max_percentage_increment}\n')
+            file.write(f'Increment category with the highest percentage per age group :\n{df_max_increment}\n')
 
-        print("Age Group Bar Chart Analysis:")
-        print("Max Cluster per Age Group:")
-        print(df_max_cluster)
-        print("Max Percentage per Age Group:")
-        print(df_max_percentage)
-        print("Crosstab of Age Group and Cluster:")
-        print(df_crosstab)
 
         # Teleassistance Variation Bar Chart
-        teleassistance_fig = teleassistance_variation_bar_chart(df_clustered)
+        result,teleassistance_fig = teleassistance_variation_bar_chart(df_clustered)
         teleassistance_fig.savefig(charts_output_path + 'teleassistance_variation_bar_chart.png')
+
+        with open(config['analysis']['analysis_file_path'], 'a') as file:
+            file.write(f'\n:Teleassistance Variation Bar Chart Analysis:\n')
+            file.write(f'Max incremento_teleassistenze category, and percentage for cluster :\n{result}\n')
+
 
         # Healthcare Professional Bar Chart
         healthcare_fig = healthcare_professional_bar_chart(df_clustered)
@@ -217,13 +215,7 @@ def main():
             file.write(f'Max Sex per Cluster:\n{max_sex_per_cluster}\n')
             file.write(f'Max Percentage per Cluster:\n{max_percentage_per_cluster}\n')
 
-        print("Gender Distribution Analysis:")
-        print("Sex Crosstab:")
-        print(sex_crosstab)
-        print("Max Sex per Cluster:")
-        print(max_sex_per_cluster)
-        print("Max Percentage per Cluster:")
-        print(max_percentage_per_cluster)
+
 
         # Scatter Map
         max_cluster_per_region, max_percentage_per_region, scatter_map_fig = scatter_map(df_clustered)
