@@ -1,7 +1,7 @@
-2024-09-06 20:56:48,975 - Data Preparation Started
-2024-09-06 20:56:51,046 - The DataFrame has 484291 rows and 33 columns.
+2024-09-06 22:26:54,863 - Data Preparation Started
+2024-09-06 22:26:59,134 - The DataFrame has 484291 rows and 33 columns.
 
-2024-09-06 20:56:52,081 - NULLS BEFORE DATA CLEANING 
+2024-09-06 22:26:59,915 - NULLS BEFORE DATA CLEANING 
  data_disdetta                  460639
 codice_provincia_erogazione     28776
 codice_provincia_residenza      28380
@@ -9,127 +9,19 @@ ora_fine_erogazione             28181
 ora_inizio_erogazione           28181
 comune_residenza                  135
 dtype: int64
-2024-09-06 20:56:52,081 - Data Cleaning Execution Started
-2024-09-06 20:56:52,081 - Missing Values...
-2024-09-06 20:56:52,877 - Cols dropped after missing_values with threshold: 0
-2024-09-06 20:56:52,877 - Imputate comune residenza...
-2024-09-06 20:56:55,473 - Removing rows where 'comune_residenza' is missing...
-2024-09-06 20:56:55,534 - Number of comune_residenza samples nulls: comune_residenza
-False    484156
-True        135
-Name: count, dtype: int64
-2024-09-06 20:56:55,763 - Removing rows where 'data_disdetta' is not null...
-2024-09-06 20:56:55,774 - Number of data_disdetta samples nulls: data_disdetta
-True     460509
-False     23647
-Name: count, dtype: int64
-2024-09-06 20:56:55,916 - Removing duplicates...
-2024-09-06 20:56:57,071 - Number of duplicates removed: 0
-2024-09-06 20:56:59,379 - NULLS AFTER DATA CLEANING 
- data_disdetta                  460509
-codice_provincia_erogazione     27396
-codice_provincia_residenza      27016
-ora_fine_erogazione              4527
-ora_inizio_erogazione            4527
-dtype: int64
-2024-09-06 20:57:01,045 - Data Cleaning Execution Completed
-2024-09-06 20:57:01,395 - Feature Selection Execution Started
-2024-09-06 20:57:01,395 - Cleaning codice_struttura_erogazione column
-2024-09-06 20:57:01,397 - Removing data_disdetta column
-2024-09-06 20:57:01,580 - Pipeline for durata_erogazione column
-2024-09-06 20:57:01,580 - Creating durata_erogazione column
-2024-09-06 20:57:07,113 - Imputating durata_erogazione...
-2024-09-06 20:57:07,238 - Identifying and removing outliers using the boxplot method...
-2024-09-06 20:57:07,380 - Number of outliers in durata_erogazione_sec: 460509
-2024-09-06 20:57:07,381 - Removing ora_inizio_erogazione and ora_fine_erogazione columns
-2024-09-06 20:57:07,601 - End of pipeline for durata_erogazione column
-2024-09-06 20:57:07,601 - Removing columns with unique correlation
-2024-09-06 20:57:07,816 - Unique correlation between codice_provincia_residenza and provincia_residenza. Column codice_provincia_residenza removed.
-2024-09-06 20:57:08,021 - Unique correlation between codice_provincia_erogazione and provincia_erogazione. Column codice_provincia_erogazione removed.
-2024-09-06 20:57:08,187 - Unique correlation between codice_regione_residenza and regione_residenza. Column codice_regione_residenza removed.
-2024-09-06 20:57:08,383 - Unique correlation between codice_asl_residenza and asl_residenza. Column codice_asl_residenza removed.
-2024-09-06 20:57:08,629 - Unique correlation between codice_comune_residenza and comune_residenza. Column codice_comune_residenza removed.
-2024-09-06 20:57:08,885 - Unique correlation between codice_descrizione_attivita and descrizione_attivita. Column codice_descrizione_attivita removed.
-2024-09-06 20:57:09,034 - Unique correlation between codice_regione_erogazione and regione_erogazione. Column codice_regione_erogazione removed.
-2024-09-06 20:57:09,186 - Unique correlation between codice_asl_erogazione and asl_erogazione. Column codice_asl_erogazione removed.
-2024-09-06 20:57:09,345 - The PRESIDIO OSPEDALIERO UNIFICATO description is associated with 2 codes: [ 70001 100803]
-2024-09-06 20:57:09,345 - --> NOT unique correlation between codice_struttura_erogazione and struttura_erogazione
-
-2024-09-06 20:57:09,528 - Unique correlation between codice_tipologia_struttura_erogazione and tipologia_struttura_erogazione. Column codice_tipologia_struttura_erogazione removed.
-2024-09-06 20:57:09,705 - Unique correlation between codice_tipologia_professionista_sanitario and tipologia_professionista_sanitario. Column codice_tipologia_professionista_sanitario removed.
-2024-09-06 20:57:09,705 - Creating fascia_eta column
-2024-09-06 20:57:09,944 - Creating anno and quadrimestre columns
-2024-09-06 20:57:10,173 - Calculating correlation matrix using Cramér's V
-2024-09-06 20:57:33,429 - Removing highly correlated columns: ['comune_residenza', 'asl_residenza', 'provincia_residenza', 'regione_erogazione', 'asl_erogazione', 'provincia_erogazione', 'struttura_erogazione']
-2024-09-06 20:57:33,504 - Calculating correlation matrix using Cramér's V
-2024-09-06 20:57:39,626 - NULLS AFTER FEATURE SELECTION 
- Series([], dtype: int64)
-2024-09-06 20:57:41,151 - Feature Selection Execution Completed
-2024-09-06 20:57:41,513 - Feature Extraction Execution Started
-2024-09-06 20:57:41,638 -      anno  quadrimestre     regione_residenza  num_servizi
-19   2019             1         Valle d'aosta           24
-40   2019             2         Valle d'aosta           35
-12   2019             1  Prov. auton. bolzano           43
-313  2022             3         Valle d'aosta           49
-10   2019             1                Molise           53
-..    ...           ...                   ...          ...
-218  2021             3             Lombardia         5466
-197  2021             2             Lombardia         5539
-134  2020             3             Lombardia         5724
-176  2021             1             Lombardia         6776
-155  2020             4             Lombardia         7043
-
-[336 rows x 4 columns]
-2024-09-06 20:57:41,655 -     quadrimestre      regione_residenza  incremento_percentuale
-12             1   Prov. auton. bolzano               84.708326
-9              1                 Marche               79.933368
-5              1  Friuli venezia giulia               78.182993
-19             1          Valle d'aosta               75.250798
-8              1              Lombardia               72.722854
-..           ...                    ...                     ...
-52             3                 Molise                8.191616
-45             3               Campania                7.481995
-43             3             Basilicata                6.624822
-31             2                 Molise                3.899685
-30             2                 Marche                3.325116
-
-[84 rows x 3 columns]
-2024-09-06 20:57:41,664 - count    84.000000
-mean     27.571205
-std      23.525024
-min       3.325116
-25%      12.339706
-50%      15.330966
-75%      40.512606
-max      84.708326
-Name: incremento_percentuale, dtype: float64
-2024-09-06 20:57:42,199 - incremento_teleassistenze
-low_increment         235694
-medium_increment      118259
-high_increment        105127
-constant_increment      1429
-Name: count, dtype: int64
-2024-09-06 20:57:42,219 - Head of the DataFrame after Feature Extraction 
-    id_prenotazione       id_paziente              data_nascita   sesso regione_residenza  ... durata_erogazione_sec fascia_eta  anno quadrimestre incremento_teleassistenze
-0  JUOCPQCUG1H96QO  LCWFXF28X79P382V 1980-04-24 00:00:00+00:00    male          Piemonte  ...                  2925      36-47  2019            1            high_increment
-1  XDP99NXRHPOYFYU  LRFZOI94E58U012I 1972-01-30 00:00:00+00:00  female           Toscana  ...                  1895      48-59  2019            1            high_increment
-2  6VYI0AK57ECO5WU  JOBCGJ98A04B765H 1986-06-27 00:00:00+00:00    male    Emilia romagna  ...                  1165      36-47  2019            1            high_increment
-3  VLFS5J9E3Q74Q2W  TKROSE51Z77Q065E 1967-10-21 00:00:00+00:00  female          Campania  ...                  1969      48-59  2019            1            high_increment
-4  XD8SZX9JOVCMEXW  WRRVSK73Z45L640S 1963-08-24 00:00:00+00:00    male           Abruzzo  ...                  3099      60-69  2019            1            high_increment
-
-[5 rows x 17 columns]
-2024-09-06 20:57:43,380 - Feature Extraction Execution Completed
-2024-09-06 20:57:43,380 - Data Preparation Completed
-2024-09-06 20:57:43,870 - Clustering Execution Started
-2024-09-06 20:57:43,870 - Columns to drop: Index(['id_prenotazione', 'id_paziente', 'data_nascita', 'sesso',
+2024-09-06 22:26:59,916 - Data Cleaning Execution Started
+2024-09-06 22:27:02,455 - Data Cleaning Execution Completed
+2024-09-06 22:27:07,815 - Data Preparation Completed
+2024-09-06 22:27:07,997 - Clustering Execution Started
+2024-09-06 22:27:08,002 - Columns to drop: Index(['id_prenotazione', 'id_paziente', 'data_nascita', 'sesso',
        'tipologia_servizio', 'data_contatto', 'id_professionista_sanitario',
        'data_erogazione', 'durata_erogazione_sec', 'anno', 'quadrimestre'],
       dtype='object')
-2024-09-06 20:57:43,888 - Columns after dropping: Index(['regione_residenza', 'descrizione_attivita',
+2024-09-06 22:27:08,088 - Columns after dropping: Index(['regione_residenza', 'descrizione_attivita',
        'tipologia_struttura_erogazione', 'tipologia_professionista_sanitario',
        'fascia_eta', 'incremento_teleassistenze'],
       dtype='object')
-2024-09-06 21:06:30,199 - Head of the DataFrame after Clustering 
+2024-09-06 22:27:54,914 - Head of the DataFrame after Clustering 
     id_prenotazione       id_paziente              data_nascita   sesso regione_residenza  ... durata_erogazione_sec fascia_eta  anno quadrimestre incremento_teleassistenze
 0  JUOCPQCUG1H96QO  LCWFXF28X79P382V 1980-04-24 00:00:00+00:00    male          Piemonte  ...                  2925      36-47  2019            1            high_increment
 1  XDP99NXRHPOYFYU  LRFZOI94E58U012I 1972-01-30 00:00:00+00:00  female           Toscana  ...                  1895      48-59  2019            1            high_increment
@@ -138,4 +30,6 @@ Name: count, dtype: int64
 4  XD8SZX9JOVCMEXW  WRRVSK73Z45L640S 1963-08-24 00:00:00+00:00    male           Abruzzo  ...                  3099      60-69  2019            1            high_increment
 
 [5 rows x 17 columns]
-2024-09-06 21:06:32,397 - Clustering Execution Completed
+2024-09-06 22:27:56,313 - Clustering Execution Completed
+2024-09-06 22:27:56,313 - Metrics Calculation Started
+2024-09-06 22:27:56,440 - Purity score: 0.7909443680796684
