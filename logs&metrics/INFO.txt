@@ -1,7 +1,7 @@
-2024-09-05 10:17:18,817 - Data Preparation Started
-2024-09-05 10:17:25,871 - The DataFrame has 484291 rows and 33 columns.
+2024-09-06 09:37:36,604 - Data Preparation Started
+2024-09-06 09:37:40,081 - The DataFrame has 484291 rows and 33 columns.
 
-2024-09-05 10:17:27,050 - NULLS BEFORE DATA CLEANING 
+2024-09-06 09:37:41,266 - NULLS BEFORE DATA CLEANING 
  data_disdetta                  460639
 codice_provincia_erogazione     28776
 codice_provincia_residenza      28380
@@ -9,19 +9,73 @@ ora_fine_erogazione             28181
 ora_inizio_erogazione           28181
 comune_residenza                  135
 dtype: int64
-2024-09-05 10:17:27,050 - Data Cleaning Execution Started
-2024-09-05 10:17:35,966 - Data Cleaning Execution Completed
-2024-09-05 10:17:45,639 - Data Preparation Completed
-2024-09-05 10:17:45,951 - Clustering Execution Started
-2024-09-05 10:17:45,967 - Columns to drop: Index(['id_prenotazione', 'id_paziente', 'data_nascita', 'sesso',
+2024-09-06 09:37:41,266 - Data Cleaning Execution Started
+2024-09-06 09:37:41,267 - Missing Values...
+2024-09-06 09:37:42,216 - Cols dropped after missing_values with threshold: 0
+2024-09-06 09:37:42,216 - Imputate comune residenza...
+2024-09-06 09:37:45,122 - Removing rows where 'comune_residenza' is missing...
+2024-09-06 09:37:45,144 - Number of comune_residenza samples nulls: comune_residenza
+False    484156
+True        135
+Name: count, dtype: int64
+2024-09-06 09:37:45,378 - Removing rows where 'data_disdetta' is not null...
+2024-09-06 09:37:45,386 - Number of data_disdetta samples nulls: data_disdetta
+True     460509
+False     23647
+Name: count, dtype: int64
+2024-09-06 09:37:45,530 - Removing duplicates...
+2024-09-06 09:37:46,828 - Number of duplicates removed: 0
+2024-09-06 09:37:50,018 - NULLS AFTER DATA CLEANING 
+ data_disdetta                  460509
+codice_provincia_erogazione     27396
+codice_provincia_residenza      27016
+ora_fine_erogazione              4527
+ora_inizio_erogazione            4527
+dtype: int64
+2024-09-06 09:37:54,115 - Data Cleaning Execution Completed
+2024-09-06 09:37:54,860 - Feature Selection Execution Started
+2024-09-06 09:37:54,862 - Cleaning codice_struttura_erogazione column
+2024-09-06 09:37:54,868 - Removing data_disdetta column
+2024-09-06 09:37:55,381 - Pipeline for durata_erogazione column
+2024-09-06 09:37:55,381 - Creating durata_erogazione column
+2024-09-06 09:38:01,355 - Imputating durata_erogazione...
+2024-09-06 09:38:01,454 - Identifying and removing outliers using the boxplot method...
+2024-09-06 09:38:01,569 - Number of outliers in durata_erogazione_sec: 460509
+2024-09-06 09:38:01,570 - Removing ora_inizio_erogazione and ora_fine_erogazione columns
+2024-09-06 09:38:01,701 - End of pipeline for durata_erogazione column
+2024-09-06 09:38:01,701 - Removing columns with unique correlation
+2024-09-06 09:38:01,983 - Unique correlation between codice_provincia_residenza and provincia_residenza. Column codice_provincia_residenza removed.
+2024-09-06 09:38:02,206 - Unique correlation between codice_provincia_erogazione and provincia_erogazione. Column codice_provincia_erogazione removed.
+2024-09-06 09:38:02,369 - Unique correlation between codice_regione_residenza and regione_residenza. Column codice_regione_residenza removed.
+2024-09-06 09:38:02,531 - Unique correlation between codice_asl_residenza and asl_residenza. Column codice_asl_residenza removed.
+2024-09-06 09:38:02,702 - Unique correlation between codice_comune_residenza and comune_residenza. Column codice_comune_residenza removed.
+2024-09-06 09:38:02,963 - Unique correlation between codice_descrizione_attivita and descrizione_attivita. Column codice_descrizione_attivita removed.
+2024-09-06 09:38:03,117 - Unique correlation between codice_regione_erogazione and regione_erogazione. Column codice_regione_erogazione removed.
+2024-09-06 09:38:03,296 - Unique correlation between codice_asl_erogazione and asl_erogazione. Column codice_asl_erogazione removed.
+2024-09-06 09:38:03,466 - The PRESIDIO OSPEDALIERO UNIFICATO description is associated with 2 codes: [ 70001 100803]
+2024-09-06 09:38:03,466 - --> NOT unique correlation between codice_struttura_erogazione and struttura_erogazione
+
+2024-09-06 09:38:03,681 - Unique correlation between codice_tipologia_struttura_erogazione and tipologia_struttura_erogazione. Column codice_tipologia_struttura_erogazione removed.
+2024-09-06 09:38:03,917 - Unique correlation between codice_tipologia_professionista_sanitario and tipologia_professionista_sanitario. Column codice_tipologia_professionista_sanitario removed.
+2024-09-06 09:38:03,917 - Creating fascia_eta column
+2024-09-06 09:38:04,227 - Creating anno and quadrimestre columns
+2024-09-06 09:38:04,445 - Calculating correlation matrix using Cramér's V
+2024-09-06 09:38:27,614 - Removing highly correlated columns: ['comune_residenza', 'asl_residenza', 'provincia_residenza', 'regione_erogazione', 'asl_erogazione', 'provincia_erogazione', 'struttura_erogazione']
+2024-09-06 09:38:27,704 - Calculating correlation matrix using Cramér's V
+2024-09-06 09:38:33,403 - NULLS AFTER FEATURE SELECTION 
+ Series([], dtype: int64)
+2024-09-06 09:38:34,949 - Feature Selection Execution Completed
+2024-09-06 09:38:38,986 - Data Preparation Completed
+2024-09-06 09:38:39,042 - Clustering Execution Started
+2024-09-06 09:38:39,043 - Columns to drop: Index(['id_prenotazione', 'id_paziente', 'data_nascita', 'sesso',
        'tipologia_servizio', 'data_contatto', 'id_professionista_sanitario',
        'data_erogazione', 'durata_erogazione_sec', 'anno', 'quadrimestre'],
       dtype='object')
-2024-09-05 10:17:46,083 - Columns after dropping: Index(['regione_residenza', 'descrizione_attivita',
+2024-09-06 09:38:39,061 - Columns after dropping: Index(['regione_residenza', 'descrizione_attivita',
        'tipologia_struttura_erogazione', 'tipologia_professionista_sanitario',
        'fascia_eta', 'incremento_teleassistenze'],
       dtype='object')
-2024-09-05 10:27:23,368 - Head of the DataFrame after Clustering 
+2024-09-06 10:31:59,308 - Head of the DataFrame after Clustering 
     id_prenotazione       id_paziente              data_nascita   sesso regione_residenza  ... durata_erogazione_sec fascia_eta  anno quadrimestre incremento_teleassistenze
 0  JUOCPQCUG1H96QO  LCWFXF28X79P382V 1980-04-24 00:00:00+00:00    male          Piemonte  ...                  2925      36-47  2019            1            high_increment
 1  XDP99NXRHPOYFYU  LRFZOI94E58U012I 1972-01-30 00:00:00+00:00  female           Toscana  ...                  1895      48-59  2019            1            high_increment
@@ -30,11 +84,11 @@ dtype: int64
 4  XD8SZX9JOVCMEXW  WRRVSK73Z45L640S 1963-08-24 00:00:00+00:00    male           Abruzzo  ...                  3099      60-69  2019            1            high_increment
 
 [5 rows x 17 columns]
-2024-09-05 10:27:29,266 - Clustering Execution Completed
-2024-09-05 10:27:29,272 - Metrics Calculation Started
-2024-09-05 10:27:29,363 - Purity score: 0.8039408567476423
-2024-09-05 11:15:03,411 - Mean normalized silhouette score: 0.6183762168422466
-2024-09-05 11:15:05,341 - Silhouette plot saved as silhouette_plot.png
-2024-09-05 11:15:05,341 - Final metric: 0.5111585367949445
-2024-09-05 11:15:05,346 - Metrics Calculation Completed
-2024-09-05 11:15:05,346 - Analysis Results Started
+2024-09-06 10:32:04,690 - Clustering Execution Completed
+2024-09-06 10:32:04,691 - Metrics Calculation Started
+2024-09-06 10:32:04,772 - Purity score: 0.7811790866193712
+2024-09-06 11:15:33,385 - Mean normalized silhouette score: 0.5962254241933617
+2024-09-06 11:15:34,488 - Silhouette plot saved as silhouette_plot.png
+2024-09-06 11:15:34,489 - Final metric: 0.4887022554063664
+2024-09-06 11:15:34,497 - Metrics Calculation Completed
+2024-09-06 11:15:34,497 - Analysis Results Started

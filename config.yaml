@@ -4,13 +4,13 @@ data:
 
 # Phase 1
 cleaning:
-  cleaning_enabled: False
+  cleaning_enabled: True
   missing_threshold: 0.6 # Drop columns with more than 60% missing values
   cleaned_file_path: "data/processed/cleaned_data.parquet"
 
 # Phase 2
 feature_selection:
-  selection_enabled: False
+  selection_enabled: True
   feature_selected_file_path: "data/processed/feature_selected_data.parquet"
 
 # Phase 3
@@ -22,7 +22,7 @@ feature_extraction:
 # Phase 4
 modelling_clustering:
   clustering_enabled: True
-  elbow_enabled: False
+  elbow_enabled: True
   prediction_enabled: True
   max_clusters: 13
   n_clusters: 4
