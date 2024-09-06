@@ -1,10 +1,10 @@
-# 1 TODO: quando costruiamo incremento_teleassistenza, oltre a raggruppare per queste colonne  ['anno', 'quadrimestre', 'regione_residenza', 'fascia_eta'], aggiungiamo anche
+# 1 DONE TODO: quando costruiamo incremento_teleassistenza, oltre a raggruppare per queste colonne  ['anno', 'quadrimestre', 'regione_residenza', 'fascia_eta'], aggiungiamo anche
 #       "descrizione_attivita" 
-# 2 TODO: confrontare KProposity con KModes
+# DONE 2 TODO: confrontare KProposity con KModes
 # 2.1 TODO: confrontare gli n_init del modello scelto (es usare un for con 3 valori [5, 10, 15] e vedere quale è il migliore)
 # 4 TODO: PPT
 # 5 TODO: fare l'introduzione del progetto nel README.dm
-# 6 TODO: aggiungere qualche commento
+# 6 DONE  TODO: aggiungere qualche commento
 
 # NOTE: IL TODO 2.1 è da studiare con un DS piu piccolo (es. 20% del DS originale). 
 # NOTE: per il TODO 2 va fatto il 2.1 prima per un modello e poi per un altro modello e confrontarli
