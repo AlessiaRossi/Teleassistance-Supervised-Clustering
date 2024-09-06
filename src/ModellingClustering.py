@@ -35,7 +35,7 @@ class ModellingClustering:
         # Calculate the cost for different numbers of clusters
         for numero_cluster in K:
             print(numero_cluster)
-            kmodes = KModes(n_clusters=numero_cluster, init='Huang', n_init=5, verbose=1)
+            kmodes = KModes(n_clusters=numero_cluster, init='Huang', n_init=1, verbose=1)
             kmodes.fit_predict(df)
             cost.append(kmodes.cost_) # Append the cost for the current number of clusters
 
@@ -96,6 +96,7 @@ class ModellingClustering:
         if config['modelling_clustering']['elbow_enabled']:
             max_clusters = config['modelling_clustering']['max_clusters']
             # print('max_clusters', max_clusters, type(max_clusters))
+            print(df.head())
             self.__elbow_method(df, max_clusters)
 
 

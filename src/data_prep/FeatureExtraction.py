@@ -58,16 +58,16 @@ class FeatureExtraction:
         low_increment = 15
         medium_increment = 40
 
-        if value <= constat_increment and value >= 0:
-            return 'constant_increment'
+        if value < 0:
+            return 'decrement'
+        # elif value <= constat_increment:
+        #     return 'constant_increment'
         elif value <= low_increment:
             return 'low_increment'
         elif value <= medium_increment:
             return 'medium_increment'
-        elif value > medium_increment:
-            return 'high_increment'
         else:
-            return 'decrement'
+            return 'high_increment'
         
 
     def __sample_cassification(self, incremento_percentuale_medio: pd.DataFrame, df: pd.DataFrame, df_cols_no_anno: list):
@@ -86,12 +86,14 @@ class FeatureExtraction:
         # Apply the function to classify the average percentage increment
         incremento_percentuale_medio['incremento_teleassistenze'] = incremento_percentuale_medio['incremento_percentuale'].apply(self.__classify_increment)
 
-        logging.info(incremento_percentuale_medio['incremento_teleassistenze'].value_counts())
+        # logging.info(incremento_percentuale_medio['incremento_teleassistenze'].value_counts())
 
         # Merge the classification with the original dataframe
         df = df.merge(incremento_percentuale_medio[df_cols_no_anno + ['incremento_teleassistenze']], 
                 on=df_cols_no_anno, 
                 how='left')
+
+        logging.info(df['incremento_teleassistenze'].value_counts())
         
         return df
 

@@ -15,15 +15,15 @@ feature_selection:
 
 # Phase 3
 feature_extraction:
-  extraction_enabled: False
-  cols_grouped: ['anno', 'quadrimestre', 'regione_residenza', 'fascia_eta']
+  extraction_enabled: True
+  cols_grouped: ['anno', 'quadrimestre', 'regione_residenza']
   feature_extraction_path: "data/processed/feature_extracted_data.parquet"
 
 # Phase 4
 modelling_clustering:
   clustering_enabled: True
   elbow_enabled: True
-  prediction_enabled: True
+  prediction_enabled: False
   max_clusters: 13
   n_clusters: 4
   list_cols_to_drop: [0,1,2,3,5,7,9,11,12,14,15]
@@ -32,7 +32,7 @@ modelling_clustering:
   clustering_file_path_all_feature: "data/processed/clustered_data_all_feature.parquet"
 
 metrics:
-  metrics_enabled: True
+  metrics_enabled: False
   metrics_file_path: "logs&metrics/metrics.txt"
 
 general:
