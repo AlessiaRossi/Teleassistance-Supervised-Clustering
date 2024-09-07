@@ -17,7 +17,7 @@ from src.data_prep.feature_selection import feature_selection_execution
 from src.data_prep.feature_extraction import feature_extraction_execution
 from src.modelling_clustering import clustering_execution
 from src.metrics_evaluation import metrics_execution
-from src.analysis_results import age_group_bar_chart, teleassistance_variation_bar_chart, healthcare_professional_bar_chart, gender_distribution_chart,scatter_map
+from src.analysis_results import age_group_bar_chart, teleassistance_variation_bar_chart, healthcare_professional_bar_chart, gender_distribution_chart,scatter_map,teleassistance_cluster_increments_chart
 import yaml
 import logging
 
@@ -232,8 +232,21 @@ def main():
         print(max_cluster_per_region)
         print("Max Percentage per Region:")
         print(max_percentage_per_region)
-
+        
+        # Teleassistance Cluser Increment Chart
+        df_max_cluster_inc,df_max_percentage_increment_cla,fig= teleassistance_cluster_increments_chart(df_clustered)
+        fig.savefig(charts_output_path + 'teleassistance_increment_cluster.png')
+        
+        # Print and log the values
+        with open(config['analysis']['analysis_file_path'], 'a') as file:
+            file.write(f'\nTeleassistance Increment Cluster Analysis:\n')
+            file.write(f'Dominant cluster for each combination of year and increment type:\n{df_max_cluster_inc}\n')
+            file.write(f'Highest percentage for each combination of year and increment type:\n{df_max_percentage_increment_cla}\n')
+        
+        
         logging.info('Analysis Results Completed')
+        
+        
 
 
 

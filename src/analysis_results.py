@@ -1,5 +1,6 @@
 import pandas as pd
 import plotly.express as px
+import logging
 
 
 def scatter_map(data):
@@ -102,10 +103,11 @@ def scatter_map(data):
             borderwidth=1  # Border width
         )
     )
-
+    
+    #fig.savefig('graphs/scatter_map.png')
     return max_cluster_per_region, max_percentage_per_region,fig
 
-t
+
 def age_group_bar_chart(data):
     ''' Analysis of the age group distribution (fascia_eta) by cluster, using a bar chart. 
     
@@ -160,6 +162,7 @@ def age_group_bar_chart(data):
         width=900  # Increase the width of the chart
     )
 
+    #fig.savefig('graphs/age_group_bar_chart.png')
     return df_max_increment,df_max_percentage_increment,df_max_cluster, fig
 
 
@@ -209,8 +212,9 @@ def teleassistance_variation_bar_chart(data):
         yaxis_title='Percentuale di incremento (%)',
         legend_title='Variazione Teleassistenza',
     )
-
-    return result,fig
+    
+    #fig.savefig('graphs/teleassistance_variation_bar_chart.png')
+    return result, fig
 
 
 def healthcare_professional_bar_chart(data):
@@ -273,6 +277,7 @@ def healthcare_professional_bar_chart(data):
         )
     )
 
+    #fig.savefig('graphs/healtcare_professional_bar_chart.png')
     return fig
 
 
@@ -319,7 +324,8 @@ def gender_distribution_chart(data):
         legend_title='Sesso',
         bargap=0.4
     )
-
+    
+    #fig.savefig('graphs/gender_distribution_chart.png')
     return sex_crosstab, max_sex_per_cluster, max_percentage_per_cluster, fig
 
 
@@ -341,9 +347,9 @@ def teleassistance_cluster_increments_chart(data):
       pd.crosstab([data['anno'], data['incremento_teleassistenze']], data['cluster'], normalize='index') * 100
   )
   # Identify the cluster with the highest percentage for each year-increment combination
-  df_max_cluster = df_crosstab_increment.idxmax(axis=1)
+  df_max_cluster_inc = df_crosstab_increment.idxmax(axis=1)
   # Extract the corresponding highest percentages for each year-increment combination
-  df_max_percentage_increment = df_crosstab_increment.max(axis=1)
+  df_max_percentage_increment_cla = df_crosstab_increment.max(axis=1)
 
   # Create a DataFrame with bar chart data
   bar_data = pd.DataFrame({
@@ -377,4 +383,40 @@ def teleassistance_cluster_increments_chart(data):
   # Show dominant cluster above bars
   fig.update_traces(textposition='outside')
 
-  return df_max_cluster,df_max_percentage_increment,fig
+  #fig.savefig('graphs/teleassistance_cluster_increments_chart.png')
+
+  return df_max_cluster_inc,df_max_percentage_increment_cla, fig
+
+
+
+'''def chart_execution(df:pd.DataFrame, config:dict): 
+    ''' 'Execute the analysis of the teleassistance data and generate the charts.' '''
+
+    max_cluster_per_region, max_percentage_per_region = scatter_map(df)
+    logging.info(f'Dominant cluster per region: {max_cluster_per_region}')
+    logging.info(f'Dominant percentage per region: {max_percentage_per_region}')
+
+    df_max_increment,df_max_percentage_increment,df_max_cluster = age_group_bar_chart(df)
+    logging.info(f'Dominant increment per age group: {df_max_increment}')
+    logging.info(f'Dominant percentage increment per age group: {df_max_percentage_increment}')
+    logging.info(f'Dominant cluster per age group: {df_max_cluster}')
+
+    result = teleassistance_variation_bar_chart(df)
+    logging.info(f'Dominant increment per cluster: {result}')
+    
+    healthcare_professional_bar_chart(df)
+
+    sex_crosstab, max_sex_per_cluster, max_percentage_per_cluster = gender_distribution_chart(df)
+    logging.info(f'The percentage of each gender within each cluster: {sex_crosstab}')
+    logging.info(f'The dominant percentages for each cluster: {max_sex_per_cluster}')
+    logging.info(f'The dominant percentagesof each gender within each cluster {max_percentage_per_cluster}')
+    
+
+    df_max_cluster_inc,df_max_percentage_increment = teleassistance_cluster_increments_chart(df)
+    logging.info(f'Dominant cluster per year-increment combination: {df_max_cluster}')
+
+    return max_cluster_per_region, max_percentage_per_region, df_max_increment, df_max_percentage_increment, df_max_cluster, result,sex_crosstab,max_sex_per_cluster,max_percentage_per_cluster,df_max_cluster_inc,df_max_percentage_increment
+'''
+
+
+   
