@@ -15,8 +15,8 @@ from src.data_prep.DataCleaning import DataCleaning
 from src.data_prep.FeatureSelection import FeatureSelection
 from src.data_prep.FeatureExtraction import FeatureExtraction
 from src.ModellingClustering import ModellingClustering
-from MetricsEvaluation import metrics_execution
-from AnalysisResults import age_group_bar_chart, teleassistance_variation_bar_chart, healthcare_professional_bar_chart, gender_distribution_chart,scatter_map, teleassistance_cluster_increments_chart
+from src.MetricsEvaluation import metrics_execution
+from src.AnalysisResults import age_group_bar_chart, teleassistance_variation_bar_chart, healthcare_professional_bar_chart, gender_distribution_chart,scatter_map, teleassistance_cluster_increments_chart
 import yaml
 import logging
 import os
