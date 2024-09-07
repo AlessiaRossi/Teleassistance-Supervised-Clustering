@@ -31,19 +31,19 @@ class MetricsEvaluation:
         # Iterate over each cluster
         for cluster_id in np.unique(clusters):
             # Obtain the indices of data points in the cluster
-            print(cluster_id)
+            # print(cluster_id)
 
             cluster_indices = np.where(clusters == cluster_id)[0] # [0] to get the array from the tuple, as np.where returns a tuple
-            print('Cluster indices:', cluster_indices)
+            # print('Cluster indices:', cluster_indices)
 
             # Obtain the true labels of data points in the cluster
             cluster_labels = true_labels[cluster_indices]
-            print('Cluster labels', cluster_labels.value_counts())
-            print('Cluster labels', cluster_labels.count())
+            # print('Cluster labels', cluster_labels.value_counts())
+            # print('Cluster labels', cluster_labels.count())
 
             # Count the number of data points in each class
             most_common_label, count = Counter(cluster_labels).most_common(1)[0] # most_common returns a list of tuples, we take the first one
-            print(f'Most common label: {most_common_label}, count: {count}')
+            # print(f'Most common label: {most_common_label}, count: {count}')
 
             purity_sum += count
 
@@ -63,7 +63,6 @@ class MetricsEvaluation:
             - The silhouette score of the clustering algorithm.
         '''
 
-        print('SIL')
         # Calculate the silhouette scores for each sample
         silhouette_vals = silhouette_samples(features, clusters)
         
@@ -153,7 +152,6 @@ class MetricsEvaluation:
             This function calculates the purity and silhouette scores of a clustering algorithm.
 
             Parameters:
-            - df: DataFrame containing the labeled data for clustering.
             - config: Dictionary containing configuration settings for the clustering process.
 
             Returns:

@@ -1,7 +1,7 @@
-2024-09-07 17:41:38,570 - Data Preparation Started
-2024-09-07 17:41:40,619 - The DataFrame has 484291 rows and 33 columns.
+2024-09-07 17:50:49,514 - Data Preparation Started
+2024-09-07 17:50:50,892 - The DataFrame has 484291 rows and 33 columns.
 
-2024-09-07 17:41:41,575 - NULLS BEFORE DATA CLEANING 
+2024-09-07 17:50:51,707 - NULLS BEFORE DATA CLEANING 
  data_disdetta                  460639
 codice_provincia_erogazione     28776
 codice_provincia_residenza      28380
@@ -9,8 +9,4 @@ ora_fine_erogazione             28181
 ora_inizio_erogazione           28181
 comune_residenza                  135
 dtype: int64
-2024-09-07 17:41:41,575 - Data Cleaning Execution Started
-2024-09-07 17:41:43,403 - Data Cleaning Execution Completed
-2024-09-07 17:41:45,841 - Data Preparation Completed
-2024-09-07 17:41:46,034 - Metrics Calculation Started
-2024-09-07 17:41:46,172 - Purity score: 0.7156667947857697
+2024-09-07 17:50:56,219 - Data Preparation Completed

@@ -30,18 +30,18 @@ class ModellingClustering:
         cost = []
         K = range(1, max_clusters) # Range of cluster numbers to test
         # print(K)
-        print(df.head())
+        # print(df.head())
 
         # Calculate the cost for different numbers of clusters
         for numero_cluster in K:
-            print(numero_cluster)
+            # print(numero_cluster)
             kmodes = KModes(n_clusters=numero_cluster, init='Huang', n_init=1, verbose=0)
             kmodes.fit_predict(df)
 
-            print('kmodes.cost_: ', kmodes.cost_)
+            # print('kmodes.cost_: ', kmodes.cost_)
             cost.append(kmodes.cost_) # Append the cost for the current number of clusters
 
-        print('cost: ', cost)
+        # print('cost: ', cost)
 
         # Grafica il costo per ogni k
         plt.plot(K, cost, 'bx-')
