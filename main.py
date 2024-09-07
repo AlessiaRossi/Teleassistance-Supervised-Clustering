@@ -20,6 +20,7 @@ from src.MetricsEvaluation import MetricsEvaluation
 from AnalysisResults import age_group_bar_chart, teleassistance_variation_bar_chart, healthcare_professional_bar_chart, gender_distribution_chart,scatter_map
 import yaml
 import logging
+import os
 
 
 def load_config(config_file):
@@ -71,9 +72,9 @@ def main():
     '''
 
     # Phase 1: Data Cleaning
-    logging.info('Data Cleaning Execution Started')
-
     if config['cleaning']['cleaning_enabled']:
+        logging.info('Data Cleaning Execution Started')
+
         missing_threshold = config['cleaning']['missing_threshold']
 
         df_cleaning = data_cleaning.data_cleaning_execution(missing_threshold, config)
@@ -92,11 +93,12 @@ def main():
         cleaned_file_path = config['cleaning']['cleaned_file_path']
         df_cleaning.to_parquet(cleaned_file_path)
 
-    else:
+        logging.info('Data Cleaning Execution Completed')
+    elif os.path.exists(config['cleaning']['cleaned_file_path']):
         cleaned_file_path = config['cleaning']['cleaned_file_path']
         df_cleaning = pd.read_parquet(cleaned_file_path)
-
-    logging.info('Data Cleaning Execution Completed')
+    else:
+        raise FileNotFoundError('The cleaned_data.parquet file does not exist. Please enable the cleaning process to create it.')
 
 
     # Create an instance of the FeatureSelection class
@@ -119,9 +121,11 @@ def main():
         df_selection.to_parquet(feature_selected_file_path)
 
         logging.info('Feature Selection Execution Completed')
-    else:
+    elif os.path.exists(config['feature_selection']['feature_selected_file_path']):
         feature_selected_file_path = config['feature_selection']['feature_selected_file_path']
         df_selection = pd.read_parquet(feature_selected_file_path)
+    else:
+        raise FileNotFoundError('The feature_selected_data.parquet file does not exist. Please enable the feature selection process to create it.')
 
     
     # Create an instance of the FeatureExtraction class
@@ -142,9 +146,11 @@ def main():
         df_extraction.to_parquet(feature_extraction_file_path)
 
         logging.info('Feature Extraction Execution Completed')
-    else:
+    elif os.path.exists(config['feature_extraction']['feature_extraction_path']):
         feature_extraction_file_path = config['feature_extraction']['feature_extraction_path']
         df_extraction = pd.read_parquet(feature_extraction_file_path)
+    else:
+        raise FileNotFoundError('The feature_extracted_data.parquet file does not exist. Please enable the feature extraction process to create it.')
 
 
     logging.info('Data Preparation Completed')
@@ -166,9 +172,12 @@ def main():
         complete_df_clustered.to_parquet(clustering_file_path_all_feature)
 
         logging.info('Clustering Execution Completed')
-    else:
+    elif os.path.exists(config['modelling_clustering']['clustering_file_path']):
         clustering_file_path = config['modelling_clustering']['clustering_file_path']
         df_clustered = pd.read_parquet(clustering_file_path)
+    else:
+        raise FileNotFoundError('The clustered_data.parquet file does not exist. Please enable the clustering process to create it.')
+    
 
     # Create an instance of the MetricsEvaluation class
     metrics_evaluation = MetricsEvaluation(df_clustered)
