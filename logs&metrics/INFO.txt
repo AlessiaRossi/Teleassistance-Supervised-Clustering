@@ -1,7 +1,7 @@
-2024-09-06 22:26:54,863 - Data Preparation Started
-2024-09-06 22:26:59,134 - The DataFrame has 484291 rows and 33 columns.
+2024-09-07 11:24:00,970 - Data Preparation Started
+2024-09-07 11:24:03,272 - The DataFrame has 484291 rows and 33 columns.
 
-2024-09-06 22:26:59,915 - NULLS BEFORE DATA CLEANING 
+2024-09-07 11:24:04,418 - NULLS BEFORE DATA CLEANING 
  data_disdetta                  460639
 codice_provincia_erogazione     28776
 codice_provincia_residenza      28380
@@ -9,19 +9,19 @@ ora_fine_erogazione             28181
 ora_inizio_erogazione           28181
 comune_residenza                  135
 dtype: int64
-2024-09-06 22:26:59,916 - Data Cleaning Execution Started
-2024-09-06 22:27:02,455 - Data Cleaning Execution Completed
-2024-09-06 22:27:07,815 - Data Preparation Completed
-2024-09-06 22:27:07,997 - Clustering Execution Started
-2024-09-06 22:27:08,002 - Columns to drop: Index(['id_prenotazione', 'id_paziente', 'data_nascita', 'sesso',
+2024-09-07 11:24:04,418 - Data Cleaning Execution Started
+2024-09-07 11:24:06,456 - Data Cleaning Execution Completed
+2024-09-07 11:24:10,060 - Data Preparation Completed
+2024-09-07 11:24:10,408 - Clustering Execution Started
+2024-09-07 11:24:10,411 - Columns to drop: Index(['id_prenotazione', 'id_paziente', 'data_nascita', 'sesso',
        'tipologia_servizio', 'data_contatto', 'id_professionista_sanitario',
        'data_erogazione', 'durata_erogazione_sec', 'anno', 'quadrimestre'],
       dtype='object')
-2024-09-06 22:27:08,088 - Columns after dropping: Index(['regione_residenza', 'descrizione_attivita',
+2024-09-07 11:24:10,434 - Columns after dropping: Index(['regione_residenza', 'descrizione_attivita',
        'tipologia_struttura_erogazione', 'tipologia_professionista_sanitario',
        'fascia_eta', 'incremento_teleassistenze'],
       dtype='object')
-2024-09-06 22:27:54,914 - Head of the DataFrame after Clustering 
+2024-09-07 11:29:04,580 - Head of the DataFrame after Clustering 
     id_prenotazione       id_paziente              data_nascita   sesso regione_residenza  ... durata_erogazione_sec fascia_eta  anno quadrimestre incremento_teleassistenze
 0  JUOCPQCUG1H96QO  LCWFXF28X79P382V 1980-04-24 00:00:00+00:00    male          Piemonte  ...                  2925      36-47  2019            1            high_increment
 1  XDP99NXRHPOYFYU  LRFZOI94E58U012I 1972-01-30 00:00:00+00:00  female           Toscana  ...                  1895      48-59  2019            1            high_increment
@@ -30,6 +30,6 @@ dtype: int64
 4  XD8SZX9JOVCMEXW  WRRVSK73Z45L640S 1963-08-24 00:00:00+00:00    male           Abruzzo  ...                  3099      60-69  2019            1            high_increment
 
 [5 rows x 17 columns]
-2024-09-06 22:27:56,313 - Clustering Execution Completed
-2024-09-06 22:27:56,313 - Metrics Calculation Started
-2024-09-06 22:27:56,440 - Purity score: 0.7909443680796684
+2024-09-07 11:29:06,089 - Clustering Execution Completed
+2024-09-07 11:29:06,090 - Metrics Calculation Started
+2024-09-07 11:29:06,227 - Purity score: 0.7778219318189221

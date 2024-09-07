@@ -35,9 +35,13 @@ class ModellingClustering:
         # Calculate the cost for different numbers of clusters
         for numero_cluster in K:
             print(numero_cluster)
-            kmodes = KModes(n_clusters=numero_cluster, init='Huang', n_init=1, verbose=1)
+            kmodes = KModes(n_clusters=numero_cluster, init='Huang', n_init=1, verbose=0)
             kmodes.fit_predict(df)
+
+            print('kmodes.cost_: ', kmodes.cost_)
             cost.append(kmodes.cost_) # Append the cost for the current number of clusters
+
+        print('cost: ', cost)
 
         # Grafica il costo per ogni k
         plt.plot(K, cost, 'bx-')
@@ -105,7 +109,7 @@ class ModellingClustering:
         if config['modelling_clustering']['prediction_enabled']:
             n_clusters = config['modelling_clustering']['n_clusters']
 
-            kmodes = KModes(n_clusters=n_clusters, init='Huang', n_init=1, verbose=1)
+            kmodes = KModes(n_clusters=n_clusters, init='Huang', n_init=10, verbose=0)
             model_pkl_file = config['modelling_clustering']['model_pkl_file']
 
             with open(model_pkl_file, 'wb') as file:
