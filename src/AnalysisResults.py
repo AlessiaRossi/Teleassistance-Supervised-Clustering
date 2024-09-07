@@ -332,8 +332,8 @@ def teleassistance_cluster_increments_chart(data):
   bar_data = pd.DataFrame({
       'anno': [index[0] for index in df_crosstab_increment.index],
       'incremento_teleassistenze': [index[1] for index in df_crosstab_increment.index],
-      'percentage_increment': df_max_percentage_increment.values,
-      'dominant_cluster': df_max_cluster.values
+      'percentage_increment': df_max_percentage_increment_cla.values,
+      'dominant_cluster': df_max_cluster_inc.values
   })
 
   # Create the bar chart with Plotly

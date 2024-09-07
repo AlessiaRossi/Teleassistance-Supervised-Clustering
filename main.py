@@ -21,20 +21,21 @@ import yaml
 import logging
 import os
 
-
+# Load the configuration file
 def load_config(config_file):
     """Load the configuration file."""
     with open(config_file, 'r') as file:
         config = yaml.safe_load(file)
     return config
 
+# Load the data
 def load_data(config):
     # Load the data
     file_path = config['data']['file_path']
     df = pd.read_parquet(file_path)
     return df
 
-
+# Main function to execute the data preparation pipeline, including data cleaning, feature selection, feature extraction, clustering, metrics calculation and analysis results
 def main():
 
     # Load the configuration file
