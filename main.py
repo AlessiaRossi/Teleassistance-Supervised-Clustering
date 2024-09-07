@@ -158,7 +158,7 @@ def main():
 
         complete_df_clustered, df_clustered = modelling_clustering.clustering_execution(config)
 
-        logging.info(f'Head of the DataFrame after Clustering \n {df_extraction.head()}')
+        logging.info(f'Head of the DataFrame after Clustering \n {df_clustered.head()}')
 
         clustering_file_path = config['modelling_clustering']['clustering_file_path']
         clustering_file_path_all_feature = config['modelling_clustering']['clustering_file_path_all_feature']

@@ -15,7 +15,7 @@ feature_selection:
 
 # Phase 3
 feature_extraction:
-  extraction_enabled: False
+  extraction_enabled: True
   cols_grouped: ['anno', 'quadrimestre', 'regione_residenza', 'fascia_eta']
   feature_extraction_path: "data/processed/feature_extracted_data.parquet"
 
@@ -25,7 +25,7 @@ modelling_clustering:
   elbow_enabled: False
   prediction_enabled: True
   max_clusters: 10
-  n_clusters: 3
+  n_clusters: 4
   list_cols_to_drop: [0,1,2,3,5,7,9,11,12,14,15]
   model_pkl_file: "models/clustering_model.pkl"
   clustering_file_path: "data/processed/clustered_data.parquet"
