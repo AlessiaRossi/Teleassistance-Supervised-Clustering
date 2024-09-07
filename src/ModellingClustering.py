@@ -30,21 +30,26 @@ class ModellingClustering:
         cost = []
         K = range(1, max_clusters) # Range of cluster numbers to test
         # print(K)
-        print(df.head())
+        # print(df.head())
 
         # Calculate the cost for different numbers of clusters
         for numero_cluster in K:
-            print(numero_cluster)
-            kmodes = KModes(n_clusters=numero_cluster, init='Huang', n_init=5, verbose=1)
+            # print(numero_cluster)
+            kmodes = KModes(n_clusters=numero_cluster, init='Huang', n_init=1, verbose=0)
             kmodes.fit_predict(df)
+
+            # print('kmodes.cost_: ', kmodes.cost_)
             cost.append(kmodes.cost_) # Append the cost for the current number of clusters
 
-        # Plot the Elbow Method results
+        # print('cost: ', cost)
+
+        # Grafica il costo per ogni k
         plt.plot(K, cost, 'bx-')
         plt.xlabel('Number of clusters (k)')
         plt.ylabel('Cost')
         plt.title('Elbow Method For Optimal k')
         plt.savefig('graphs/elbow_method.png')
+
 
 
     def __kmodes_clustering(self, kmodes:KModes, df:pd.DataFrame) -> pd.DataFrame:
@@ -96,14 +101,15 @@ class ModellingClustering:
         if config['modelling_clustering']['elbow_enabled']:
             max_clusters = config['modelling_clustering']['max_clusters']
             # print('max_clusters', max_clusters, type(max_clusters))
+            print(df.head())
             self.__elbow_method(df, max_clusters)
-
+            
 
         # Apply K-Modes clustering if enabled in the configuration
         if config['modelling_clustering']['prediction_enabled']:
             n_clusters = config['modelling_clustering']['n_clusters']
 
-            kmodes = KModes(n_clusters=n_clusters, init='Huang', n_init=15, verbose=1)
+            kmodes = KModes(n_clusters=n_clusters, init='Huang', n_init=10, verbose=0)
             model_pkl_file = config['modelling_clustering']['model_pkl_file']
 
             with open(model_pkl_file, 'wb') as file:
