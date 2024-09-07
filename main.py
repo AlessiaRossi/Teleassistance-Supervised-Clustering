@@ -16,7 +16,7 @@ from src.data_prep.DataCleaning import DataCleaning
 from src.data_prep.FeatureSelection import FeatureSelection
 from src.data_prep.FeatureExtraction import FeatureExtraction
 from src.ModellingClustering import ModellingClustering
-from MetricsEvaluation import metrics_execution
+from src.MetricsEvaluation import MetricsEvaluation
 from AnalysisResults import age_group_bar_chart, teleassistance_variation_bar_chart, healthcare_professional_bar_chart, gender_distribution_chart,scatter_map
 import yaml
 import logging
@@ -170,12 +170,14 @@ def main():
         clustering_file_path = config['modelling_clustering']['clustering_file_path']
         df_clustered = pd.read_parquet(clustering_file_path)
 
-    
+    # Create an instance of the MetricsEvaluation class
+    metrics_evaluation = MetricsEvaluation(df_clustered)
+
     # Phase 5: Metrics
     if config['metrics']['metrics_enabled']:
         logging.info('Metrics Calculation Started')
 
-        purity_score, silhouette_score, final_metric = metrics_execution(df_clustered, config)
+        purity_score, silhouette_score, final_metric = metrics_evaluation.metrics_execution(config)
 
         with open(config['metrics']['metrics_file_path'], 'w') as file:
             file.write(f'Purity score: {purity_score}\n')
