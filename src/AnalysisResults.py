@@ -125,7 +125,7 @@ def age_group_bar_chart(data):
     '''
 
     # Create crosstab for teleassistance increment per age group
-    df_crosstab_increment = pd.crosstab(data['fascia_eta'], data['incremento_teleassistene'], normalize='index') * 100
+    df_crosstab_increment = pd.crosstab(data['fascia_eta'], data['incremento_teleassistenze'], normalize='index') * 100
     
     # Identify the increment category with the highest percentage per age group
     df_max_increment = df_crosstab_increment.idxmax(axis=1)
@@ -153,7 +153,7 @@ def age_group_bar_chart(data):
         color='incremento_teleassistenze',
         text='dominant_cluster',  # Add dominant cluster as text inside bars
         title='Distrbuzione delle fasce d\'età per variazione teleassistenza e cluster dominante',
-        labels={'age_group': 'Fascia età', 'percentage': 'Percentuale massima di appartenenza al cluster (%)', 'incremento_teleassistenze': 'Variazione Teleassistenza'},
+        labels={'age_group': 'Fascia età', 'percentage_increment': 'Percentuale massima di appartenenza al cluster (%)', 'incremento_teleassistenze': 'Variazione Teleassistenza'},
         color_discrete_sequence=px.colors.qualitative.Pastel
     )
 
