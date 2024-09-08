@@ -1,7 +1,7 @@
-2024-09-08 16:05:33,370 - Data Preparation Started
-2024-09-08 16:05:40,915 - The DataFrame has 484291 rows and 33 columns.
+2024-09-08 17:18:12,928 - Data Preparation Started
+2024-09-08 17:18:16,533 - The DataFrame has 484291 rows and 33 columns.
 
-2024-09-08 16:05:41,897 - NULLS BEFORE DATA CLEANING 
+2024-09-08 17:18:17,482 - NULLS BEFORE DATA CLEANING 
  data_disdetta                  460639
 codice_provincia_erogazione     28776
 codice_provincia_residenza      28380
@@ -9,133 +9,7 @@ ora_fine_erogazione             28181
 ora_inizio_erogazione           28181
 comune_residenza                  135
 dtype: int64
-2024-09-08 16:05:41,898 - Data Cleaning Execution Started
-2024-09-08 16:05:41,899 - Missing Values...
-2024-09-08 16:05:42,761 - Cols dropped after missing_values with threshold: 0
-2024-09-08 16:05:42,762 - Imputate comune residenza...
-2024-09-08 16:05:45,896 - Removing rows where 'comune_residenza' is missing...
-2024-09-08 16:05:45,924 - Number of comune_residenza samples nulls: comune_residenza
-False    484156
-True        135
-Name: count, dtype: int64
-2024-09-08 16:05:46,244 - Removing rows where 'data_disdetta' is not null...
-2024-09-08 16:05:46,252 - Number of data_disdetta samples nulls: data_disdetta
-True     460509
-False     23647
-Name: count, dtype: int64
-2024-09-08 16:05:46,391 - Removing duplicates...
-2024-09-08 16:05:47,468 - Number of duplicates removed: 0
-2024-09-08 16:05:49,843 - NULLS AFTER DATA CLEANING 
- data_disdetta                  460509
-codice_provincia_erogazione     27396
-codice_provincia_residenza      27016
-ora_fine_erogazione              4527
-ora_inizio_erogazione            4527
-dtype: int64
-2024-09-08 16:05:52,398 - Data Cleaning Execution Completed
-2024-09-08 16:05:53,020 - Feature Selection Execution Started
-2024-09-08 16:05:53,021 - Cleaning codice_struttura_erogazione column
-2024-09-08 16:05:53,027 - Removing data_disdetta column
-2024-09-08 16:05:53,293 - Pipeline for durata_erogazione column
-2024-09-08 16:05:53,293 - Creating durata_erogazione column
-2024-09-08 16:05:58,599 - Imputating durata_erogazione...
-2024-09-08 16:05:58,705 - Identifying and removing outliers using the boxplot method...
-2024-09-08 16:05:58,826 - Number of outliers in durata_erogazione_sec: 460509
-2024-09-08 16:05:58,826 - Removing ora_inizio_erogazione and ora_fine_erogazione columns
-2024-09-08 16:05:58,985 - End of pipeline for durata_erogazione column
-2024-09-08 16:05:58,986 - Removing columns with unique correlation
-2024-09-08 16:05:59,221 - Unique correlation between codice_provincia_residenza and provincia_residenza. Column codice_provincia_residenza removed.
-2024-09-08 16:05:59,421 - Unique correlation between codice_provincia_erogazione and provincia_erogazione. Column codice_provincia_erogazione removed.
-2024-09-08 16:05:59,552 - Unique correlation between codice_regione_residenza and regione_residenza. Column codice_regione_residenza removed.
-2024-09-08 16:05:59,728 - Unique correlation between codice_asl_residenza and asl_residenza. Column codice_asl_residenza removed.
-2024-09-08 16:05:59,923 - Unique correlation between codice_comune_residenza and comune_residenza. Column codice_comune_residenza removed.
-2024-09-08 16:06:00,181 - Unique correlation between codice_descrizione_attivita and descrizione_attivita. Column codice_descrizione_attivita removed.
-2024-09-08 16:06:00,375 - Unique correlation between codice_regione_erogazione and regione_erogazione. Column codice_regione_erogazione removed.
-2024-09-08 16:06:00,500 - Unique correlation between codice_asl_erogazione and asl_erogazione. Column codice_asl_erogazione removed.
-2024-09-08 16:06:00,614 - The PRESIDIO OSPEDALIERO UNIFICATO description is associated with 2 codes: [ 70001 100803]
-2024-09-08 16:06:00,614 - --> NOT unique correlation between codice_struttura_erogazione and struttura_erogazione
-
-2024-09-08 16:06:00,785 - Unique correlation between codice_tipologia_struttura_erogazione and tipologia_struttura_erogazione. Column codice_tipologia_struttura_erogazione removed.
-2024-09-08 16:06:00,925 - Unique correlation between codice_tipologia_professionista_sanitario and tipologia_professionista_sanitario. Column codice_tipologia_professionista_sanitario removed.
-2024-09-08 16:06:00,925 - Creating fascia_eta column
-2024-09-08 16:06:01,128 - Creating anno and quadrimestre columns
-2024-09-08 16:06:01,362 - Calculating correlation matrix using Cramér's V
-2024-09-08 16:06:22,022 - Removing highly correlated columns: ['comune_residenza', 'asl_residenza', 'provincia_residenza', 'regione_erogazione', 'asl_erogazione', 'provincia_erogazione', 'struttura_erogazione']
-2024-09-08 16:06:22,093 - Calculating correlation matrix using Cramér's V
-2024-09-08 16:06:28,130 - NULLS AFTER FEATURE SELECTION 
- Series([], dtype: int64)
-2024-09-08 16:06:29,052 - Feature Selection Execution Completed
-2024-09-08 16:06:29,494 - Feature Extraction Execution Started
-2024-09-08 16:06:29,669 -       anno  quadrimestre     regione_residenza fascia_eta  num_servizi
-230   2019             2  Prov. auton. bolzano       0-11            2
-574   2019             4         Valle d'aosta      12-23            2
-252   2019             2              Sardegna      12-23            2
-106   2019             1              Sardegna      12-23            2
-281   2019             2         Valle d'aosta      24-35            3
-...    ...           ...                   ...        ...          ...
-1070  2020             4                 Lazio       0-11         1166
-1232  2021             1             Lombardia      12-23         1331
-1085  2020             4             Lombardia      12-23         1389
-1231  2021             1             Lombardia       0-11         1473
-1084  2020             4             Lombardia       0-11         1651
-
-[2351 rows x 5 columns]
-2024-09-08 16:06:29,700 -      quadrimestre     regione_residenza fascia_eta  incremento_percentuale
-253             2              Sardegna      12-23              349.033816
-546             4              Sardegna       0-11              330.667305
-575             4         Valle d'aosta      12-23              311.688312
-106             1              Sardegna      12-23              268.412698
-231             2  Prov. auton. bolzano       0-11              249.128540
-..            ...                   ...        ...                     ...
-304             3            Basilicata      36-47              -11.971596
-361             3                Marche      48-59              -13.685300
-219             2                Molise      24-35              -13.930976
-432             3         Valle d'aosta      60-69              -28.333333
-433             3         Valle d'aosta        70+              -28.492063
-
-[588 rows x 4 columns]
-2024-09-08 16:06:29,709 - count    588.000000
-mean      39.775714
-std       46.145734
-min      -28.492063
-25%        8.096367
-50%       24.782646
-75%       58.428331
-max      349.033816
-Name: incremento_percentuale, dtype: float64
-2024-09-08 16:06:30,207 - incremento_teleassistenze
-low_increment       194549
-high_increment      171475
-medium_increment     70574
-decrement            23911
-Name: count, dtype: int64
-2024-09-08 16:06:30,222 - Head of the DataFrame after Feature Extraction 
-    id_prenotazione       id_paziente              data_nascita   sesso regione_residenza  ... durata_erogazione_sec fascia_eta  anno quadrimestre incremento_teleassistenze
-0  JUOCPQCUG1H96QO  LCWFXF28X79P382V 1980-04-24 00:00:00+00:00    male          Piemonte  ...                  2925      36-47  2019            1            high_increment
-1  XDP99NXRHPOYFYU  LRFZOI94E58U012I 1972-01-30 00:00:00+00:00  female           Toscana  ...                  1895      48-59  2019            1            high_increment
-2  6VYI0AK57ECO5WU  JOBCGJ98A04B765H 1986-06-27 00:00:00+00:00    male    Emilia romagna  ...                  1165      36-47  2019            1            high_increment
-3  VLFS5J9E3Q74Q2W  TKROSE51Z77Q065E 1967-10-21 00:00:00+00:00  female          Campania  ...                  1969      48-59  2019            1            high_increment
-4  XD8SZX9JOVCMEXW  WRRVSK73Z45L640S 1963-08-24 00:00:00+00:00    male           Abruzzo  ...                  3099      60-69  2019            1            high_increment
-
-[5 rows x 17 columns]
-2024-09-08 16:06:32,621 - Feature Extraction Execution Completed
-2024-09-08 16:06:32,622 - Data Preparation Completed
-2024-09-08 16:06:33,698 - Clustering Execution Started
-2024-09-08 16:06:33,699 - Columns to drop: Index(['id_prenotazione', 'id_paziente', 'data_nascita', 'sesso',
-       'tipologia_servizio', 'data_contatto', 'id_professionista_sanitario',
-       'data_erogazione', 'durata_erogazione_sec', 'anno', 'quadrimestre'],
-      dtype='object')
-2024-09-08 16:06:33,711 - Columns after dropping: Index(['regione_residenza', 'descrizione_attivita',
-       'tipologia_struttura_erogazione', 'tipologia_professionista_sanitario',
-       'fascia_eta', 'incremento_teleassistenze'],
-      dtype='object')
-2024-09-08 16:11:17,344 - Head of the DataFrame after Clustering 
-   regione_residenza                               descrizione_attivita     tipologia_struttura_erogazione tipologia_professionista_sanitario fascia_eta incremento_teleassistenze  cluster
-0          Piemonte  Insegnamento al paziente e/o alla sua famiglia...                Azienda Ospedaliera                         Infermiere      36-47            high_increment        0
-1           Toscana  Prestazione infermieristica connessa alla nece...  Azienda Ospedaliera Universitaria                         Infermiere      48-59            high_increment        0
-2    Emilia romagna                             Prestazione dietistica        Ospedale a gestione diretta                           Dietista      36-47            high_increment        0
-3          Campania                           Psicoterapia individuale                Azienda Ospedaliera                          Psicologo      48-59            high_increment        0
-4           Abruzzo                             Prestazione dietistica        Ospedale a gestione diretta                           Dietista      60-69            high_increment        0
-2024-09-08 16:11:19,161 - Clustering Execution Completed
-2024-09-08 16:11:19,161 - Metrics Calculation Started
-2024-09-08 16:11:19,225 - Purity score: 0.7382439865453226
+2024-09-08 17:18:17,482 - Data Cleaning Execution Started
+2024-09-08 17:18:17,482 - Missing Values...
+2024-09-08 17:18:18,439 - Cols dropped after missing_values with threshold: 0
+2024-09-08 17:18:18,439 - Imputate comune residenza...

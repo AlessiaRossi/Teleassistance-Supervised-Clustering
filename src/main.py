@@ -14,9 +14,9 @@ import pandas as pd
 from data_prep.DataCleaning import DataCleaning
 from data_prep.FeatureSelection import FeatureSelection
 from data_prep.FeatureExtraction import FeatureExtraction
-from modelling.ModellingClustering import ModellingClustering
-from evaluation.MetricsEvaluation import MetricsEvaluation
-from analysis.AnalysisResults import age_group_bar_chart, teleassistance_variation_bar_chart, healthcare_professional_bar_chart, gender_distribution_chart,scatter_map, teleassistance_cluster_increments_chart
+from processing.ModellingClustering import ModellingClustering
+from processing.MetricsEvaluation import MetricsEvaluation
+from processing.AnalysisResults import age_group_bar_chart, teleassistance_variation_bar_chart, healthcare_professional_bar_chart, gender_distribution_chart,scatter_map, teleassistance_cluster_increments_chart
 import yaml
 import logging
 import os
