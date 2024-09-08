@@ -33,7 +33,7 @@ modelling_clustering:
 
 # Phase 5
 metrics:
-  metrics_enabled: True
+  metrics_enabled: False
   metrics_file_path: "logs&metrics/metrics.txt"
 
 # Phase 6

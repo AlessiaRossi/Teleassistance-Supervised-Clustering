@@ -125,7 +125,7 @@ def age_group_bar_chart(data):
     '''
 
     # Create crosstab for teleassistance increment per age group
-    df_crosstab_increment = pd.crosstab(data['fascia_eta'], data['incremento_teleassistene'], normalize='index') * 100
+    df_crosstab_increment = pd.crosstab(data['fascia_eta'], data['incremento_teleassistenze'], normalize='index') * 100
     
     # Identify the increment category with the highest percentage per age group
     df_max_increment = df_crosstab_increment.idxmax(axis=1)
@@ -149,11 +149,11 @@ def age_group_bar_chart(data):
     fig = px.bar(
         pie_data,
         x='age_group',
-        y='percentage',
+        y='percentage_increment',
         color='incremento_teleassistenze',
         text='dominant_cluster',  # Add dominant cluster as text inside bars
         title='Distrbuzione delle fasce d\'età per variazione teleassistenza e cluster dominante',
-        labels={'age_group': 'Fascia età', 'percentage': 'Percentuale massima di appartenenza al cluster (%)', 'incremento_teleassistenze': 'Variazione Teleassistenza'},
+        labels={'age_group': 'Fascia età', 'percentage_increment': 'Percentuale massima di appartenenza al cluster (%)', 'incremento_teleassistenze': 'Variazione Teleassistenza'},
         color_discrete_sequence=px.colors.qualitative.Pastel
     )
 
@@ -185,6 +185,19 @@ def teleassistance_variation_bar_chart(data):
     # This groups the data by cluster and teleassistance variation and counts the occurrences
     cluster_counts = data.groupby(['cluster', 'incremento_teleassistenze']).size().reset_index(name='count')
 
+    # Calculate the total count per cluster to compute percentages
+    total_counts_per_cluster = cluster_counts.groupby('cluster')['count'].sum().reset_index(name='total_count')
+
+    # Merge total counts with cluster counts to calculate percentages
+    cluster_counts = cluster_counts.merge(total_counts_per_cluster, on='cluster')
+    cluster_counts['percentage'] = (cluster_counts['count'] / cluster_counts['total_count']) * 100
+
+    # Identify the 'incremento_teleassistenze' category with the highest count for each cluster
+    dominant_increment_per_cluster = cluster_counts.loc[cluster_counts.groupby('cluster')['count'].idxmax()]
+
+    # Extract the cluster, 'incremento_teleassistenze' category, and percentage
+    result = dominant_increment_per_cluster[['cluster', 'incremento_teleassistenze', 'percentage']]
+
     # Create an interactive bar chart with Plotly to visualize the distribution of teleassistance variations by cluster
     fig = px.bar(
         cluster_counts,
@@ -195,7 +208,7 @@ def teleassistance_variation_bar_chart(data):
         labels={'cluster': 'Cluster', 'percentage': 'Percentuale incremento (%)',
                 'incremento_teleassistenze': 'Teleassistance Variation'},
         barmode='group',
-    ),
+    )
 
     # Customize the chart layout, including the axis labels and legend title
     fig.update_layout(
@@ -219,19 +232,31 @@ def healthcare_professional_bar_chart(data):
     '''
 
     # Calculate the frequency of each type of healthcare professional per cluster
-    # This groups the data by cluster and type of healthcare professional and counts the occurrences
     cluster_counts = data.groupby(['cluster', 'tipologia_professionista_sanitario']).size().reset_index(name='count')
+
+    # Calculate the total for each cluster to obtain percentages
+    total_counts_per_cluster = cluster_counts.groupby('cluster')['count'].sum().reset_index(name='total_count')
+
+    # Merge total counts with clusters to calculate percentages
+    cluster_counts = cluster_counts.merge(total_counts_per_cluster, on='cluster')
+    cluster_counts['percentage'] = (cluster_counts['count'] / cluster_counts['total_count']) * 100
+
+    # Identify the dominant 'incremento_teleassistenze' category for each healthcare professional
+    dominant_increment_per_professional = cluster_counts.loc[
+        cluster_counts.groupby('tipologia_professionista_sanitario')['percentage'].idxmax()]
 
     # Create an interactive bar chart with Plotly to visualize the distribution of healthcare professionals by cluster
     fig = px.bar(
-        cluster_counts,
-        x='cluster',
-        y='count',
-        color='tipologia_professionista_sanitario',
-        title='Distribuzione dei professionisti sanitari per cluster',
-        labels={'cluster': 'Cluster', 'count': 'Numero di professionisti', 'tipologia_professionista_sanitario': 'Tipo di Professionista'},
-        barmode='group',
-        color_discrete_sequence=px.colors.qualitative.Pastel
+        dominant_increment_per_professional,
+        x='tipologia_professionista_sanitario',
+        y='percentage',
+        color='incremento_teleassistenze',
+        title='Distribuzione dei professionisti sanitari per cluster ed incremento teleassistenza',
+        labels={'tipologia_professionista_sanitario': 'Type of Professional',
+        'percentage': 'Increment Percentage (%)',
+        'cluster': 'Cluster',
+        'incremento_teleassistenze': 'Teleassistance Increment'},
+        color_discrete_sequence=px.colors.qualitative.Set2
     )
 
     # Customize the appearance of text labels inside the bars
@@ -243,9 +268,9 @@ def healthcare_professional_bar_chart(data):
 
     # Customize the chart
     fig.update_layout(
-        xaxis_title='Cluster',
-        yaxis_title='Numero di professionisti',
-        legend_title='Tipo di Professionista',
+        xaxis_title='Percentuale di incremento (%)',
+        yaxis_title='Tipo di professionista',
+        showlegend=True,  # Show the legend
         legend=dict(
             x=1.05,  # Horizontal position of the legend
             y=1,     # Vertical position of the legend
