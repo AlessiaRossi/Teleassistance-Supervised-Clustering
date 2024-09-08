@@ -232,7 +232,7 @@ def healthcare_professional_bar_chart(data):
     '''
 
     # Calculate the frequency of each type of healthcare professional per cluster
-    cluster_counts = data.groupby(['cluster', 'tipologia_professionista_sanitario']).size().reset_index(name='count')
+    cluster_counts = data.groupby(['cluster', 'tipologia_professionista_sanitario','incremento_teleassistenze']).size().reset_index(name='count')
 
     # Calculate the total for each cluster to obtain percentages
     total_counts_per_cluster = cluster_counts.groupby('cluster')['count'].sum().reset_index(name='total_count')
@@ -252,10 +252,10 @@ def healthcare_professional_bar_chart(data):
         y='percentage',
         color='incremento_teleassistenze',
         title='Distribuzione dei professionisti sanitari per cluster ed incremento teleassistenza',
-        labels={'tipologia_professionista_sanitario': 'Type of Professional',
-        'percentage': 'Increment Percentage (%)',
+        labels={'tipologia_professionista_sanitario': 'Tipo di professionista',
+        'percentage': 'Percentuale incremento(%)',
         'cluster': 'Cluster',
-        'incremento_teleassistenze': 'Teleassistance Increment'},
+        'incremento_teleassistenze': 'Incremento Teleassistenza'},
         color_discrete_sequence=px.colors.qualitative.Set2
     )
 

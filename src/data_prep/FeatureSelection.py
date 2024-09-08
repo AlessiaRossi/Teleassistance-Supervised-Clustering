@@ -1,5 +1,5 @@
 import pandas as pd
-from data_prep.DataCleaning import DataCleaning
+from src.data_prep.DataCleaning import DataCleaning
 import numpy as np
 from scipy.stats import chi2_contingency
 import seaborn as sns
