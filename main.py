@@ -168,6 +168,7 @@ def main():
 
         clustering_file_path = config['modelling_clustering']['clustering_file_path']
         clustering_file_path_all_feature = config['modelling_clustering']['clustering_file_path_all_feature']
+        
         df_clustered.to_parquet(clustering_file_path)
         complete_df_clustered.to_parquet(clustering_file_path_all_feature)
 
@@ -257,9 +258,10 @@ def main():
         print(max_cluster_per_region)
         print("Max Percentage per Region:")
         print(max_percentage_per_region)
+
         
         # Teleassistance Cluser Increment Chart
-        df_max_cluster_inc,df_max_percentage_increment_cla,fig= teleassistance_cluster_increments_chart(df_clustered)
+        df_max_cluster_inc,df_max_percentage_increment_cla,fig= teleassistance_cluster_increments_chart(complete_df_clustered)
         fig.write_image(charts_output_path + 'teleassistance_increment_cluster.png')
         
         # Print and log the values

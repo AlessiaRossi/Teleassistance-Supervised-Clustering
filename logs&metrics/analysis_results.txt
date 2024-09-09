@@ -182,3 +182,351 @@ Max incremento_teleassistenze category, and percentage for cluster :
 6         1             low_increment   78.965599
 9         2            high_increment   55.121327
 14        3             low_increment   84.787819
+
+Age Group Bar Chart Analysis:
+Cluster with the highest percentage for each age group:
+fascia_eta
+0-11     high_increment
+12-23    high_increment
+24-35     low_increment
+36-47     low_increment
+48-59     low_increment
+60-69     low_increment
+70+       low_increment
+dtype: object
+Highest percentage per age group:
+fascia_eta
+0-11     0
+12-23    0
+24-35    0
+36-47    1
+48-59    0
+60-69    1
+70+      3
+dtype: uint16
+Increment category with the highest percentage per age group :
+fascia_eta
+0-11     87.751509
+12-23    62.667903
+24-35    61.447346
+36-47    64.683816
+48-59    57.283819
+60-69    41.052561
+70+      70.763407
+dtype: float64
+
+:Teleassistance Variation Bar Chart Analysis:
+Max incremento_teleassistenze category, and percentage for cluster :
+    cluster incremento_teleassistenze  percentage
+1         0            high_increment   69.784008
+6         1             low_increment   78.965599
+9         2            high_increment   55.121327
+14        3             low_increment   84.787819
+
+Gender Distribution Analysis:
+Sex Crosstab:
+cluster          0          1         2          3
+sesso                                             
+female   43.400722  28.734371  8.395476  19.469431
+male     46.082110  27.864716  9.330930  16.722245
+Max Sex per Cluster:
+sesso
+female    0
+male      0
+dtype: uint16
+Max Percentage per Cluster:
+sesso
+female    43.400722
+male      46.082110
+dtype: float64
+
+Age Group Bar Chart Analysis:
+Cluster with the highest percentage for each age group:
+fascia_eta
+0-11     high_increment
+12-23    high_increment
+24-35     low_increment
+36-47     low_increment
+48-59     low_increment
+60-69     low_increment
+70+       low_increment
+dtype: object
+Highest percentage per age group:
+fascia_eta
+0-11     0
+12-23    0
+24-35    0
+36-47    1
+48-59    0
+60-69    1
+70+      3
+dtype: uint16
+Increment category with the highest percentage per age group :
+fascia_eta
+0-11     87.751509
+12-23    62.667903
+24-35    61.447346
+36-47    64.683816
+48-59    57.283819
+60-69    41.052561
+70+      70.763407
+dtype: float64
+
+:Teleassistance Variation Bar Chart Analysis:
+Max incremento_teleassistenze category, and percentage for cluster :
+    cluster incremento_teleassistenze  percentage
+1         0            high_increment   69.784008
+6         1             low_increment   78.965599
+9         2            high_increment   55.121327
+14        3             low_increment   84.787819
+
+Gender Distribution Analysis:
+Sex Crosstab:
+cluster          0          1         2          3
+sesso                                             
+female   43.400722  28.734371  8.395476  19.469431
+male     46.082110  27.864716  9.330930  16.722245
+Max Sex per Cluster:
+sesso
+female    0
+male      0
+dtype: uint16
+Max Percentage per Cluster:
+sesso
+female    43.400722
+male      46.082110
+dtype: float64
+
+Age Group Bar Chart Analysis:
+Cluster with the highest percentage for each age group:
+fascia_eta
+0-11     high_increment
+12-23    high_increment
+24-35     low_increment
+36-47     low_increment
+48-59     low_increment
+60-69     low_increment
+70+       low_increment
+dtype: object
+Highest percentage per age group:
+fascia_eta
+0-11     0
+12-23    0
+24-35    0
+36-47    1
+48-59    0
+60-69    1
+70+      3
+dtype: uint16
+Increment category with the highest percentage per age group :
+fascia_eta
+0-11     87.751509
+12-23    62.667903
+24-35    61.447346
+36-47    64.683816
+48-59    57.283819
+60-69    41.052561
+70+      70.763407
+dtype: float64
+
+:Teleassistance Variation Bar Chart Analysis:
+Max incremento_teleassistenze category, and percentage for cluster :
+    cluster incremento_teleassistenze  percentage
+1         0            high_increment   69.784008
+6         1             low_increment   78.965599
+9         2            high_increment   55.121327
+14        3             low_increment   84.787819
+
+Gender Distribution Analysis:
+Sex Crosstab:
+cluster          0          1         2          3
+sesso                                             
+female   43.400722  28.734371  8.395476  19.469431
+male     46.082110  27.864716  9.330930  16.722245
+Max Sex per Cluster:
+sesso
+female    0
+male      0
+dtype: uint16
+Max Percentage per Cluster:
+sesso
+female    43.400722
+male      46.082110
+dtype: float64
+
+Teleassistance Increment Cluster Analysis:
+Dominant cluster for each combination of year and increment type:
+anno  incremento_teleassistenze
+2019  decrement                    0
+      high_increment               0
+      low_increment                1
+      medium_increment             0
+2020  decrement                    0
+      high_increment               0
+      low_increment                1
+      medium_increment             0
+2021  decrement                    0
+      high_increment               0
+      low_increment                1
+      medium_increment             0
+2022  decrement                    0
+      high_increment               0
+      low_increment                1
+      medium_increment             1
+dtype: uint16
+Highest percentage for each combination of year and increment type:
+anno  incremento_teleassistenze
+2019  decrement                    79.340511
+      high_increment               82.828455
+      low_increment                53.464212
+      medium_increment             38.722272
+2020  decrement                    76.584400
+      high_increment               84.127073
+      low_increment                52.591044
+      medium_increment             41.351655
+2021  decrement                    77.479407
+      high_increment               83.819923
+      low_increment                53.210263
+      medium_increment             44.297528
+2022  decrement                    74.985937
+      high_increment               83.057508
+      low_increment                52.692308
+      medium_increment             38.340858
+dtype: float64
+
+Age Group Bar Chart Analysis:
+Cluster with the highest percentage for each age group:
+fascia_eta
+0-11     high_increment
+12-23    high_increment
+24-35     low_increment
+36-47     low_increment
+48-59     low_increment
+60-69     low_increment
+70+       low_increment
+dtype: object
+Highest percentage per age group:
+fascia_eta
+0-11     0
+12-23    0
+24-35    0
+36-47    1
+48-59    0
+60-69    1
+70+      3
+dtype: uint16
+Increment category with the highest percentage per age group :
+fascia_eta
+0-11     87.751509
+12-23    62.667903
+24-35    61.447346
+36-47    64.683816
+48-59    57.283819
+60-69    41.052561
+70+      70.763407
+dtype: float64
+
+:Teleassistance Variation Bar Chart Analysis:
+Max incremento_teleassistenze category, and percentage for cluster :
+    cluster incremento_teleassistenze  percentage
+1         0            high_increment   69.784008
+6         1             low_increment   78.965599
+9         2            high_increment   55.121327
+14        3             low_increment   84.787819
+
+Gender Distribution Analysis:
+Sex Crosstab:
+cluster          0          1         2          3
+sesso                                             
+female   43.400722  28.734371  8.395476  19.469431
+male     46.082110  27.864716  9.330930  16.722245
+Max Sex per Cluster:
+sesso
+female    0
+male      0
+dtype: uint16
+Max Percentage per Cluster:
+sesso
+female    43.400722
+male      46.082110
+dtype: float64
+
+Scatter Map Analysis:
+Max Cluster per Region:
+regione_residenza
+Abruzzo       0
+Basilicata    0
+Calabria      0
+Campania      1
+Lazio         1
+Liguria       0
+Lombardia     3
+Marche        0
+Molise        0
+Piemonte      0
+Puglia        0
+Sardegna      0
+Sicilia       0
+Toscana       0
+Umbria        0
+Veneto        0
+dtype: uint16
+Max Percentage per Region:
+regione_residenza
+Abruzzo       54.345111
+Basilicata    58.306189
+Calabria      48.869555
+Campania      31.467509
+Lazio         64.627125
+Liguria       50.804055
+Lombardia     51.394485
+Marche        48.677792
+Molise        56.708311
+Piemonte      55.505046
+Puglia        45.384593
+Sardegna      55.026672
+Sicilia       47.422489
+Toscana       45.762602
+Umbria        58.173516
+Veneto        75.064083
+dtype: float64
+
+Teleassistance Increment Cluster Analysis:
+Dominant cluster for each combination of year and increment type:
+anno  incremento_teleassistenze
+2019  decrement                    0
+      high_increment               0
+      low_increment                1
+      medium_increment             0
+2020  decrement                    0
+      high_increment               0
+      low_increment                1
+      medium_increment             0
+2021  decrement                    0
+      high_increment               0
+      low_increment                1
+      medium_increment             0
+2022  decrement                    0
+      high_increment               0
+      low_increment                1
+      medium_increment             1
+dtype: uint16
+Highest percentage for each combination of year and increment type:
+anno  incremento_teleassistenze
+2019  decrement                    79.340511
+      high_increment               82.828455
+      low_increment                53.464212
+      medium_increment             38.722272
+2020  decrement                    76.584400
+      high_increment               84.127073
+      low_increment                52.591044
+      medium_increment             41.351655
+2021  decrement                    77.479407
+      high_increment               83.819923
+      low_increment                53.210263
+      medium_increment             44.297528
+2022  decrement                    74.985937
+      high_increment               83.057508
+      low_increment                52.692308
+      medium_increment             38.340858
+dtype: float64

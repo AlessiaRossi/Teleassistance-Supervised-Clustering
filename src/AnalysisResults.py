@@ -58,11 +58,15 @@ def scatter_map(data):
     # Extract the max percentages for each region
     max_percentage_per_region = region_cluster_crosstab.max(axis=1)
 
+    # Identify the incremento_teleassistenze with the highest percentage for each region
+    max_increment_teleassistenze = data.groupby('regione_residenza')['incremento_teleassistenze'].max()
+
     # Create a DataFrame for visualization containing the region, dominant cluster, and percentage
     map_data = pd.DataFrame({
         'regione_residenza': max_cluster_per_region.index,
         'cluster': max_cluster_per_region.values,
-        'percentage': max_percentage_per_region.values
+        'percentage': max_percentage_per_region.values,
+        'incremento_teleassistenze': max_increment_teleassistenze.values  # Incremento teleassistenza
     })
 
     # Merge with coordinates to plot the map
