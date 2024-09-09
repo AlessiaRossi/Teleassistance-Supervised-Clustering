@@ -294,6 +294,7 @@ def gender_distribution_chart(data):
         pandas.Series: The dominant percentages of each gender within each cluster
         plotly.graph_objects.Figure: The generated bar chart figure.
     '''
+    print(data.columns)
 
     # Calculate the percentage of each gender within each cluster
     # The result is a crosstab that shows the gender distribution within each cluster

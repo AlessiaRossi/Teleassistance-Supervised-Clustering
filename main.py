@@ -174,7 +174,10 @@ def main():
         logging.info('Clustering Execution Completed')
     elif os.path.exists(config['modelling_clustering']['clustering_file_path']):
         clustering_file_path = config['modelling_clustering']['clustering_file_path']
+        clustering_file_path_all_feature = config['modelling_clustering']['clustering_file_path_all_feature']
+
         df_clustered = pd.read_parquet(clustering_file_path)
+        complete_df_clustered = pd.read_parquet(clustering_file_path_all_feature)
     else:
         raise FileNotFoundError('The clustered_data.parquet file does not exist. Please enable the clustering process to create it.')
     
@@ -227,7 +230,7 @@ def main():
         healthcare_fig.write_image(charts_output_path + 'healthcare_professional_bar_chart.png')
 
         # Gender Distribution Bar Chart
-        sex_crosstab, max_sex_per_cluster, max_percentage_per_cluster, gender_fig = gender_distribution_chart(df_clustered)
+        sex_crosstab, max_sex_per_cluster, max_percentage_per_cluster, gender_fig = gender_distribution_chart(complete_df_clustered)
         gender_fig.write_image(charts_output_path + 'gender_distribution_bar_chart.png')
 
         # Print and log the values
