@@ -210,7 +210,7 @@ def main():
         age_group_fig.write_image(charts_output_path + 'age_group_bar_chart.png')
 
         # Print and log the values
-        with open(config['analysis']['analysis_file_path'], 'a') as file:
+        with open(config['analysis']['analysis_file_path'], 'w') as file:
             file.write(f'\nAge Group Bar Chart Analysis:\n')
             file.write(f'Cluster with the highest percentage for each age group:\n{df_max_cluster}\n')
             file.write(f'Increment category with the highest percentage per age group :\n{df_max_increment}\n')
@@ -270,7 +270,7 @@ def main():
 
         
         # Year Cluser Increment Chart
-        df_max_cluster_inc,df_max_percentage_increment_cla,fig= year_cluster_increments_chart(complete_df_clustered)
+        df_max_cluster_inc, df_max_percentage_increment_cla, df_crosstab_cluster, fig = year_cluster_increments_chart(complete_df_clustered)
         fig.write_image(charts_output_path + 'teleassistance_increment_cluster.png')
         
         # Print and log the values

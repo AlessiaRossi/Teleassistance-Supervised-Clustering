@@ -10,80 +10,6 @@ fascia_eta
 60-69     low_increment
 70+       low_increment
 dtype: object
-Highest percentage per age group:
-fascia_eta
-0-11     3
-12-23    0
-24-35    1
-36-47    1
-48-59    1
-60-69    0
-70+      2
-dtype: uint16
-Increment category with the highest percentage per age group :
-fascia_eta
-0-11     87.749760
-12-23    62.665131
-24-35    61.687614
-36-47    63.933026
-48-59    57.288791
-60-69    41.055122
-70+      70.763068
-dtype: float64
-
-Age Group Bar Chart Analysis:
-Cluster with the highest percentage for each age group:
-fascia_eta
-0-11     high_increment
-12-23    high_increment
-24-35     low_increment
-36-47     low_increment
-48-59     low_increment
-60-69     low_increment
-70+       low_increment
-dtype: object
-Highest percentage per age group:
-fascia_eta
-0-11     3
-12-23    0
-24-35    1
-36-47    1
-48-59    1
-60-69    0
-70+      2
-dtype: uint16
-Increment category with the highest percentage per age group :
-fascia_eta
-0-11     87.749760
-12-23    62.665131
-24-35    61.687614
-36-47    63.933026
-48-59    57.288791
-60-69    41.055122
-70+      70.763068
-dtype: float64
-
-Age Group Bar Chart Analysis:
-Cluster with the highest percentage for each age group:
-fascia_eta
-0-11     high_increment
-12-23    high_increment
-24-35     low_increment
-36-47     low_increment
-48-59     low_increment
-60-69     low_increment
-70+       low_increment
-dtype: object
-Highest percentage per age group:
-fascia_eta
-0-11     0
-12-23    0
-24-35    0
-36-47    1
-48-59    0
-60-69    1
-70+      3
-dtype: uint16
 Increment category with the highest percentage per age group :
 fascia_eta
 0-11     87.751509
@@ -94,27 +20,7 @@ fascia_eta
 60-69    41.052561
 70+      70.763407
 dtype: float64
-
-:Teleassistance Variation Bar Chart Analysis:
-Max incremento_teleassistenze category, and percentage for cluster :
-    cluster incremento_teleassistenze  percentage
-1         0            high_increment   69.784008
-6         1             low_increment   78.965599
-9         2            high_increment   55.121327
-14        3             low_increment   84.787819
-
-Age Group Bar Chart Analysis:
-Cluster with the highest percentage for each age group:
-fascia_eta
-0-11     high_increment
-12-23    high_increment
-24-35     low_increment
-36-47     low_increment
-48-59     low_increment
-60-69     low_increment
-70+       low_increment
-dtype: object
-Highest percentage per age group:
+Highest percentage of increment type per age group:
 fascia_eta
 0-11     0
 12-23    0
@@ -124,354 +30,88 @@ fascia_eta
 60-69    1
 70+      3
 dtype: uint16
-Increment category with the highest percentage per age group :
-fascia_eta
-0-11     87.751509
-12-23    62.667903
-24-35    61.447346
-36-47    64.683816
-48-59    57.283819
-60-69    41.052561
-70+      70.763407
-dtype: float64
+Percentage of samples of increment type per age group:
+incremento_teleassistenze  decrement  high_increment  low_increment  medium_increment
+fascia_eta                                                                           
+0-11                        0.000000       87.751509       0.102083         12.146408
+12-23                       0.000000       62.667903       0.508571         36.823526
+24-35                       6.480435       21.739856      61.447346         10.332363
+36-47                       8.651527       23.105908      64.683816          3.558749
+48-59                      18.607907       18.567905      57.283819          5.540369
+60-69                       0.601607       21.694497      41.052561         36.651335
+70+                         1.205380       22.993941      70.763407          5.037272
+Percentage of samples of cluster per age group:
+incremento_teleassistenze  decrement  high_increment  low_increment  medium_increment
+fascia_eta                                                                           
+0-11                        0.000000       87.751509       0.102083         12.146408
+12-23                       0.000000       62.667903       0.508571         36.823526
+24-35                       6.480435       21.739856      61.447346         10.332363
+36-47                       8.651527       23.105908      64.683816          3.558749
+48-59                      18.607907       18.567905      57.283819          5.540369
+60-69                       0.601607       21.694497      41.052561         36.651335
+70+                         1.205380       22.993941      70.763407          5.037272
 
 :Teleassistance Variation Bar Chart Analysis:
-Max incremento_teleassistenze category, and percentage for cluster :
+Frequency of incremento_teleassistenze categories per cluster:: 
+    cluster incremento_teleassistenze   count  total_count  percentage
+0         0                 decrement   18445       205517    8.974927
+1         0            high_increment  143418       205517   69.784008
+2         0             low_increment   14858       205517    7.229572
+3         0          medium_increment   28796       205517   14.011493
+4         1                 decrement    1399       130491    1.072105
+5         1            high_increment    2164       130491    1.658352
+6         1             low_increment  103043       130491   78.965599
+7         1          medium_increment   23885       130491   18.303944
+8         2                 decrement    2393        40634    5.889157
+9         2            high_increment   22398        40634   55.121327
+10        2             low_increment    5539        40634   13.631442
+11        2          medium_increment   10304        40634   25.358075
+12        3                 decrement    1674        83867    1.996018
+13        3            high_increment    3495        83867    4.167313
+14        3             low_increment   71109        83867   84.787819
+15        3          medium_increment    7589        83867    9.048851
+Cluster with the highest percentage for each increment category: 
     cluster incremento_teleassistenze  percentage
 1         0            high_increment   69.784008
 6         1             low_increment   78.965599
 9         2            high_increment   55.121327
 14        3             low_increment   84.787819
 
-Age Group Bar Chart Analysis:
-Cluster with the highest percentage for each age group:
-fascia_eta
-0-11     high_increment
-12-23    high_increment
-24-35     low_increment
-36-47     low_increment
-48-59     low_increment
-60-69     low_increment
-70+       low_increment
-dtype: object
-Highest percentage per age group:
-fascia_eta
-0-11     0
-12-23    0
-24-35    0
-36-47    1
-48-59    0
-60-69    1
-70+      3
-dtype: uint16
-Increment category with the highest percentage per age group :
-fascia_eta
-0-11     87.751509
-12-23    62.667903
-24-35    61.447346
-36-47    64.683816
-48-59    57.283819
-60-69    41.052561
-70+      70.763407
-dtype: float64
-
-:Teleassistance Variation Bar Chart Analysis:
-Max incremento_teleassistenze category, and percentage for cluster :
-    cluster incremento_teleassistenze  percentage
-1         0            high_increment   69.784008
-6         1             low_increment   78.965599
-9         2            high_increment   55.121327
-14        3             low_increment   84.787819
-
-Age Group Bar Chart Analysis:
-Cluster with the highest percentage for each age group:
-fascia_eta
-0-11     high_increment
-12-23    high_increment
-24-35     low_increment
-36-47     low_increment
-48-59     low_increment
-60-69     low_increment
-70+       low_increment
-dtype: object
-Highest percentage per age group:
-fascia_eta
-0-11     0
-12-23    0
-24-35    0
-36-47    1
-48-59    0
-60-69    1
-70+      3
-dtype: uint16
-Increment category with the highest percentage per age group :
-fascia_eta
-0-11     87.751509
-12-23    62.667903
-24-35    61.447346
-36-47    64.683816
-48-59    57.283819
-60-69    41.052561
-70+      70.763407
-dtype: float64
-
-:Teleassistance Variation Bar Chart Analysis:
-Max incremento_teleassistenze category, and percentage for cluster :
-    cluster incremento_teleassistenze  percentage
-1         0            high_increment   69.784008
-6         1             low_increment   78.965599
-9         2            high_increment   55.121327
-14        3             low_increment   84.787819
+: Healthcare Professional Bar Chart Analysis:
+Frequency of each type of healthcare professional per teleassistance increment and dominant cluster: 
+     cluster                 tipologia_professionista_sanitario incremento_teleassistenze  count  total_count  percentage
+91         2                               Assistente sanitario            high_increment   1365        40634    3.359256
+94         2                                           Dietista            high_increment   4312        40634   10.611803
+97         2                            Educatore Professionale            high_increment    319        40634    0.785057
+100        2                                     Fisioterapista            high_increment   6176        40634   15.199094
+141        3                                         Infermiere             low_increment  46805        83867   55.808602
+106        2                                        Logopedista            high_increment   2138        40634    5.261604
+109        2                                        Ostetrica/o            high_increment    740        40634    1.821135
+112        2                                           Podologo            high_increment    350        40634    0.861348
+157        3                                          Psicologo             low_increment   7600        83867    9.061967
+118        2                Tecnico Riabilitazione Psichiatrica            high_increment    377        40634    0.927794
+121        2                            Terapista Occupazionale            high_increment    378        40634    0.930255
+124        2  Terapista della Neuro e Psicomotricità dell'Et...            high_increment    302        40634    0.743220
 
 Gender Distribution Analysis:
-Sex Crosstab:
+Percentage of each gender within each cluster:
 cluster          0          1         2          3
 sesso                                             
 female   43.400722  28.734371  8.395476  19.469431
 male     46.082110  27.864716  9.330930  16.722245
-Max Sex per Cluster:
+Gender with the highest percentage for each cluster:
 sesso
 female    0
 male      0
 dtype: uint16
-Max Percentage per Cluster:
-sesso
-female    43.400722
-male      46.082110
-dtype: float64
-
-Age Group Bar Chart Analysis:
-Cluster with the highest percentage for each age group:
-fascia_eta
-0-11     high_increment
-12-23    high_increment
-24-35     low_increment
-36-47     low_increment
-48-59     low_increment
-60-69     low_increment
-70+       low_increment
-dtype: object
-Highest percentage per age group:
-fascia_eta
-0-11     0
-12-23    0
-24-35    0
-36-47    1
-48-59    0
-60-69    1
-70+      3
-dtype: uint16
-Increment category with the highest percentage per age group :
-fascia_eta
-0-11     87.751509
-12-23    62.667903
-24-35    61.447346
-36-47    64.683816
-48-59    57.283819
-60-69    41.052561
-70+      70.763407
-dtype: float64
-
-:Teleassistance Variation Bar Chart Analysis:
-Max incremento_teleassistenze category, and percentage for cluster :
-    cluster incremento_teleassistenze  percentage
-1         0            high_increment   69.784008
-6         1             low_increment   78.965599
-9         2            high_increment   55.121327
-14        3             low_increment   84.787819
-
-Gender Distribution Analysis:
-Sex Crosstab:
-cluster          0          1         2          3
-sesso                                             
-female   43.400722  28.734371  8.395476  19.469431
-male     46.082110  27.864716  9.330930  16.722245
-Max Sex per Cluster:
-sesso
-female    0
-male      0
-dtype: uint16
-Max Percentage per Cluster:
-sesso
-female    43.400722
-male      46.082110
-dtype: float64
-
-Age Group Bar Chart Analysis:
-Cluster with the highest percentage for each age group:
-fascia_eta
-0-11     high_increment
-12-23    high_increment
-24-35     low_increment
-36-47     low_increment
-48-59     low_increment
-60-69     low_increment
-70+       low_increment
-dtype: object
-Highest percentage per age group:
-fascia_eta
-0-11     0
-12-23    0
-24-35    0
-36-47    1
-48-59    0
-60-69    1
-70+      3
-dtype: uint16
-Increment category with the highest percentage per age group :
-fascia_eta
-0-11     87.751509
-12-23    62.667903
-24-35    61.447346
-36-47    64.683816
-48-59    57.283819
-60-69    41.052561
-70+      70.763407
-dtype: float64
-
-:Teleassistance Variation Bar Chart Analysis:
-Max incremento_teleassistenze category, and percentage for cluster :
-    cluster incremento_teleassistenze  percentage
-1         0            high_increment   69.784008
-6         1             low_increment   78.965599
-9         2            high_increment   55.121327
-14        3             low_increment   84.787819
-
-Gender Distribution Analysis:
-Sex Crosstab:
-cluster          0          1         2          3
-sesso                                             
-female   43.400722  28.734371  8.395476  19.469431
-male     46.082110  27.864716  9.330930  16.722245
-Max Sex per Cluster:
-sesso
-female    0
-male      0
-dtype: uint16
-Max Percentage per Cluster:
-sesso
-female    43.400722
-male      46.082110
-dtype: float64
-
-Teleassistance Increment Cluster Analysis:
-Dominant cluster for each combination of year and increment type:
-anno  incremento_teleassistenze
-2019  decrement                    0
-      high_increment               0
-      low_increment                1
-      medium_increment             0
-2020  decrement                    0
-      high_increment               0
-      low_increment                1
-      medium_increment             0
-2021  decrement                    0
-      high_increment               0
-      low_increment                1
-      medium_increment             0
-2022  decrement                    0
-      high_increment               0
-      low_increment                1
-      medium_increment             1
-dtype: uint16
-Highest percentage for each combination of year and increment type:
-anno  incremento_teleassistenze
-2019  decrement                    79.340511
-      high_increment               82.828455
-      low_increment                53.464212
-      medium_increment             38.722272
-2020  decrement                    76.584400
-      high_increment               84.127073
-      low_increment                52.591044
-      medium_increment             41.351655
-2021  decrement                    77.479407
-      high_increment               83.819923
-      low_increment                53.210263
-      medium_increment             44.297528
-2022  decrement                    74.985937
-      high_increment               83.057508
-      low_increment                52.692308
-      medium_increment             38.340858
-dtype: float64
-
-Age Group Bar Chart Analysis:
-Cluster with the highest percentage for each age group:
-fascia_eta
-0-11     high_increment
-12-23    high_increment
-24-35     low_increment
-36-47     low_increment
-48-59     low_increment
-60-69     low_increment
-70+       low_increment
-dtype: object
-Highest percentage per age group:
-fascia_eta
-0-11     0
-12-23    0
-24-35    0
-36-47    1
-48-59    0
-60-69    1
-70+      3
-dtype: uint16
-Increment category with the highest percentage per age group :
-fascia_eta
-0-11     87.751509
-12-23    62.667903
-24-35    61.447346
-36-47    64.683816
-48-59    57.283819
-60-69    41.052561
-70+      70.763407
-dtype: float64
-
-:Teleassistance Variation Bar Chart Analysis:
-Max incremento_teleassistenze category, and percentage for cluster :
-    cluster incremento_teleassistenze  percentage
-1         0            high_increment   69.784008
-6         1             low_increment   78.965599
-9         2            high_increment   55.121327
-14        3             low_increment   84.787819
-
-Gender Distribution Analysis:
-Sex Crosstab:
-cluster          0          1         2          3
-sesso                                             
-female   43.400722  28.734371  8.395476  19.469431
-male     46.082110  27.864716  9.330930  16.722245
-Max Sex per Cluster:
-sesso
-female    0
-male      0
-dtype: uint16
-Max Percentage per Cluster:
+Highest percentage for of samples for each cluster:
 sesso
 female    43.400722
 male      46.082110
 dtype: float64
 
 Scatter Map Analysis:
-Max Cluster per Region:
-regione_residenza
-Abruzzo       0
-Basilicata    0
-Calabria      0
-Campania      1
-Lazio         1
-Liguria       0
-Lombardia     3
-Marche        0
-Molise        0
-Piemonte      0
-Puglia        0
-Sardegna      0
-Sicilia       0
-Toscana       0
-Umbria        0
-Veneto        0
-dtype: uint16
-Max Percentage per Region:
+Type of increment with the highest percentage for each region::
 regione_residenza
 Abruzzo       54.345111
 Basilicata    58.306189
@@ -490,8 +130,46 @@ Toscana       45.762602
 Umbria        58.173516
 Veneto        75.064083
 dtype: float64
+Cluster with the highest percentage for each region 
+regione_residenza
+Abruzzo       medium_increment
+Basilicata    medium_increment
+Calabria      medium_increment
+Campania      medium_increment
+Lazio         medium_increment
+Liguria       medium_increment
+Lombardia     medium_increment
+Marche        medium_increment
+Molise        medium_increment
+Piemonte      medium_increment
+Puglia        medium_increment
+Sardegna      medium_increment
+Sicilia       medium_increment
+Toscana       medium_increment
+Umbria        medium_increment
+Veneto        medium_increment
+Name: incremento_teleassistenze, dtype: object
+Percentage of each region within each cluster:
+regione_residenza
+Abruzzo       0
+Basilicata    0
+Calabria      0
+Campania      1
+Lazio         1
+Liguria       0
+Lombardia     3
+Marche        0
+Molise        0
+Piemonte      0
+Puglia        0
+Sardegna      0
+Sicilia       0
+Toscana       0
+Umbria        0
+Veneto        0
+dtype: uint16
 
-Teleassistance Increment Cluster Analysis:
+Year Increment Cluster Analysis:
 Dominant cluster for each combination of year and increment type:
 anno  incremento_teleassistenze
 2019  decrement                    0
