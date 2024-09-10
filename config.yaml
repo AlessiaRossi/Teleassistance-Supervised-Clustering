@@ -33,12 +33,12 @@ modelling_clustering:
 
 # Phase 5
 metrics:
-  metrics_enabled: True
+  metrics_enabled: False
   metrics_file_path: "logs&metrics/metrics.txt"
 
 # Phase 6
 analysis:
-  analysis_enabled: False
+  analysis_enabled: True
   analysis_file_path: "logs&metrics/analysis_results.txt"
   charts_output_path: "graphs/analysis/"
 

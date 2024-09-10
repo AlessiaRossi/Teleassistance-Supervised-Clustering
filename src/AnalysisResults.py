@@ -41,8 +41,9 @@ def scatter_map(data):
     }
 
     # Convert the dictionary to a DataFrame for easier manipulatio
-    coords_df = pd.DataFrame.from_dict(region_coords, orient='index', columns=['latitude', 'longitude']).reset_index()  # Reset the index, so 'regione_residenza' becomes a column
-    coords_df.rename(columns={'index': 'regione_residenza'}, inplace=True) # Rename the columns
+    coords_df = pd.DataFrame.from_dict(region_coords, orient='index', columns=['latitude',
+                                                                               'longitude']).reset_index()  # Reset the index, so 'regione_residenza' becomes a column
+    coords_df.rename(columns={'index': 'regione_residenza'}, inplace=True)  # Rename the columns
 
     # Merge the data with the coordinates based on the region of residence
     # This step adds latitude and longitude to the main data for each region
@@ -81,9 +82,9 @@ def scatter_map(data):
         size='percentage',
         hover_name='regione_residenza',
         hover_data={
-        'cluster': True,  # Mostra il numero del cluster
-        'percentage': ':.2f',  # Mostra la percentuale di incremento
-        'incremento_teleassistenze': True  # Mostra incremento teleassistenza
+            'cluster': True,  # Mostra il numero del cluster
+            'percentage': ':.2f',  # Mostra la percentuale di incremento
+            'incremento_teleassistenze': True  # Mostra incremento teleassistenza
         },
         title='Cluster con percentuale di appartenenza maggiore per regione in Italia',
         color_continuous_scale=px.colors.cyclical.IceFire,
@@ -97,7 +98,7 @@ def scatter_map(data):
             center=dict(lat=41.8719, lon=12.5674),  # Centered on Italy
             zoom=5
         ),
-        margin={"r":0,"t":0,"l":0,"b":0},
+        margin={"r": 0, "t": 0, "l": 0, "b": 0},
         legend=dict(
             x=0.99,  # Positioned at the top right
             y=0.99,  # Positioned at the top right
@@ -110,9 +111,9 @@ def scatter_map(data):
             borderwidth=1  # Border width
         )
     )
-    
-    #fig.savefig('graphs/scatter_map.png')
-    return max_cluster_per_region, max_percentage_per_region,fig
+
+    # fig.savefig('graphs/scatter_map.png')
+    return max_increment_teleassistenze, max_cluster_per_region, max_percentage_per_region, fig
 
 
 def age_group_bar_chart(data):
@@ -130,12 +131,13 @@ def age_group_bar_chart(data):
 
     # Create crosstab for teleassistance increment per age group
     df_crosstab_increment = pd.crosstab(data['fascia_eta'], data['incremento_teleassistenze'], normalize='index') * 100
-    
+
     # Identify the increment category with the highest percentage per age group
     df_max_increment = df_crosstab_increment.idxmax(axis=1)
+    ## Identify the highest percentage of increment type per age group
     df_max_percentage_increment = df_crosstab_increment.max(axis=1)
 
-    #Create crosstab for clusters per age group
+    # Create crosstab for clusters per age group
     df_crosstab_cluster = pd.crosstab(data['fascia_eta'], data['cluster'], normalize='index') * 100
 
     # Identify the cluster with the highest percentage per age group
@@ -157,7 +159,8 @@ def age_group_bar_chart(data):
         color='incremento_teleassistenze',
         text='dominant_cluster',  # Add dominant cluster as text inside bars
         title='Distrbuzione delle fasce d\'età per variazione teleassistenza e cluster dominante',
-        labels={'age_group': 'Fascia età', 'percentage_increment': 'Percentuale massima di appartenenza al cluster (%)', 'incremento_teleassistenze': 'Variazione Teleassistenza'},
+        labels={'age_group': 'Fascia età', 'percentage_increment': 'Percentuale massima di appartenenza al cluster (%)',
+                'incremento_teleassistenze': 'Variazione Teleassistenza'},
         color_discrete_sequence=px.colors.qualitative.Pastel
     )
 
@@ -168,9 +171,11 @@ def age_group_bar_chart(data):
         xaxis_tickangle=-45,
         width=900  # Increase the width of the chart
     )
+    # Show text (cluster numbers) on top of the bars
+    fig.update_traces(textposition='outside')
 
-    #fig.savefig('graphs/age_group_bar_chart.png')
-    return df_max_increment,df_max_percentage_increment,df_max_cluster, fig
+    # fig.savefig('graphs/age_group_bar_chart.png')
+    return df_max_increment, df_max_percentage_increment, df_max_cluster,df_crosstab_cluster,df_crosstab_increment,fig
 
 
 def teleassistance_variation_bar_chart(data):
@@ -186,7 +191,6 @@ def teleassistance_variation_bar_chart(data):
     '''
 
     # Calculate the frequency of each 'incremento_teleassistenze' category per cluster
-    # This groups the data by cluster and teleassistance variation and counts the occurrences
     cluster_counts = data.groupby(['cluster', 'incremento_teleassistenze']).size().reset_index(name='count')
 
     # Calculate the total count per cluster to compute percentages
@@ -220,9 +224,9 @@ def teleassistance_variation_bar_chart(data):
         yaxis_title='Percentuale di incremento (%)',
         legend_title='Variazione Teleassistenza',
     )
-    
-    #fig.savefig('graphs/teleassistance_variation_bar_chart.png')
-    return result, fig
+
+    # fig.savefig('graphs/teleassistance_variation_bar_chart.png')
+    return cluster_counts , result, fig
 
 
 def healthcare_professional_bar_chart(data):
@@ -236,7 +240,8 @@ def healthcare_professional_bar_chart(data):
     '''
 
     # Calculate the frequency of each type of healthcare professional per cluster
-    cluster_counts = data.groupby(['cluster', 'tipologia_professionista_sanitario','incremento_teleassistenze']).size().reset_index(name='count')
+    cluster_counts = data.groupby(
+        ['cluster', 'tipologia_professionista_sanitario', 'incremento_teleassistenze']).size().reset_index(name='count')
 
     # Calculate the total for each cluster to obtain percentages
     total_counts_per_cluster = cluster_counts.groupby('cluster')['count'].sum().reset_index(name='total_count')
@@ -255,11 +260,12 @@ def healthcare_professional_bar_chart(data):
         x='tipologia_professionista_sanitario',
         y='percentage',
         color='incremento_teleassistenze',
-        title='Distribuzione dei professionisti sanitari per cluster ed incremento teleassistenza',
+        text='cluster',
+        title='Distribuzione dei professionisti sanitari per incremento teleassistenza e cluster dominante ',
         labels={'tipologia_professionista_sanitario': 'Tipo di professionista',
-        'percentage': 'Percentuale incremento(%)',
-        'cluster': 'Cluster',
-        'incremento_teleassistenze': 'Incremento Teleassistenza'},
+                'percentage': 'Percentuale incremento(%)',
+                'cluster': 'Cluster',
+                'incremento_teleassistenze': 'Incremento Teleassistenza'},
         color_discrete_sequence=px.colors.qualitative.Set2
     )
 
@@ -272,18 +278,18 @@ def healthcare_professional_bar_chart(data):
 
     # Customize the chart
     fig.update_layout(
-        xaxis_title='Percentuale di incremento (%)',
-        yaxis_title='Tipo di professionista',
+        xaxis_title='Tipo di professionista sanitario',
+        yaxis_title='Percentuale di incremento (%)',
         showlegend=True,  # Show the legend
         legend=dict(
             x=1.05,  # Horizontal position of the legend
-            y=1,     # Vertical position of the legend
+            y=1,  # Vertical position of the legend
             traceorder='normal'  # Order of items in the legend
         )
     )
 
-    #fig.savefig('graphs/healtcare_professional_bar_chart.png')
-    return fig
+    # fig.savefig('graphs/healtcare_professional_bar_chart.png')
+    return dominant_increment_per_professional , fig
 
 
 def gender_distribution_chart(data):
@@ -303,7 +309,7 @@ def gender_distribution_chart(data):
     # Calculate the percentage of each gender within each cluster
     # The result is a crosstab that shows the gender distribution within each cluster
     sex_crosstab = pd.crosstab(data['sesso'], data['cluster'], normalize='index') * 100
-    
+
     max_sex_per_cluster = sex_crosstab.idxmax(axis=1)
 
     # Extract the corresponding highest percentages for each cluster
@@ -331,13 +337,13 @@ def gender_distribution_chart(data):
         legend_title='Sesso',
         bargap=0.4
     )
-    
-    #fig.savefig('graphs/gender_distribution_chart.png')
+
+    # fig.savefig('graphs/gender_distribution_chart.png')
     return sex_crosstab, max_sex_per_cluster, max_percentage_per_cluster, fig
 
 
-def teleassistance_cluster_increments_chart(data):
-  """ Analyzes teleassistance data, identifies dominant clusters for each year-increment combination,
+def year_cluster_increments_chart(data):
+    """ Analyzes teleassistance data, identifies dominant clusters for each year-increment combination,
   and creates a bar chart visualizing the distribution.
 
     Args:
@@ -349,51 +355,55 @@ def teleassistance_cluster_increments_chart(data):
         plotly.graph_objects.Figure: The generated bar chart figure.
   """
 
-  # Create crosstab for percentage and identify dominant clusters
-  df_crosstab_increment = (
-      pd.crosstab([data['anno'], data['incremento_teleassistenze']], data['cluster'], normalize='index') * 100
-  )
-  # Identify the cluster with the highest percentage for each year-increment combination
-  df_max_cluster_inc = df_crosstab_increment.idxmax(axis=1)
-  # Extract the corresponding highest percentages for each year-increment combination
-  df_max_percentage_increment_cla = df_crosstab_increment.max(axis=1)
+    # Create crosstab for percentage and identify dominant clusters
+    df_crosstab_increment = (
+            pd.crosstab([data['anno'], data['incremento_teleassistenze']], data['cluster'], normalize='index') * 100
+    )
+    # Identify the cluster with the highest percentage for each year-increment combination
+    df_max_cluster_inc = df_crosstab_increment.idxmax(axis=1)
+    # Identify the highest percentage of samples of increment type for each combination of year and increment type
+    df_crosstab_cluster = (
+            pd.crosstab([data['anno'], data['incremento_teleassistenze']], data['cluster'], normalize='index') * 100
+    )
+    # Identify the percentage of samples of increment type for each combination of year and increment type
+    df_max_percentage_increment_cla = df_crosstab_increment.max(axis=1)
 
-  # Create a DataFrame with bar chart data
-  bar_data = pd.DataFrame({
-      'anno': [index[0] for index in df_crosstab_increment.index],
-      'incremento_teleassistenze': [index[1] for index in df_crosstab_increment.index],
-      'percentage_increment': df_max_percentage_increment_cla.values,
-      'dominant_cluster': df_max_cluster_inc.values
-  })
+    # Create a DataFrame with bar chart data
+    bar_data = pd.DataFrame({
+        'anno': [index[0] for index in df_crosstab_increment.index],
+        'incremento_teleassistenze': [index[1] for index in df_crosstab_increment.index],
+        'percentage_increment': df_max_percentage_increment_cla.values,
+        'dominant_cluster': df_max_cluster_inc.values
+    })
 
-  # Create the bar chart with Plotly
-  fig = px.bar(
-      bar_data,
-      x='anno',
-      y='percentage_increment',
-      color='incremento_teleassistenze',
-      text='dominant_cluster',
-      barmode='group',
-      title='Distribuzione delle variazioni delle teleassistenze per anno e cluster dominante',
-      labels={'anno': 'Anno', 'percentage_increment': 'Percentuale Incremento (%)', 'incremento_teleassistenze': 'Variazione Teleassistenza'},
-      color_discrete_sequence=px.colors.qualitative.Pastel
-  )
+    # Create the bar chart with Plotly
+    fig = px.bar(
+        bar_data,
+        x='anno',
+        y='percentage_increment',
+        color='incremento_teleassistenze',
+        text='dominant_cluster',
+        barmode='group',
+        title='Distribuzione delle variazioni delle teleassistenze per anno e cluster dominante',
+        labels={'anno': 'Anno', 'percentage_increment': 'Percentuale Incremento (%)',
+                'incremento_teleassistenze': 'Variazione Teleassistenza'},
+        color_discrete_sequence=px.colors.qualitative.Pastel
+    )
 
-  # Customize the chart layout
-  fig.update_layout(
-      xaxis_title='Anno',
-      yaxis_title='Percentuale Incremento (%)',
-      xaxis_tickangle=-45,
-      width=900
-  )
+    # Customize the chart layout
+    fig.update_layout(
+        xaxis_title='Anno',
+        yaxis_title='Percentuale Incremento (%)',
+        xaxis_tickangle=-45,
+        width=900
+    )
 
-  # Show dominant cluster above bars
-  fig.update_traces(textposition='outside')
+    # Show dominant cluster above bars
+    fig.update_traces(textposition='outside')
 
-  #fig.savefig('graphs/teleassistance_cluster_increments_chart.png')
+    # fig.savefig('graphs/teleassistance_cluster_increments_chart.png')
 
-  return df_max_cluster_inc,df_max_percentage_increment_cla, fig
-
+    return df_max_cluster_inc, df_max_percentage_increment_cla,df_crosstab_cluster, fig
 
 
 '''def chart_execution(df:pd.DataFrame, config:dict): 
@@ -424,6 +434,3 @@ def teleassistance_cluster_increments_chart(data):
 
     return max_cluster_per_region, max_percentage_per_region, df_max_increment, df_max_percentage_increment, df_max_cluster, result,sex_crosstab,max_sex_per_cluster,max_percentage_per_cluster,df_max_cluster_inc,df_max_percentage_increment
 '''
-
-
-   
