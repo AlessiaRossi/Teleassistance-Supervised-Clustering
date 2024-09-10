@@ -226,7 +226,7 @@ def main():
 
         with open(config['analysis']['analysis_file_path'], 'a') as file:
             file.write(f'\n:Teleassistance Variation Bar Chart Analysis:\n')
-            file.write(f'Frequency of incremento_teleassistenze categories per cluster:: \n{cluster_counts}\n')
+            file.write(f'Frequency of incremento_teleassistenze categories per cluster: \n{cluster_counts}\n')
             file.write(f'Cluster with the highest percentage for each increment category: \n{result}\n')
 
 
@@ -238,16 +238,21 @@ def main():
             file.write(f'\n: Healthcare Professional Bar Chart Analysis:\n')
             file.write(f'Frequency of each type of healthcare professional per teleassistance increment and dominant cluster: \n{dominant_increment_per_professional}\n')
 
-        # Gender Distribution Bar Chart
+        # Gender-Cluster Distribution Bar Chart
         sex_crosstab, max_sex_per_cluster, max_percentage_per_cluster, gender_fig = gender_distribution_chart(complete_df_clustered)
         gender_fig.write_image(charts_output_path + 'gender_distribution_bar_chart.png')
-
+        # Gender-Increment Distribution Bar Chart
+        sex_crosstab_inc, max_sex_per_inc, max_percentage_per_inc, gender_inc_fig = gender_distribution_chart(complete_df_clustered)
+        gender_inc_fig.write_image(charts_output_path + 'gender_distribution_bar_chart.png')
         # Print and log the values
         with open(config['analysis']['analysis_file_path'], 'a') as file:
             file.write(f'\nGender Distribution Analysis:\n')
             file.write(f'Percentage of each gender within each cluster:\n{sex_crosstab}\n')
             file.write(f'Gender with the highest percentage for each cluster:\n{max_sex_per_cluster}\n')
-            file.write(f'Highest percentage for of samples for each cluster:\n{max_percentage_per_cluster}\n')
+            file.write(f'Dominant percentages of each gender within each cluster:\n{max_percentage_per_cluster}\n')
+            file.write(f'Percentage of each gender within each increment type:\n{sex_crosstab_inc}\n')
+            file.write(f'Gender with the highest percentage for each increment type:\n{max_sex_per_inc}\n')
+            file.write(f'Dominant percentages of each gender within each increment type:\n{max_percentage_per_inc}\n')
 
 
 
@@ -258,8 +263,8 @@ def main():
         # Print and log the values
         with open(config['analysis']['analysis_file_path'], 'a') as file:
             file.write(f'\nScatter Map Analysis:\n')
-            file.write(f'Type of increment with the highest percentage for each region::\n{max_increment_teleassistenze}\n')
-            file.write(f'Cluster with the highest percentage for each region \n{max_cluster_per_region}\n')
+            file.write(f'Type of increment with the highest percentage for each region:\n{max_increment_teleassistenze}\n')
+            file.write(f'Cluster with the highest percentage for each region:\n{max_cluster_per_region}\n')
             file.write(f'Percentage of each region within each cluster:\n{max_percentage_per_region}\n')
 
         print("Scatter Map Analysis:")

@@ -11,19 +11,21 @@ def scatter_map(data):
 
     Returns:
         pandas.Series: The dominant cluster for each region.
-        pandas.Series: The percentage of the dominant cluster for each region.
+        pandas.Series: Percentage of each region within each cluster
+        pandas.Series: The dominant increment category for each region.
         plotly.graph_objects.Figure: The generated scatter map figure.
  '''
 
     # Define latitude and longitude for each region in Italy
     # These coordinates are used to accurately place each region on the map
+    # Add latitude and longitude for each region
     region_coords = {
         'Abruzzo': (42.351221, 13.398438),
         'Basilicata': (40.639470, 15.805148),
         'Calabria': (38.905975, 16.594401),
         'Campania': (40.839565, 14.250849),
-        'Emilia-Romagna': (44.494887, 11.342616),
-        'Friuli Venezia Giulia': (45.649526, 13.776818),
+        'Emilia romagna': (44.494887, 11.342616),
+        'Friuli venezia giulia': (45.649526, 13.776818),
         'Lazio': (41.892770, 12.482520),
         'Liguria': (44.411308, 8.932699),
         'Lombardia': (45.466797, 9.190498),
@@ -34,9 +36,10 @@ def scatter_map(data):
         'Sardegna': (39.215311, 9.110616),
         'Sicilia': (37.600000, 14.015356),
         'Toscana': (43.769560, 11.255814),
-        'Trentino-Alto Adige': (46.499334, 11.356624),
+        'Prov. auton. trento': (46.074779, 11.121749),
+        'Prov. auton. bolzano': (46.4982953, 11.3547582),
         'Umbria': (43.112203, 12.388784),
-        'Valle d\'Aosta': (45.737502, 7.320149),
+        'Valle d\'aosta': (45.737502, 7.320149),
         'Veneto': (45.434904, 12.338452)
     }
 
@@ -124,8 +127,10 @@ def age_group_bar_chart(data):
 
     Returns:
         pandas.Series: The dominant cluster for each age group.
-        pandas.Series: The percentage of the dominant cluster for each age group.
+        pandas.Series: Highest percentage of increment type per age group.
         pandas.Series: The dominant increment category for each age group.
+        pandas.DataFrame: The percentage of each cluster per age group.
+        pandas.DataFrame: The percentage of each increment type per age group.
         plotly.graph_objects.Figure: The generated bar chart figure.
     '''
 
@@ -185,7 +190,8 @@ def teleassistance_variation_bar_chart(data):
         data (pandas.DataFrame): The DataFrame containing the teleassistance data with columns 'incremento_teleassistenze' and 'cluster'.
 
     Returns:
-        pandas.DataFrame: The dominant increment category for each cluster and percentage.
+        pandas.DataFrame: Frequency of incremento_teleassistenze categories per cluster.
+        pandas.DataFrame: Cluster with the highest percentage for each increment category.
         plotly.graph_objects.Figure: The generated bar chart figure.
 
     '''
@@ -236,6 +242,7 @@ def healthcare_professional_bar_chart(data):
         data (pandas.DataFrame): The DataFrame containing the teleassistance data with columns 'tipologia_professionista_sanitario' and 'cluster'.
 
     Returns:
+        pandas.DataFrame: Frequency of healthcare professionals per teleassistence increment and dominant cluster.
         plotly.graph_objects.Figure: The generated bar chart figure.
     '''
 
@@ -292,7 +299,7 @@ def healthcare_professional_bar_chart(data):
     return dominant_increment_per_professional , fig
 
 
-def gender_distribution_chart(data):
+def gender_cluster_distribution_chart(data):
     ''' Analysis of the gender distribution (sesso) by cluster, using a bar chart. 
     
     Args:
@@ -300,7 +307,7 @@ def gender_distribution_chart(data):
 
     Returns:
         pandas.DataFrame: The percentage of each gender within each cluster 
-        pandas.Series: The dominant percentages for each cluster
+        pandas.Series: The dominant cluster for each gender.
         pandas.Series: The dominant percentages of each gender within each cluster
         plotly.graph_objects.Figure: The generated bar chart figure.
     '''
@@ -340,6 +347,54 @@ def gender_distribution_chart(data):
 
     # fig.savefig('graphs/gender_distribution_chart.png')
     return sex_crosstab, max_sex_per_cluster, max_percentage_per_cluster, fig
+
+def increment_gender_distribution_chart(data):
+    ''' Analysis of the gender distribution (sesso) by increment type, using a bar chart.
+
+    Args:
+        data (pandas.DataFrame): The DataFrame containing the teleassistance data with columns 'sesso' and 'incremento_teleassistenze'.
+
+    Returns:
+        pandas.DataFrame: The percentage of each gender within each increment type.
+        pandas.Series: The dominant increment type for each gender.
+        pandas.Series: The dominant percentages of each gender within each increment type.
+        plotly.graph_objects.Figure: The generated bar chart figure.
+    '''
+    # Calculate the percentage of each gender within each increment type
+    sex_crosstab = pd.crosstab(data['sesso'], data['incremento_teleassistenze'], normalize='index') * 100
+
+    # Identify the gender with the highest percentage for each increment type
+    max_sex_per_inc = sex_crosstab.idxmax(axis=1)
+
+    # Extract the corresponding highest percentages of samples for each increment type
+    max_percentage_per_inc = sex_crosstab.max(axis=1)
+
+    # Melt the crosstab DataFrame for easier plotting
+    melted_gender_data = sex_crosstab.reset_index().melt(id_vars='sesso', var_name='incremento_teleassistenze',
+                                                         value_name='percentage')
+
+    # Create a bar chart using Plotly
+    fig = px.bar(
+        melted_gender_data,
+        x='incremento_teleassistenze',
+        y='percentage',
+        color='sesso',
+        title='Distribuzione di uomini e donne per variazione incremento teleassistenza',
+        labels={'cluster': 'Cluster', 'percentage': 'Percentuale (%)', 'sesso': 'Sesso'},
+        barmode='group',
+        color_discrete_map={'female': '#FF69B4', 'male': '#1E90FF'}
+
+    )
+
+    # Customize the chart
+    fig.update_layout(
+        xaxis_title='Tipologia di incremento',
+        yaxis_title='Percentuale (%)',
+        legend_title='Sesso',
+        bargap=0.4
+    )
+
+    return sex_crosstab,max_sex_per_inc,max_percentage_per_inc, fig
 
 
 def year_cluster_increments_chart(data):
