@@ -16,7 +16,7 @@ from src.data_prep.FeatureSelection import FeatureSelection
 from src.data_prep.FeatureExtraction import FeatureExtraction
 from src.ModellingClustering import ModellingClustering
 from src.MetricsEvaluation import MetricsEvaluation
-from src.AnalysisResults import age_group_bar_chart, teleassistance_variation_bar_chart, healthcare_professional_bar_chart, gender_distribution_chart,scatter_map, year_cluster_increments_chart
+from src.AnalysisResults import age_group_bar_chart, teleassistance_variation_bar_chart, healthcare_professional_bar_chart, increment_gender_distribution_chart,scatter_map, year_cluster_increments_chart
 import yaml
 import logging
 import os
@@ -207,7 +207,7 @@ def main():
 
         # Age Group Bar Chart
         df_max_cluster,df_max_increment,df_max_percentage_increment,df_crosstab_cluster,df_crosstab_increment,age_group_fig = age_group_bar_chart(df_clustered)
-        age_group_fig.write_image(charts_output_path + 'age_group_bar_chart.png')
+        age_group_fig.write_html(charts_output_path + 'age_group_bar_chart.html')
 
         # Print and log the values
         with open(config['analysis']['analysis_file_path'], 'w') as file:
@@ -222,7 +222,7 @@ def main():
 
         # Teleassistance Variation Bar Chart
         cluster_counts,result,teleassistance_fig = teleassistance_variation_bar_chart(df_clustered)
-        teleassistance_fig.write_image(charts_output_path + 'teleassistance_variation_bar_chart.png')
+        teleassistance_fig.write_html(charts_output_path + 'teleassistance_variation_bar_chart.html')
 
         with open(config['analysis']['analysis_file_path'], 'a') as file:
             file.write(f'\n:Teleassistance Variation Bar Chart Analysis:\n')
@@ -232,18 +232,18 @@ def main():
 
         # Healthcare Professional Bar Chart
         dominant_increment_per_professional , healthcare_fig = healthcare_professional_bar_chart(df_clustered)
-        healthcare_fig.write_image(charts_output_path + 'healthcare_professional_bar_chart.png')
+        healthcare_fig.write_html(charts_output_path + 'healthcare_professional_bar_chart.html')
 
         with open(config['analysis']['analysis_file_path'], 'a') as file:
             file.write(f'\n: Healthcare Professional Bar Chart Analysis:\n')
             file.write(f'Frequency of each type of healthcare professional per teleassistance increment and dominant cluster: \n{dominant_increment_per_professional}\n')
 
         # Gender-Cluster Distribution Bar Chart
-        sex_crosstab, max_sex_per_cluster, max_percentage_per_cluster, gender_fig = gender_distribution_chart(complete_df_clustered)
-        gender_fig.write_image(charts_output_path + 'gender_distribution_bar_chart.png')
+        sex_crosstab, max_sex_per_cluster, max_percentage_per_cluster, gender_fig = increment_gender_distribution_chart(complete_df_clustered)
+        gender_fig.write_html(charts_output_path + 'gender_distribution_bar_chart.html')
         # Gender-Increment Distribution Bar Chart
-        sex_crosstab_inc, max_sex_per_inc, max_percentage_per_inc, gender_inc_fig = gender_distribution_chart(complete_df_clustered)
-        gender_inc_fig.write_image(charts_output_path + 'gender_distribution_bar_chart.png')
+        sex_crosstab_inc, max_sex_per_inc, max_percentage_per_inc, gender_inc_fig = increment_gender_distribution_chart(complete_df_clustered)
+        gender_inc_fig.write_html(charts_output_path + 'gender_distribution_bar_chart.html')
         # Print and log the values
         with open(config['analysis']['analysis_file_path'], 'a') as file:
             file.write(f'\nGender Distribution Analysis:\n')
@@ -258,7 +258,7 @@ def main():
 
         # Scatter Map
         max_cluster_per_region, max_percentage_per_region,max_increment_teleassistenze, scatter_map_fig = scatter_map(df_clustered)
-        scatter_map_fig.write_image(charts_output_path + 'scatter_map.png')
+        scatter_map_fig.write_html(charts_output_path + 'scatter_map.html')
 
         # Print and log the values
         with open(config['analysis']['analysis_file_path'], 'a') as file:
@@ -276,7 +276,7 @@ def main():
         
         # Year Cluser Increment Chart
         df_max_cluster_inc, df_max_percentage_increment_cla, df_crosstab_cluster, fig = year_cluster_increments_chart(complete_df_clustered)
-        fig.write_image(charts_output_path + 'teleassistance_increment_cluster.png')
+        fig.write_html(charts_output_path + 'teleassistance_increment_cluster.html')
         
         # Print and log the values
         with open(config['analysis']['analysis_file_path'], 'a') as file:

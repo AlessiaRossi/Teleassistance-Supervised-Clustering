@@ -52,7 +52,7 @@ fascia_eta
 70+                         1.205380       22.993941      70.763407          5.037272
 
 :Teleassistance Variation Bar Chart Analysis:
-Frequency of incremento_teleassistenze categories per cluster:: 
+Frequency of incremento_teleassistenze categories per cluster: 
     cluster incremento_teleassistenze   count  total_count  percentage
 0         0                 decrement   18445       205517    8.974927
 1         0            high_increment  143418       205517   69.784008
@@ -95,78 +95,108 @@ Frequency of each type of healthcare professional per teleassistance increment a
 
 Gender Distribution Analysis:
 Percentage of each gender within each cluster:
-cluster          0          1         2          3
-sesso                                             
-female   43.400722  28.734371  8.395476  19.469431
-male     46.082110  27.864716  9.330930  16.722245
+incremento_teleassistenze  decrement  high_increment  low_increment  medium_increment
+sesso                                                                                
+female                      5.211178       36.174277      43.576938         15.037606
+male                        5.169936       38.493466      40.670730         15.665868
 Gender with the highest percentage for each cluster:
 sesso
-female    0
-male      0
-dtype: uint16
-Highest percentage for of samples for each cluster:
+female    low_increment
+male      low_increment
+dtype: object
+Dominant percentages of each gender within each cluster:
 sesso
-female    43.400722
-male      46.082110
+female    43.576938
+male      40.670730
+dtype: float64
+Percentage of each gender within each increment type:
+incremento_teleassistenze  decrement  high_increment  low_increment  medium_increment
+sesso                                                                                
+female                      5.211178       36.174277      43.576938         15.037606
+male                        5.169936       38.493466      40.670730         15.665868
+Gender with the highest percentage for each increment type:
+sesso
+female    low_increment
+male      low_increment
+dtype: object
+Dominant percentages of each gender within each increment type:
+sesso
+female    43.576938
+male      40.670730
 dtype: float64
 
 Scatter Map Analysis:
-Type of increment with the highest percentage for each region::
+Type of increment with the highest percentage for each region:
 regione_residenza
-Abruzzo       54.345111
-Basilicata    58.306189
-Calabria      48.869555
-Campania      31.467509
-Lazio         64.627125
-Liguria       50.804055
-Lombardia     51.394485
-Marche        48.677792
-Molise        56.708311
-Piemonte      55.505046
-Puglia        45.384593
-Sardegna      55.026672
-Sicilia       47.422489
-Toscana       45.762602
-Umbria        58.173516
-Veneto        75.064083
+Abruzzo                  54.345111
+Basilicata               58.306189
+Calabria                 48.869555
+Campania                 31.467509
+Emilia romagna           44.797189
+Friuli venezia giulia    42.404929
+Lazio                    64.627125
+Liguria                  50.804055
+Lombardia                51.394485
+Marche                   48.677792
+Molise                   56.708311
+Piemonte                 55.505046
+Prov. auton. bolzano     62.584118
+Prov. auton. trento      56.984309
+Puglia                   45.384593
+Sardegna                 55.026672
+Sicilia                  47.422489
+Toscana                  45.762602
+Umbria                   58.173516
+Valle d'aosta            71.564391
+Veneto                   75.064083
 dtype: float64
-Cluster with the highest percentage for each region 
+Cluster with the highest percentage for each region:
 regione_residenza
-Abruzzo       medium_increment
-Basilicata    medium_increment
-Calabria      medium_increment
-Campania      medium_increment
-Lazio         medium_increment
-Liguria       medium_increment
-Lombardia     medium_increment
-Marche        medium_increment
-Molise        medium_increment
-Piemonte      medium_increment
-Puglia        medium_increment
-Sardegna      medium_increment
-Sicilia       medium_increment
-Toscana       medium_increment
-Umbria        medium_increment
-Veneto        medium_increment
+Abruzzo                  medium_increment
+Basilicata               medium_increment
+Calabria                 medium_increment
+Campania                 medium_increment
+Emilia romagna           medium_increment
+Friuli venezia giulia    medium_increment
+Lazio                    medium_increment
+Liguria                  medium_increment
+Lombardia                medium_increment
+Marche                   medium_increment
+Molise                   medium_increment
+Piemonte                 medium_increment
+Prov. auton. bolzano     medium_increment
+Prov. auton. trento      medium_increment
+Puglia                   medium_increment
+Sardegna                 medium_increment
+Sicilia                  medium_increment
+Toscana                  medium_increment
+Umbria                   medium_increment
+Valle d'aosta            medium_increment
+Veneto                   medium_increment
 Name: incremento_teleassistenze, dtype: object
 Percentage of each region within each cluster:
 regione_residenza
-Abruzzo       0
-Basilicata    0
-Calabria      0
-Campania      1
-Lazio         1
-Liguria       0
-Lombardia     3
-Marche        0
-Molise        0
-Piemonte      0
-Puglia        0
-Sardegna      0
-Sicilia       0
-Toscana       0
-Umbria        0
-Veneto        0
+Abruzzo                  0
+Basilicata               0
+Calabria                 0
+Campania                 1
+Emilia romagna           0
+Friuli venezia giulia    0
+Lazio                    1
+Liguria                  0
+Lombardia                3
+Marche                   0
+Molise                   0
+Piemonte                 0
+Prov. auton. bolzano     0
+Prov. auton. trento      0
+Puglia                   0
+Sardegna                 0
+Sicilia                  0
+Toscana                  0
+Umbria                   0
+Valle d'aosta            0
+Veneto                   0
 dtype: uint16
 
 Year Increment Cluster Analysis:
