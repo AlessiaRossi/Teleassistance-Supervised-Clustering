@@ -8,3 +8,5 @@ data/processed/*
 data/raw/*
 setup.py
 src/teleassistance_ml_project.egg-info/
+graphs/*
+logs&metrics/*

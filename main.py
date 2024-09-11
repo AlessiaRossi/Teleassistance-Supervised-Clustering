@@ -16,10 +16,12 @@ from src.data_prep.FeatureSelection import FeatureSelection
 from src.data_prep.FeatureExtraction import FeatureExtraction
 from src.ModellingClustering import ModellingClustering
 from src.MetricsEvaluation import MetricsEvaluation
-from src.AnalysisResults import age_group_bar_chart, teleassistance_variation_bar_chart, healthcare_professional_bar_chart, increment_gender_distribution_chart,scatter_map, year_cluster_increments_chart
+from src.AnalysisResults import age_group_bar_chart, teleassistance_variation_bar_chart, \
+    healthcare_professional_bar_chart, increment_gender_distribution_chart, scatter_map, year_cluster_increments_chart
 import yaml
 import logging
 import os
+
 
 # Load the configuration file
 def load_config(config_file):
@@ -28,6 +30,7 @@ def load_config(config_file):
         config = yaml.safe_load(file)
     return config
 
+
 # Load the data
 def load_data(config):
     # Load the data
@@ -35,15 +38,15 @@ def load_data(config):
     df = pd.read_parquet(file_path)
     return df
 
+
 # Main function to execute the data preparation pipeline, including data cleaning, feature selection, feature extraction, clustering, metrics calculation and analysis results
 def main():
-
     # Load the configuration file
     config = load_config('config.yaml')
 
     # Set up logging
     log_file_path = config['general']['log_file_path']
-    open(log_file_path, 'w').close() # Clear the log file
+    open(log_file_path, 'w').close()  # Clear the log file
     logging.basicConfig(filename=log_file_path, format='%(asctime)s - %(message)s', level=logging.INFO)
 
     logging.info("Data Preparation Started")
@@ -58,8 +61,8 @@ def main():
     num_rows, num_columns = df.shape
     logging.info(f"The DataFrame has {num_rows} rows and {num_columns} columns.\n")
 
-
-    logging.info(f'NULLS BEFORE DATA CLEANING \n {df.isnull().sum().sort_values(ascending=False)[df.isnull().sum().sort_values(ascending=False) > 0]}')
+    logging.info(
+        f'NULLS BEFORE DATA CLEANING \n {df.isnull().sum().sort_values(ascending=False)[df.isnull().sum().sort_values(ascending=False) > 0]}')
     '''
         NULLS BEFORE DATA CLEANING
 
@@ -79,7 +82,8 @@ def main():
 
         df_cleaning = data_cleaning.data_cleaning_execution(missing_threshold, config)
 
-        logging.info(f'NULLS AFTER DATA CLEANING \n {df_cleaning.isnull().sum().sort_values(ascending=False)[df_cleaning.isnull().sum().sort_values(ascending=False) > 0]}' )
+        logging.info(
+            f'NULLS AFTER DATA CLEANING \n {df_cleaning.isnull().sum().sort_values(ascending=False)[df_cleaning.isnull().sum().sort_values(ascending=False) > 0]}')
         '''
             NULLS AFTER DATA CLEANING
 
@@ -98,12 +102,11 @@ def main():
         cleaned_file_path = config['cleaning']['cleaned_file_path']
         df_cleaning = pd.read_parquet(cleaned_file_path)
     else:
-        raise FileNotFoundError('The cleaned_data.parquet file does not exist. Please enable the cleaning process to create it.')
-
+        raise FileNotFoundError(
+            'The cleaned_data.parquet file does not exist. Please enable the cleaning process to create it.')
 
     # Create an instance of the FeatureSelection class
     feature_selection = FeatureSelection(df_cleaning)
-
 
     # Phase 2: Feature Selection
     if config['feature_selection']['selection_enabled']:
@@ -111,7 +114,8 @@ def main():
 
         df_selection = feature_selection.feature_selection_execution(config)
 
-        logging.info(f'NULLS AFTER FEATURE SELECTION \n {df_selection.isnull().sum().sort_values(ascending=False)[df_selection.isnull().sum().sort_values(ascending=False) > 0]}')
+        logging.info(
+            f'NULLS AFTER FEATURE SELECTION \n {df_selection.isnull().sum().sort_values(ascending=False)[df_selection.isnull().sum().sort_values(ascending=False) > 0]}')
         '''
             NULLS AFTER FEATURE SELECTION
             comune_residenza                      130
@@ -125,12 +129,11 @@ def main():
         feature_selected_file_path = config['feature_selection']['feature_selected_file_path']
         df_selection = pd.read_parquet(feature_selected_file_path)
     else:
-        raise FileNotFoundError('The feature_selected_data.parquet file does not exist. Please enable the feature selection process to create it.')
+        raise FileNotFoundError(
+            'The feature_selected_data.parquet file does not exist. Please enable the feature selection process to create it.')
 
-    
     # Create an instance of the FeatureExtraction class
     feature_extraction = FeatureExtraction(df_selection)
-
 
     # Phase 3: Feature Extraction
     if config['feature_extraction']['extraction_enabled']:
@@ -150,11 +153,11 @@ def main():
         feature_extraction_file_path = config['feature_extraction']['feature_extraction_path']
         df_extraction = pd.read_parquet(feature_extraction_file_path)
     else:
-        raise FileNotFoundError('The feature_extracted_data.parquet file does not exist. Please enable the feature extraction process to create it.')
-
+        raise FileNotFoundError(
+            'The feature_extracted_data.parquet file does not exist. Please enable the feature extraction process to create it.')
 
     logging.info('Data Preparation Completed')
-    
+
     # Create an instance of the ModellingClustering class
     modelling_clustering = ModellingClustering(df_extraction)
 
@@ -168,7 +171,7 @@ def main():
 
         clustering_file_path = config['modelling_clustering']['clustering_file_path']
         clustering_file_path_all_feature = config['modelling_clustering']['clustering_file_path_all_feature']
-        
+
         df_clustered.to_parquet(clustering_file_path)
         complete_df_clustered.to_parquet(clustering_file_path_all_feature)
 
@@ -180,8 +183,8 @@ def main():
         df_clustered = pd.read_parquet(clustering_file_path)
         complete_df_clustered = pd.read_parquet(clustering_file_path_all_feature)
     else:
-        raise FileNotFoundError('The clustered_data.parquet file does not exist. Please enable the clustering process to create it.')
-    
+        raise FileNotFoundError(
+            'The clustered_data.parquet file does not exist. Please enable the clustering process to create it.')
 
     # Create an instance of the MetricsEvaluation class
     metrics_evaluation = MetricsEvaluation(df_clustered)
@@ -201,52 +204,52 @@ def main():
 
     # Phase 6: Analysis Results
     if config['analysis']['analysis_enabled']:
-
         logging.info('Analysis Results Started')
         charts_output_path = config['analysis']['charts_output_path']
 
         # Age Group Bar Chart
-        df_max_cluster,df_max_increment,df_max_percentage_increment,df_crosstab_cluster,df_crosstab_increment,age_group_fig = age_group_bar_chart(df_clustered)
+        df_max_cluster, df_max_increment, df_max_percentage_increment, df_crosstab_cluster, df_crosstab_increment, age_group_fig = age_group_bar_chart(
+            df_clustered)
         age_group_fig.write_html(charts_output_path + 'age_group_bar_chart.html')
 
         # Print and log the values
         with open(config['analysis']['analysis_file_path'], 'w') as file:
-            file.write(f'\nAge Group Bar Chart Analysis:\n')
+            file.write(f'\n-Age Group Bar Chart Analysis- :\n')
             file.write(f'Cluster with the highest percentage for each age group:\n{df_max_cluster}\n')
             file.write(f'Increment category with the highest percentage per age group :\n{df_max_increment}\n')
             file.write(f'Highest percentage of increment type per age group:\n{df_max_percentage_increment}\n')
             file.write(f'Percentage of samples of increment type per age group:\n{df_crosstab_increment}\n')
             file.write(f'Percentage of samples of cluster per age group:\n{df_crosstab_increment}\n')
 
-
-
         # Teleassistance Variation Bar Chart
-        cluster_counts,result,teleassistance_fig = teleassistance_variation_bar_chart(df_clustered)
+        cluster_counts, result, teleassistance_fig = teleassistance_variation_bar_chart(df_clustered)
         teleassistance_fig.write_html(charts_output_path + 'teleassistance_variation_bar_chart.html')
 
         with open(config['analysis']['analysis_file_path'], 'a') as file:
-            file.write(f'\n:Teleassistance Variation Bar Chart Analysis:\n')
+            file.write(f'\n-Teleassistance Variation Bar Chart Analysis- :\n')
             file.write(f'Frequency of incremento_teleassistenze categories per cluster: \n{cluster_counts}\n')
             file.write(f'Cluster with the highest percentage for each increment category: \n{result}\n')
 
-
         # Healthcare Professional Bar Chart
-        dominant_increment_per_professional , healthcare_fig = healthcare_professional_bar_chart(df_clustered)
+        dominant_increment_per_professional, healthcare_fig = healthcare_professional_bar_chart(df_clustered)
         healthcare_fig.write_html(charts_output_path + 'healthcare_professional_bar_chart.html')
 
         with open(config['analysis']['analysis_file_path'], 'a') as file:
-            file.write(f'\n: Healthcare Professional Bar Chart Analysis:\n')
-            file.write(f'Frequency of each type of healthcare professional per teleassistance increment and dominant cluster: \n{dominant_increment_per_professional}\n')
+            file.write(f'\n-Healthcare Professional Bar Chart Analysis- :\n')
+            file.write(
+                f'Frequency of each type of healthcare professional per teleassistance increment and dominant cluster: \n{dominant_increment_per_professional}\n')
 
         # Gender-Cluster Distribution Bar Chart
-        sex_crosstab, max_sex_per_cluster, max_percentage_per_cluster, gender_fig = increment_gender_distribution_chart(complete_df_clustered)
+        sex_crosstab, max_sex_per_cluster, max_percentage_per_cluster, gender_fig = increment_gender_distribution_chart(
+            complete_df_clustered)
         gender_fig.write_html(charts_output_path + 'gender_distribution_bar_chart.html')
         # Gender-Increment Distribution Bar Chart
-        sex_crosstab_inc, max_sex_per_inc, max_percentage_per_inc, gender_inc_fig = increment_gender_distribution_chart(complete_df_clustered)
+        sex_crosstab_inc, max_sex_per_inc, max_percentage_per_inc, gender_inc_fig = increment_gender_distribution_chart(
+            complete_df_clustered)
         gender_inc_fig.write_html(charts_output_path + 'gender_distribution_bar_chart.html')
         # Print and log the values
         with open(config['analysis']['analysis_file_path'], 'a') as file:
-            file.write(f'\nGender Distribution Analysis:\n')
+            file.write(f'\n-Gender Distribution Analysis- :\n')
             file.write(f'Percentage of each gender within each cluster:\n{sex_crosstab}\n')
             file.write(f'Gender with the highest percentage for each cluster:\n{max_sex_per_cluster}\n')
             file.write(f'Dominant percentages of each gender within each cluster:\n{max_percentage_per_cluster}\n')
@@ -254,44 +257,33 @@ def main():
             file.write(f'Gender with the highest percentage for each increment type:\n{max_sex_per_inc}\n')
             file.write(f'Dominant percentages of each gender within each increment type:\n{max_percentage_per_inc}\n')
 
-
-
         # Scatter Map
-        max_cluster_per_region, max_percentage_per_region,max_increment_teleassistenze, scatter_map_fig = scatter_map(df_clustered)
+        max_cluster_per_region, max_percentage_per_region, max_increment_teleassistenze, scatter_map_fig = scatter_map(
+            df_clustered)
         scatter_map_fig.write_html(charts_output_path + 'scatter_map.html')
 
         # Print and log the values
         with open(config['analysis']['analysis_file_path'], 'a') as file:
-            file.write(f'\nScatter Map Analysis:\n')
-            file.write(f'Type of increment with the highest percentage for each region:\n{max_increment_teleassistenze}\n')
+            file.write(f'\n-Scatter Map Analysis- :\n')
+            file.write(
+                f'Type of increment with the highest percentage for each region:\n{max_increment_teleassistenze}\n')
             file.write(f'Cluster with the highest percentage for each region:\n{max_cluster_per_region}\n')
             file.write(f'Percentage of each region within each cluster:\n{max_percentage_per_region}\n')
 
-        print("Scatter Map Analysis:")
-        print("Max Cluster per Region:")
-        print(max_cluster_per_region)
-        print("Max Percentage per Region:")
-        print(max_percentage_per_region)
-
-        
         # Year Cluser Increment Chart
-        df_max_cluster_inc, df_max_percentage_increment_cla, df_crosstab_cluster, fig = year_cluster_increments_chart(complete_df_clustered)
+        df_max_cluster_inc, df_max_percentage_increment_cla, df_crosstab_cluster, fig = year_cluster_increments_chart(
+            complete_df_clustered)
         fig.write_html(charts_output_path + 'teleassistance_increment_cluster.html')
-        
+
         # Print and log the values
         with open(config['analysis']['analysis_file_path'], 'a') as file:
-            file.write(f'\nYear Increment Cluster Analysis:\n')
+            file.write(f'\n-Year Increment Cluster Analysis- :\n')
             file.write(f'Dominant cluster for each combination of year and increment type:\n{df_max_cluster_inc}\n')
-            file.write(f'Highest percentage for each combination of year and increment type:\n{df_max_percentage_increment_cla}\n')
-        
-        
-        logging.info('Analysis Results Completed')
-        
-        
+            file.write(
+                f'Highest percentage for each combination of year and increment type:\n{df_max_percentage_increment_cla}\n')
 
+        logging.info('Analysis Results Completed')
 
 
 if __name__ == '__main__':
     main()
-
-
