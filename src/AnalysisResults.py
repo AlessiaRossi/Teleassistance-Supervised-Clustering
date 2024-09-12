@@ -1,6 +1,8 @@
 import pandas as pd
 import plotly.express as px
 import logging
+import seaborn as sns
+import matplotlib.pyplot as plt
 
 
 def scatter_map(data):
@@ -110,7 +112,7 @@ def scatter_map(data):
             traceorder='normal',
             font=dict(size=12),
             bgcolor='rgba(0, 0, 0, 0.7)',  # Dark background color with transparency
-            bordercolor='white',  # White border color
+            bordercolor='black',  # black  border color
             borderwidth=1  # Border width
         )
     )
@@ -164,7 +166,7 @@ def age_group_bar_chart(data):
         color='incremento_teleassistenze',
         text='dominant_cluster',  # Add dominant cluster as text inside bars
         title='Distrbuzione delle fasce d\'età per variazione teleassistenza e cluster dominante',
-        labels={'age_group': 'Fascia età', 'percentage_increment': 'Percentuale massima di appartenenza al cluster (%)',
+        labels={'age_group': 'Fascia età', 'percentage_increment': 'Percentuale massima per tipo di incremento (%)',
                 'incremento_teleassistenze': 'Variazione Teleassistenza'},
         color_discrete_sequence=px.colors.qualitative.Pastel
     )
@@ -460,6 +462,29 @@ def year_cluster_increments_chart(data):
 
     return df_max_cluster_inc, df_max_percentage_increment_cla,df_crosstab_cluster, fig
 
+def heatmap(data):
+    ''' Analysis of the cluster distribution by increment type, using a heatmap.
+
+    Args:
+        data (pandas.DataFrame): The DataFrame containing the teleassistance data with columns 'cluster' and 'incremento_teleassistenze'.
+
+    Returns:
+        plotly.graph_objects.Figure: The generated heatmap figure.
+    '''
+    # Calculate the frequency of each combination of cluster and increment type
+    cluster_increment_counts = data.groupby(['cluster', 'incremento_teleassistenze']).size().unstack(fill_value=0)
+
+    # Create the heatmap
+    plt.figure(figsize=(10, 8))
+    sns.heatmap(cluster_increment_counts, annot=True, fmt='d', cmap='coolwarm', cbar=True)
+
+    # Set titles and labels
+    plt.title('Heatmap of Cluster Distribution by Increment Type')
+    plt.xlabel('Increment Type')
+    plt.ylabel('Cluster')
+
+    # fig.savefig('graphs/heatmap.png')
+    return plt
 
 '''def chart_execution(df:pd.DataFrame, config:dict): 
     ''' 'Execute the analysis of the teleassistance data and generate the charts.' '''
