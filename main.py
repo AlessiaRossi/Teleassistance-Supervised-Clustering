@@ -106,7 +106,10 @@ def main():
     elif os.path.exists(config['cleaning']['cleaned_file_path']):
         cleaned_file_path = config['cleaning']['cleaned_file_path']
         df_cleaning = pd.read_parquet(cleaned_file_path)
-    elif config['cleaning']['cleaning_enabled'] and not os.path.exists(config['cleaning']['cleaned_file_path']):
+
+        # Create an instance of the FeatureSelection class
+        feature_selection = FeatureSelection(df_cleaning)
+    elif not config['cleaning']['cleaning_enabled'] and not os.path.exists(config['cleaning']['cleaned_file_path']):
         raise FileNotFoundError(
             'The cleaned_data.parquet file does not exist. Please enable the cleaning process to create it.')
 
@@ -135,7 +138,10 @@ def main():
     elif os.path.exists(config['feature_selection']['feature_selected_file_path']):
         feature_selected_file_path = config['feature_selection']['feature_selected_file_path']
         df_selection = pd.read_parquet(feature_selected_file_path)
-    elif config['feature_selection']['selection_enabled'] and not os.path.exists(config['feature_selection']['feature_selected_file_path']):
+
+        # Create an instance of the FeatureExtraction class
+        feature_extraction = FeatureExtraction(df_selection)
+    elif not config['feature_selection']['selection_enabled'] and not os.path.exists(config['feature_selection']['feature_selected_file_path']):
         raise FileNotFoundError(
             'The feature_selected_data.parquet file does not exist. Please enable the feature selection process to create it.')
 
@@ -161,7 +167,10 @@ def main():
     elif os.path.exists(config['feature_extraction']['feature_extraction_path']):
         feature_extraction_file_path = config['feature_extraction']['feature_extraction_path']
         df_extraction = pd.read_parquet(feature_extraction_file_path)
-    elif config['feature_extraction']['extraction_enabled'] and not os.path.exists(config['feature_extraction']['feature_extraction_path']):
+
+        # Create an instance of the ModellingClustering class
+        modelling_clustering = ModellingClustering(df_extraction)
+    elif not config['feature_extraction']['extraction_enabled'] and not os.path.exists(config['feature_extraction']['feature_extraction_path']):
         raise FileNotFoundError(
             'The feature_extracted_data.parquet file does not exist. Please enable the feature extraction process to create it.')
 
@@ -182,6 +191,9 @@ def main():
         df_clustered.to_parquet(clustering_file_path)
         complete_df_clustered.to_parquet(clustering_file_path_all_feature)
 
+        # Create an instance of the MetricsEvaluation class
+        metrics_evaluation = MetricsEvaluation(df_clustered)
+
         logging.info('Clustering Execution Completed')
     elif os.path.exists(config['modelling_clustering']['clustering_file_path']):
         clustering_file_path = config['modelling_clustering']['clustering_file_path']
@@ -192,7 +204,7 @@ def main():
 
         # Create an instance of the MetricsEvaluation class
         metrics_evaluation = MetricsEvaluation(df_clustered)
-    elif config['modelling_clustering']['clustering_enabled'] and not os.path.exists(config['modelling_clustering']['clustering_file_path']):
+    elif not config['modelling_clustering']['clustering_enabled'] and not os.path.exists(config['modelling_clustering']['clustering_file_path']):
         raise FileNotFoundError(
             'The clustered_data.parquet file does not exist. Please enable the clustering process to create it.')
 
