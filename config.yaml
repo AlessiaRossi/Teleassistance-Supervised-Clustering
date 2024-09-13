@@ -4,18 +4,18 @@ data:
 
 # Phase 1
 cleaning:
-  cleaning_enabled: False
+  cleaning_enabled: True
   missing_threshold: 0.6 # Drop columns with more than 60% missing values
   cleaned_file_path: "data/processed/cleaned_data.parquet"
 
 # Phase 2
 feature_selection:
-  selection_enabled: False
+  selection_enabled: True
   feature_selected_file_path: "data/processed/feature_selected_data.parquet"
 
 # Phase 3
 feature_extraction:
-  extraction_enabled: False
+  extraction_enabled: True
   cols_grouped: ['anno', 'quadrimestre', 'regione_residenza', 'fascia_eta']
   feature_extraction_path: "data/processed/feature_extracted_data.parquet"
 
@@ -38,7 +38,7 @@ metrics:
 
 # Phase 6
 analysis:
-  analysis_enabled: False
+  analysis_enabled: True
   analysis_file_path: "logs&metrics/analysis_results.txt"
   charts_output_path: "graphs/analysis/"
 
