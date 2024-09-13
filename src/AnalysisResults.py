@@ -1,6 +1,8 @@
 import pandas as pd
 import plotly.express as px
 import logging
+import seaborn as sns
+import matplotlib.pyplot as plt
 
 
 def scatter_map(data):
@@ -110,7 +112,7 @@ def scatter_map(data):
             traceorder='normal',
             font=dict(size=12),
             bgcolor='rgba(0, 0, 0, 0.7)',  # Dark background color with transparency
-            bordercolor='white',  # White border color
+            bordercolor='black',  # black  border color
             borderwidth=1  # Border width
         )
     )
@@ -164,7 +166,7 @@ def age_group_bar_chart(data):
         color='incremento_teleassistenze',
         text='dominant_cluster',  # Add dominant cluster as text inside bars
         title='Distrbuzione delle fasce d\'età per variazione teleassistenza e cluster dominante',
-        labels={'age_group': 'Fascia età', 'percentage_increment': 'Percentuale massima di appartenenza al cluster (%)',
+        labels={'age_group': 'Fascia età', 'percentage_increment': 'Percentuale massima per tipo di incremento (%)',
                 'incremento_teleassistenze': 'Variazione Teleassistenza'},
         color_discrete_sequence=px.colors.qualitative.Pastel
     )
@@ -180,7 +182,7 @@ def age_group_bar_chart(data):
     fig.update_traces(textposition='outside')
 
     # fig.savefig('graphs/age_group_bar_chart.png')
-    return df_max_increment, df_max_percentage_increment, df_max_cluster,df_crosstab_cluster,df_crosstab_increment,fig
+    return df_max_increment, df_max_percentage_increment, df_max_cluster, df_crosstab_cluster, df_crosstab_increment, fig
 
 
 def teleassistance_variation_bar_chart(data):
@@ -232,7 +234,7 @@ def teleassistance_variation_bar_chart(data):
     )
 
     # fig.savefig('graphs/teleassistance_variation_bar_chart.png')
-    return cluster_counts , result, fig
+    return cluster_counts, result, fig
 
 
 def healthcare_professional_bar_chart(data):
@@ -296,7 +298,7 @@ def healthcare_professional_bar_chart(data):
     )
 
     # fig.savefig('graphs/healtcare_professional_bar_chart.png')
-    return dominant_increment_per_professional , fig
+    return dominant_increment_per_professional, fig
 
 
 def gender_cluster_distribution_chart(data):
@@ -348,6 +350,7 @@ def gender_cluster_distribution_chart(data):
     # fig.savefig('graphs/gender_distribution_chart.png')
     return sex_crosstab, max_sex_per_cluster, max_percentage_per_cluster, fig
 
+
 def increment_gender_distribution_chart(data):
     ''' Analysis of the gender distribution (sesso) by increment type, using a bar chart.
 
@@ -394,7 +397,7 @@ def increment_gender_distribution_chart(data):
         bargap=0.4
     )
 
-    return sex_crosstab,max_sex_per_inc,max_percentage_per_inc, fig
+    return sex_crosstab, max_sex_per_inc, max_percentage_per_inc, fig
 
 
 def year_cluster_increments_chart(data):
@@ -458,7 +461,32 @@ def year_cluster_increments_chart(data):
 
     # fig.savefig('graphs/teleassistance_cluster_increments_chart.png')
 
-    return df_max_cluster_inc, df_max_percentage_increment_cla,df_crosstab_cluster, fig
+    return df_max_cluster_inc, df_max_percentage_increment_cla, df_crosstab_cluster, fig
+
+
+def heatmap_plot(data):
+    ''' Analysis of the cluster distribution by increment type, using a heatmap.
+
+    Args:
+        data (pandas.DataFrame): The DataFrame containing the teleassistance data with columns 'cluster' and 'incremento_teleassistenze'.
+
+    Returns:
+        plotly.graph_objects.Figure: The generated heatmap figure.
+    '''
+    # Calculate the frequency of each combination of cluster and increment type
+    cluster_increment_counts = data.groupby(['cluster', 'incremento_teleassistenze']).size().unstack(fill_value=0)
+
+    # Create the heatmap
+    plt.figure(figsize=(10, 8))
+    sns.heatmap(cluster_increment_counts, annot=True, fmt='d', cmap='viridis', cbar=True)
+
+    # Set titles and labels
+    plt.title('Heatmap of Cluster Distribution by Increment Type')
+    plt.xlabel('Increment Type')
+    plt.ylabel('Cluster')
+
+    # fig.savefig('graphs/heatmap.png')
+    return plt
 
 
 '''def chart_execution(df:pd.DataFrame, config:dict): 

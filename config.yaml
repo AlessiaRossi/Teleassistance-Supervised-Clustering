@@ -23,7 +23,7 @@ feature_extraction:
 modelling_clustering:
   clustering_enabled: False
   elbow_enabled: False
-  prediction_enabled: True
+  prediction_enabled: False
   max_clusters: 10
   n_clusters: 4
   list_cols_to_drop: [0,1,2,3,5,7,9,11,12,14,15]

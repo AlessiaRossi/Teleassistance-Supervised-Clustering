@@ -1,5 +1,5 @@
 
-Age Group Bar Chart Analysis:
+-Age Group Bar Chart Analysis- :
 Cluster with the highest percentage for each age group:
 fascia_eta
 0-11     high_increment
@@ -12,199 +12,237 @@ fascia_eta
 dtype: object
 Increment category with the highest percentage per age group :
 fascia_eta
-0-11     87.751509
-12-23    62.667903
-24-35    61.447346
-36-47    64.683816
-48-59    57.283819
-60-69    41.052561
-70+      70.763407
+0-11     87.756795
+12-23    60.274259
+24-35    61.607938
+36-47    64.436407
+48-59    57.279768
+60-69    41.229430
+70+      70.755192
 dtype: float64
 Highest percentage of increment type per age group:
 fascia_eta
 0-11     0
-12-23    0
-24-35    0
-36-47    1
-48-59    0
-60-69    1
-70+      3
+12-23    1
+24-35    2
+36-47    2
+48-59    2
+60-69    3
+70+      2
 dtype: uint16
 Percentage of samples of increment type per age group:
-incremento_teleassistenze  decrement  high_increment  low_increment  medium_increment
-fascia_eta                                                                           
-0-11                        0.000000       87.751509       0.102083         12.146408
-12-23                       0.000000       62.667903       0.508571         36.823526
-24-35                       6.480435       21.739856      61.447346         10.332363
-36-47                       8.651527       23.105908      64.683816          3.558749
-48-59                      18.607907       18.567905      57.283819          5.540369
-60-69                       0.601607       21.694497      41.052561         36.651335
-70+                         1.205380       22.993941      70.763407          5.037272
-Percentage of samples of cluster per age group:
-incremento_teleassistenze  decrement  high_increment  low_increment  medium_increment
-fascia_eta                                                                           
-0-11                        0.000000       87.751509       0.102083         12.146408
-12-23                       0.000000       62.667903       0.508571         36.823526
-24-35                       6.480435       21.739856      61.447346         10.332363
-36-47                       8.651527       23.105908      64.683816          3.558749
-48-59                      18.607907       18.567905      57.283819          5.540369
-60-69                       0.601607       21.694497      41.052561         36.651335
-70+                         1.205380       22.993941      70.763407          5.037272
+incremento_teleassistenze  decrement  ...  medium_increment
+fascia_eta                            ...                  
+0-11                        0.000000  ...         12.141006
+12-23                       0.000000  ...         39.335437
+24-35                       6.487389  ...         10.183605
+36-47                       8.638068  ...          3.799143
+48-59                      18.616957  ...          5.543633
+60-69                       0.416813  ...         36.407743
+70+                         1.206810  ...          5.035043
 
-:Teleassistance Variation Bar Chart Analysis:
-Frequency of incremento_teleassistenze categories per cluster:: 
+[7 rows x 4 columns]
+Percentage of samples of cluster per age group:
+incremento_teleassistenze  decrement  ...  medium_increment
+fascia_eta                            ...                  
+0-11                        0.000000  ...         12.141006
+12-23                       0.000000  ...         39.335437
+24-35                       6.487389  ...         10.183605
+36-47                       8.638068  ...          3.799143
+48-59                      18.616957  ...          5.543633
+60-69                       0.416813  ...         36.407743
+70+                         1.206810  ...          5.035043
+
+[7 rows x 4 columns]
+
+-Teleassistance Variation Bar Chart Analysis- :
+Frequency of incremento_teleassistenze categories per cluster: 
     cluster incremento_teleassistenze   count  total_count  percentage
-0         0                 decrement   18445       205517    8.974927
-1         0            high_increment  143418       205517   69.784008
-2         0             low_increment   14858       205517    7.229572
-3         0          medium_increment   28796       205517   14.011493
-4         1                 decrement    1399       130491    1.072105
-5         1            high_increment    2164       130491    1.658352
-6         1             low_increment  103043       130491   78.965599
-7         1          medium_increment   23885       130491   18.303944
-8         2                 decrement    2393        40634    5.889157
-9         2            high_increment   22398        40634   55.121327
-10        2             low_increment    5539        40634   13.631442
-11        2          medium_increment   10304        40634   25.358075
-12        3                 decrement    1674        83867    1.996018
-13        3            high_increment    3495        83867    4.167313
-14        3             low_increment   71109        83867   84.787819
-15        3          medium_increment    7589        83867    9.048851
+0         0                 decrement    9807       125585    7.809054
+1         0            high_increment   81685       125585   65.043596
+2         0             low_increment   16126       125585   12.840705
+3         0          medium_increment   17967       125585   14.306645
+4         1                 decrement   11166       133033    8.393406
+5         1            high_increment   85990       133033   64.638097
+6         1             low_increment    3128       133033    2.351296
+7         1          medium_increment   32749       133033   24.617200
+8         2                 decrement    1711       144730    1.182201
+9         2            high_increment     402       144730    0.277759
+10        2             low_increment  138156       144730   95.457749
+11        2          medium_increment    4461       144730    3.082291
+12        3                 decrement    1125        57161    1.968125
+13        3            high_increment    1911        57161    3.343189
+14        3             low_increment   37144        57161   64.981368
+15        3          medium_increment   16981        57161   29.707318
 Cluster with the highest percentage for each increment category: 
     cluster incremento_teleassistenze  percentage
-1         0            high_increment   69.784008
-6         1             low_increment   78.965599
-9         2            high_increment   55.121327
-14        3             low_increment   84.787819
+1         0            high_increment   65.043596
+5         1            high_increment   64.638097
+10        2             low_increment   95.457749
+14        3             low_increment   64.981368
 
-: Healthcare Professional Bar Chart Analysis:
+-Healthcare Professional Bar Chart Analysis- :
 Frequency of each type of healthcare professional per teleassistance increment and dominant cluster: 
-     cluster                 tipologia_professionista_sanitario incremento_teleassistenze  count  total_count  percentage
-91         2                               Assistente sanitario            high_increment   1365        40634    3.359256
-94         2                                           Dietista            high_increment   4312        40634   10.611803
-97         2                            Educatore Professionale            high_increment    319        40634    0.785057
-100        2                                     Fisioterapista            high_increment   6176        40634   15.199094
-141        3                                         Infermiere             low_increment  46805        83867   55.808602
-106        2                                        Logopedista            high_increment   2138        40634    5.261604
-109        2                                        Ostetrica/o            high_increment    740        40634    1.821135
-112        2                                           Podologo            high_increment    350        40634    0.861348
-157        3                                          Psicologo             low_increment   7600        83867    9.061967
-118        2                Tecnico Riabilitazione Psichiatrica            high_increment    377        40634    0.927794
-121        2                            Terapista Occupazionale            high_increment    378        40634    0.930255
-124        2  Terapista della Neuro e Psicomotricità dell'Et...            high_increment    302        40634    0.743220
+     cluster  ... percentage
+83         2  ...   3.246735
+5          0  ...  13.873472
+9          0  ...   0.675240
+125        3  ...   9.020136
+93         2  ...  67.535411
+61         1  ...   3.526193
+97         2  ...   1.945692
+27         0  ...   0.735757
+104        2  ...  13.267464
+35         0  ...   0.694350
+39         0  ...   0.711868
+43         0  ...   0.633037
 
-Gender Distribution Analysis:
+[12 rows x 6 columns]
+
+-Gender Distribution Analysis- :
 Percentage of each gender within each cluster:
-cluster          0          1         2          3
-sesso                                             
-female   43.400722  28.734371  8.395476  19.469431
-male     46.082110  27.864716  9.330930  16.722245
+cluster          0          1          2          3
+sesso                                              
+female   26.543289  27.880125  32.901471  12.675114
+male     28.132723  30.082300  29.683372  12.101606
 Gender with the highest percentage for each cluster:
 sesso
-female    0
-male      0
+female    2
+male      1
 dtype: uint16
-Highest percentage for of samples for each cluster:
+Dominant percentages of each gender within each cluster:
 sesso
-female    43.400722
-male      46.082110
+female    32.901471
+male      30.082300
+dtype: float64
+Percentage of each gender within each increment type:
+incremento_teleassistenze  decrement  ...  medium_increment
+sesso                                 ...                  
+female                      5.196761  ...         15.359200
+male                        5.138629  ...         16.036335
+
+[2 rows x 4 columns]
+Gender with the highest percentage for each increment type:
+sesso
+female    low_increment
+male      low_increment
+dtype: object
+Dominant percentages of each gender within each increment type:
+sesso
+female    43.574936
+male      40.675474
 dtype: float64
 
-Scatter Map Analysis:
-Type of increment with the highest percentage for each region::
+-Scatter Map Analysis- :
+Type of increment with the highest percentage for each region:
 regione_residenza
-Abruzzo       54.345111
-Basilicata    58.306189
-Calabria      48.869555
-Campania      31.467509
-Lazio         64.627125
-Liguria       50.804055
-Lombardia     51.394485
-Marche        48.677792
-Molise        56.708311
-Piemonte      55.505046
-Puglia        45.384593
-Sardegna      55.026672
-Sicilia       47.422489
-Toscana       45.762602
-Umbria        58.173516
-Veneto        75.064083
+Abruzzo                  34.653819
+Basilicata               41.653094
+Calabria                 31.266467
+Campania                 53.908750
+Emilia romagna           33.648085
+Friuli venezia giulia    35.447206
+Lazio                    42.687403
+Liguria                  33.084369
+Lombardia                48.967513
+Marche                   31.373556
+Molise                   40.793047
+Piemonte                 34.302027
+Prov. auton. bolzano     42.440556
+Prov. auton. trento      36.892461
+Puglia                   31.974599
+Sardegna                 32.211736
+Sicilia                  31.982987
+Toscana                  32.492093
+Umbria                   35.981735
+Valle d'aosta            41.227312
+Veneto                   37.664827
 dtype: float64
-Cluster with the highest percentage for each region 
+Cluster with the highest percentage for each region:
 regione_residenza
-Abruzzo       medium_increment
-Basilicata    medium_increment
-Calabria      medium_increment
-Campania      medium_increment
-Lazio         medium_increment
-Liguria       medium_increment
-Lombardia     medium_increment
-Marche        medium_increment
-Molise        medium_increment
-Piemonte      medium_increment
-Puglia        medium_increment
-Sardegna      medium_increment
-Sicilia       medium_increment
-Toscana       medium_increment
-Umbria        medium_increment
-Veneto        medium_increment
+Abruzzo                  medium_increment
+Basilicata               medium_increment
+Calabria                 medium_increment
+Campania                 medium_increment
+Emilia romagna           medium_increment
+Friuli venezia giulia    medium_increment
+Lazio                    medium_increment
+Liguria                  medium_increment
+Lombardia                medium_increment
+Marche                   medium_increment
+Molise                   medium_increment
+Piemonte                 medium_increment
+Prov. auton. bolzano     medium_increment
+Prov. auton. trento      medium_increment
+Puglia                   medium_increment
+Sardegna                 medium_increment
+Sicilia                  medium_increment
+Toscana                  medium_increment
+Umbria                   medium_increment
+Valle d'aosta            medium_increment
+Veneto                   medium_increment
 Name: incremento_teleassistenze, dtype: object
 Percentage of each region within each cluster:
 regione_residenza
-Abruzzo       0
-Basilicata    0
-Calabria      0
-Campania      1
-Lazio         1
-Liguria       0
-Lombardia     3
-Marche        0
-Molise        0
-Piemonte      0
-Puglia        0
-Sardegna      0
-Sicilia       0
-Toscana       0
-Umbria        0
-Veneto        0
+Abruzzo                  1
+Basilicata               1
+Calabria                 1
+Campania                 0
+Emilia romagna           2
+Friuli venezia giulia    2
+Lazio                    3
+Liguria                  1
+Lombardia                2
+Marche                   1
+Molise                   1
+Piemonte                 1
+Prov. auton. bolzano     1
+Prov. auton. trento      1
+Puglia                   2
+Sardegna                 1
+Sicilia                  2
+Toscana                  2
+Umbria                   1
+Valle d'aosta            1
+Veneto                   2
 dtype: uint16
 
-Year Increment Cluster Analysis:
+-Year Increment Cluster Analysis- :
 Dominant cluster for each combination of year and increment type:
 anno  incremento_teleassistenze
-2019  decrement                    0
+2019  decrement                    1
+      high_increment               1
+      low_increment                2
+      medium_increment             1
+2020  decrement                    1
+      high_increment               1
+      low_increment                2
+      medium_increment             1
+2021  decrement                    1
       high_increment               0
-      low_increment                1
-      medium_increment             0
-2020  decrement                    0
-      high_increment               0
-      low_increment                1
-      medium_increment             0
-2021  decrement                    0
-      high_increment               0
-      low_increment                1
-      medium_increment             0
-2022  decrement                    0
-      high_increment               0
-      low_increment                1
+      low_increment                2
+      medium_increment             1
+2022  decrement                    1
+      high_increment               1
+      low_increment                2
       medium_increment             1
 dtype: uint16
 Highest percentage for each combination of year and increment type:
 anno  incremento_teleassistenze
-2019  decrement                    79.340511
-      high_increment               82.828455
-      low_increment                53.464212
-      medium_increment             38.722272
-2020  decrement                    76.584400
-      high_increment               84.127073
-      low_increment                52.591044
-      medium_increment             41.351655
-2021  decrement                    77.479407
-      high_increment               83.819923
-      low_increment                53.210263
-      medium_increment             44.297528
-2022  decrement                    74.985937
-      high_increment               83.057508
-      low_increment                52.692308
-      medium_increment             38.340858
+2019  decrement                    48.741341
+      high_increment               52.009632
+      low_increment                72.536002
+      medium_increment             44.547038
+2020  decrement                    46.931905
+      high_increment               49.603554
+      low_increment                71.202848
+      medium_increment             48.407199
+2021  decrement                    46.246693
+      high_increment               49.919773
+      low_increment                70.921311
+      medium_increment             46.058993
+2022  decrement                    45.543622
+      high_increment               54.191221
+      low_increment                69.598926
+      medium_increment             41.722917
 dtype: float64
