@@ -10,5 +10,7 @@ setup.py
 src/teleassistance_ml_project.egg-info/
 graphs/*
 !graphs/
+graphs/analysis/*
+!graphs/analysis/
 logs&metrics/*
 !logs&metrics/
