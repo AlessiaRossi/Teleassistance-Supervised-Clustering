@@ -16,9 +16,10 @@ from src.data_prep.FeatureSelection import FeatureSelection
 from src.data_prep.FeatureExtraction import FeatureExtraction
 from src.ModellingClustering import ModellingClustering
 from src.MetricsEvaluation import MetricsEvaluation
-from src.AnalysisResults import (age_group_bar_chart, teleassistance_variation_bar_chart, \
-    healthcare_professional_bar_chart, increment_gender_distribution_chart, scatter_map, year_cluster_increments_chart,
-                                 gender_cluster_distribution_chart,heatmap)
+from src.AnalysisResults import (age_group_bar_chart, teleassistance_variation_bar_chart,
+                                 healthcare_professional_bar_chart, increment_gender_distribution_chart, scatter_map,
+                                 year_cluster_increments_chart,
+                                 gender_cluster_distribution_chart, heatmap_plot)
 import yaml
 import logging
 import os
@@ -283,10 +284,11 @@ def main():
             file.write(
                 f'Highest percentage for each combination of year and increment type:\n{df_max_percentage_increment_cla}\n')
 
-        logging.info('Analysis Results Completed')
-
-        heatmap=heatmap(df_clustered)
+        # Heat
+        heatmap = heatmap_plot(complete_df_clustered)
         heatmap.write_html(charts_output_path + 'heatmap.html')
+
+        logging.info('Analysis Results Completed')
 
 
 if __name__ == '__main__':
