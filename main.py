@@ -305,7 +305,7 @@ def main():
 
         # Heat
         heatmap = heatmap_plot(complete_df_clustered)
-        heatmap.write_html(charts_output_path + 'heatmap.html')
+        heatmap.savefig(charts_output_path + 'heatmap.png')
 
         logging.info('Analysis Results Completed')
 
