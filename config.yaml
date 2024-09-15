@@ -40,7 +40,7 @@ metrics:
 
 # Phase 6
 analysis:
-  analysis_enabled: False
+  analysis_enabled: True
   analysis_file_path: "logs&metrics/analysis_results.txt"
   charts_output_path: "graphs/analysis/"
 
