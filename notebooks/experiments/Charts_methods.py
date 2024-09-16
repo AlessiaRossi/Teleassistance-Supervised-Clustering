@@ -68,7 +68,7 @@ def create_gender_distribution_chart(data):
         y='count',
         color='sesso',
         text='dominant_cluster',  # Display the dominant cluster as text
-        title='Distribution of Men and Women by Teleassistance Increment Type',
+        title='Distribution of Men and Women by Teleassistance Increment Type and Dominant Cluster',
         labels={'incremento_teleassistenze': 'Increment Type', 'count': 'Number of Samples', 'sesso': 'Gender'},
         barmode='group',
         color_discrete_map={'female': '#FF69B4', 'male': '#1E90FF'}
@@ -172,9 +172,10 @@ def create_increment_scatter_map(data):
         'Sardegna': (39.215311, 9.110616),
         'Sicilia': (37.600000, 14.015356),
         'Toscana': (43.769560, 11.255814),
-        'Trentino-Alto Adige': (46.499334, 11.356624),
+        'Prov. auton. trento': (46.499334, 11.356624),
         'Umbria': (43.112203, 12.388784),
-        'Valle d\'Aosta': (45.737502, 7.320149),
+        'Valle d\'aosta': (45.737502, 7.320149),
+        'Prov. auton. bolzano': (46.4982953, 11.3547582),
         'Veneto': (45.434904, 12.338452)
     }
 

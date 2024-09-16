@@ -136,8 +136,8 @@ region_coords = {
     'Basilicata': (40.639470, 15.805148),
     'Calabria': (38.905975, 16.594401),
     'Campania': (40.839565, 14.250849),
-    'Emilia-Romagna': (44.494887, 11.342616),
-    'Friuli Venezia Giulia': (45.649526, 13.776818),
+    'Emilia romagna': (44.494887, 11.342616),
+    'Friuli venezia giulia': (46.225918, 13.103365),
     'Lazio': (41.892770, 12.482520),
     'Liguria': (44.411308, 8.932699),
     'Lombardia': (45.466797, 9.190498),
@@ -148,9 +148,10 @@ region_coords = {
     'Sardegna': (39.215311, 9.110616),
     'Sicilia': (37.600000, 14.015356),
     'Toscana': (43.769560, 11.255814),
-    'Trentino-Alto Adige': (46.499334, 11.356624),
+    'Prov. auton. trento': (46.499334, 11.356624),
     'Umbria': (43.112203, 12.388784),
     'Valle d\'Aosta': (45.737502, 7.320149),
+    'Prov. auton. bolzano': (46.4982953, 11.3547582),
     'Veneto': (45.434904, 12.338452)
 }
 # Convert the dictionary to a DataFrame
