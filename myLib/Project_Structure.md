@@ -8,6 +8,7 @@ In this section, we will discuss the project structure of the application. The p
 │   ├── raw/                        # Raw datasets (original, unprocessed)
 │   └── README.md                   # Documentation for the datasets
 ├── graphs/                         # Visualizations generated during analysis
+│   ├── analysis/                   # Final charts explaining the results obtained
 ├── logs&metrics/                   # Logs and metrics recorded during model training and evaluation
 ├── models/                         # Saved models for future use or deployment
 ├── myLib/                          # Documentation and utility files for the project
@@ -16,15 +17,14 @@ In this section, we will discuss the project structure of the application. The p
 │   ├── EDA/                        # Notebooks for Exploratory Data Analysis
 │   └── experiments/                # Experimental notebooks for testing ideas
 ├── src/                            # Source code for data preparation, model training, and evaluation
-│   ├── data_prep/                  # Scripts for data cleaning, feature extraction, and selection
+│   ├── data_prep/                  # Scripts for data cleaning, feature sselection and extraction
 │   ├── __init__.py                 # Initialization script for the source package
-├── .gitattributes                  # Git attributes file for configuring repository behavior
-├── .gitignore                      # Specifies files and directories to be ignored by Git
-├── config.yaml                     # Configuration file for the project
+├── .gitattributes                  
+├── .gitignore                      
+├── config.yaml                     # Configuration file for the project (data paths, model parameters, enablers)
 ├── main.py                         # Main script to run the project
 ├── README.md                       # Overview and documentation of the project
-├── requirements.txt                # List of Python dependencies
-└── setup.py                        # Script for setting up the project package
+└── requirements.txt                # List of Python dependencies required for the project
 ```
 
 
@@ -75,12 +75,12 @@ The project structure of the application is organized into the following directo
 
     - **`__init__.py`**: Initializes the `src` directory as a Python package.
     - **`data_prep/`**: This subdirectory includes scripts for data preparation, such as:
-        - **`data_cleaning.py`**: Handles data cleaning tasks.
-        - **`feature_selection.py`**: Focuses on selecting relevant features.
-        - **`feature_extraction.py`**: Manages feature extraction processes.
-    - **`modelling_clustering.py`**: Script for defining and training clustering models.
-    - **`metrics_evaluation.py`**: Contains functions and classes for evaluating model performance.
-    - **`storytelling.py`**: Focuses on data visualization and storytelling to present the results of the analysis or modeling in an understandable way.
+        - **`DataCleaning.py`**: Handles data cleaning tasks.
+        - **`FeatureSelection.py`**: Focuses on selecting relevant features.
+        - **`FeatureExtraction.py`**: Manages feature extraction processes.
+    - **`ModellingClustering.py`**: Script for defining and training clustering models.
+    - **`MetricsEvaluation.py`**: Contains functions and classes for evaluating model performance.
+    - **`AnalysisResults.py`**: Focuses on data visualization and storytelling to present the results of the analysis or modeling in an understandable way.
 
 
 - ## Pipeline Description
@@ -91,7 +91,7 @@ The project structure of the application is organized into the following directo
 
     - **Loading Configuration**: The configuration settings for the entire project are stored in the [config.yaml](../config.yaml) file located at the root of the project. These settings control various aspects of the pipeline, such as data paths, processing options, and model parameters. The `load_config` function in the [main.py](../main.py) script reads these settings and makes them available throughout the pipeline.
     
-    - **Logging Setup**: To ensure that the execution of the pipeline is properly tracked, logging is initialized at the start. Logs are recorded in a file specified in the configuration, typically stored as [INFO.txt](../INFO.txt) at the root of the project. This log file is cleared at the beginning of each run to maintain a clean record of the current pipeline execution.
+    - **Logging Setup**: To ensure that the execution of the pipeline is properly tracked, logging is initialized at the start. Logs are recorded in a file specified in the configuration, typically stored as [INFO.txt](../logs&metrics/INFO.txt) at the root of the project. This log file is cleared at the beginning of each run to maintain a clean record of the current pipeline execution.
 
     ### 2. **Data Loading**
     Once the configurations are loaded, the pipeline proceeds to load the dataset.
@@ -102,35 +102,37 @@ The project structure of the application is organized into the following directo
     Data preparation is a crucial phase where the raw data is transformed into a cleaner and more structured format suitable for modeling. This phase is divided into several steps, each handled by specific scripts within the [src/data_prep/](../src/data_prep/) directory.
 
     - **Data Cleaning**:
-        - **Process**: The first step in data preparation is cleaning the dataset to remove or correct any errors, value imputing, handle missing values, and remove duplicates. This is done using the `data_cleaning_execution` function located in [src/data_prep/data_cleaning.py](../src/data_prep/data_cleaning.py).
+        - **Process**: The first step in data preparation is cleaning the dataset to remove or correct any errors, value imputing, handle missing values, and remove duplicates. This is done using the `data_cleaning_execution` function located in [src/data_prep/DataCleaning.py](../src/data_prep/DataCleaning.py).
         - **Output**: The cleaned data is then saved to the [data/processed/](../data/processed/) folder, making it ready for the next stages of processing.
 
     - **Feature Selection**:
-        - **Process**: After cleaning, the pipeline selects the most relevant features from the dataset. This step, managed by the `feature_selection_execution` function in [src/data_prep/feature_selection.py](../src/data_prep/feature_selection.py), involves filtering out unimportant or redundant features to improve model performance and interpretability.
+        - **Process**: After cleaning, the pipeline selects the most relevant features from the dataset. This step, managed by the `feature_selection_execution` function in [src/data_prep/FeatureSelection.py](../src/data_prep/FeatureSelection.py), involves filtering out unimportant or redundant features to improve model performance and interpretability.
         - **Output**: The resulting dataset, now streamlined with only the selected features, is saved again in the [data/processed/](../data/processed/) folder.
 
     - **Feature Extraction**:
-        - **Process**: In this step, the pipeline enhances the dataset by calculating and classifying the increment of services over time, as well as creating new features. The `feature_extraction_execution` function in [src/data_prep/feature_extraction.py](../src/data_prep/feature_extraction.py) handles this task. This process includes calculating the year-over-year increment of services, categorizing these increments into different levels, and visualizing the distribution of these increments. The resulting dataset is enriched with these new features and classifications.
+        - **Process**: In this step, the pipeline enhances the dataset by calculating and classifying the increment of services over time, as well as creating new features. The `feature_extraction_execution` function in [src/data_prep/FeatureExtraction.py](../src/data_prep/FeatureExtraction.py) handles this task. This process includes calculating the year-over-year increment of services, categorizing these increments into different levels, and visualizing the distribution of these increments. The resulting dataset is enriched with these new features and classifications.
         - **Output**: The enriched dataset, now containing new features and classifications based on service increments, is stored in the [data/processed/](../data/processed/) folder for further use in the pipeline.
 
 
     ### 4. **Modeling - Clustering**
     With the data prepared, the pipeline moves on to the modeling phase, where clustering is performed.
 
-    - **Process**: The `clustering_execution` function in [src/modelling_clustering.py](../src/modelling_clustering.py) applies **_"Elbow method"_** to determine the optimal number of clusters and then uses one of the clustering algorithms _"**KModes Clustering"**_ to group the data into distinct clusters based on the patterns identified in the features.
+    - **Process**: The `clustering_execution` function in [src/ModellingClustering.py](../src/ModellingClustering.py) applies **_"Elbow method"_** to determine the optimal number of clusters and then uses one of the clustering algorithms _"**KModes Clustering"**_ to group the data into distinct clusters based on the patterns identified in the features.
     - **Output**: The model is saved in the [models/](../models/) folder. The clustered data is saved in the [data/processed](../data/processed/) folder, ready for evaluation and further analysis. This step is essential for understanding the natural groupings within the data and forms the basis for later evaluation.
 
     ### 5. **Model Evaluation - Metrics**
     After clustering, the pipeline evaluates the performance of the model using various metrics.
 
-    - **Process**: The `metrics_execution` function in [src/metrics_evaluation.py](../src/metrics_evaluation.py) calculates key performance metrics such as the Purity Score and the Silhouette Score, which help assess the quality and coherence of the clusters formed during modeling.
+    - **Process**: The `metrics_execution` function in [src/MetricsEvaluation.py](../src/MetricsEvaluation.py) calculates key performance metrics such as the Purity Score and the Silhouette Score, which help assess the quality and coherence of the clusters formed during modeling.
     - **Output**: These metrics are written to a file as specified in the [config.yaml](../config.yaml), saved in [logs&metrics/](../logs&metrics/) folder. This step provides valuable feedback on the effectiveness of the clustering model and guides any necessary adjustments.
 
-    ### 6. **Storytelling and Visualization** _TODO_
+    ### 6. **Storytelling and Visualization**
     The final phase of the pipeline focuses on visualizing the results and communicating the findings in an accessible format.
 
-    - **Process**: The `storytelling.py` script in `src/storytelling.py` is dedicated to creating visualizations and narratives that make the data insights clear and understandable. This can include charts, graphs, and other forms of data representation.
+    - **Process**: The `AnalysisResults.py` script in [src/AnalysisResults.py](../src/AnalysisResults.py) is dedicated to creating visualizations and narratives that make the data insights clear and understandable. This can include charts, graphs, and other forms of data representation.
     - **Output**: The visualizations and any associated summaries are either saved to a file or displayed as specified in the script, providing a comprehensive view of the data and the results of the analysis.
+
+    The visualizations generated during the analysis can be found in the [Presentazione_progetto_FIA](./myLib/Presentazione_proggetto_FIA.pptx) file.
 
     ---
 
@@ -139,8 +141,9 @@ The project structure of the application is organized into the following directo
 [Quickly return to the top](#project-structure)
 
 ## **2. Flow Chart**
-TODO
-![Image](teleassistenze_flowchart v_1.drawio.png)
+The flow chart below illustrates the high-level process of the application, from data loading to model evaluation and visualization. The flow chart provides a visual representation of the pipeline described in the previous section.
+
+![Flow Chart](https://github.com/AlessiaRossi/Teleassistance-Supervised-Clustering/blob/main/myLib/teleassistenze_flowchart%20v_2.drawio.png?raw=true)
 
 [Quickly return to the top](#project-structure)
 
