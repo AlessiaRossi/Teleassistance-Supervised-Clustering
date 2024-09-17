@@ -1,0 +1,180 @@
+
+-Analysis Results- :
+
+-Gender Distribution Analysis- :
+Percentage of each gender within each cluster:
+cluster          0          1          2          3
+sesso                                              
+female   52.073338  19.504674  16.206236  12.215752
+male     48.122287  21.081991  18.023385  12.772336
+Gender with the highest percentage for each cluster:
+sesso
+female    0
+male      0
+dtype: uint16
+Dominant percentages of each gender within each cluster:
+sesso
+female    52.073338
+male      48.122287
+dtype: float64
+
+-Year Distribution Analysis- :
+Calculate the number of samples for each combination of year and increment type:
+cluster                             0      1      2      3
+anno incremento_teleassistenze                            
+2019 decrement                   3535    639    156   1262
+     high_increment              2258   7599   7720     37
+     low_increment              40779   1286    105     43
+     medium_increment            1233    975    752   8334
+2020 decrement                   3895    717    168   1447
+     high_increment              5943  25356  22376     91
+     low_increment              51505   1687    160     61
+     medium_increment            1854   1794   1545  14443
+2021 decrement                   3424    739    188   1297
+     high_increment              7193  28208  24753     81
+     low_increment              48862   1719    193     62
+     medium_increment            2042   2319   1653  16129
+2022 decrement                   3000    627    200   1166
+     high_increment              6485  16088  17026     75
+     low_increment              47489   1690    197     82
+     medium_increment            1976   1703   1270  12818
+Dominant cluster for each combination of year and increment type:
+anno  incremento_teleassistenze
+2019  decrement                    0
+      high_increment               2
+      low_increment                0
+      medium_increment             3
+2020  decrement                    0
+      high_increment               1
+      low_increment                0
+      medium_increment             3
+2021  decrement                    0
+      high_increment               1
+      low_increment                0
+      medium_increment             3
+2022  decrement                    0
+      high_increment               2
+      low_increment                0
+      medium_increment             3
+dtype: uint16
+highest number of samples for each combination of year and increment type:
+anno  incremento_teleassistenze
+2019  decrement                     3535
+      high_increment                7720
+      low_increment                40779
+      medium_increment              8334
+2020  decrement                     3895
+      high_increment               25356
+      low_increment                51505
+      medium_increment             14443
+2021  decrement                     3424
+      high_increment               28208
+      low_increment                48862
+      medium_increment             16129
+2022  decrement                     3000
+      high_increment               17026
+      low_increment                47489
+      medium_increment             12818
+dtype: int64
+
+-Geographical Distribution Analysis- :
+Type of increment with the highest percentage for each region:
+regione_residenza
+Abruzzo                   high_increment
+Basilicata                high_increment
+Calabria                  high_increment
+Campania                   low_increment
+Lazio                      low_increment
+Liguria                 medium_increment
+Lombardia                  low_increment
+Marche                    high_increment
+Molise                    high_increment
+Piemonte                  high_increment
+Prov. auton. bolzano      high_increment
+Prov. auton. trento       high_increment
+Puglia                     low_increment
+Sardegna                  high_increment
+Sicilia                    low_increment
+Toscana                    low_increment
+Umbria                    high_increment
+Valle d'aosta             high_increment
+Veneto                     low_increment
+dtype: object
+Cluster with the highest percentage for each region:
+regione_residenza
+Abruzzo                 0
+Basilicata              0
+Calabria                0
+Campania                0
+Lazio                   0
+Liguria                 0
+Lombardia               0
+Marche                  0
+Molise                  0
+Piemonte                3
+Prov. auton. bolzano    0
+Prov. auton. trento     0
+Puglia                  0
+Sardegna                0
+Sicilia                 0
+Toscana                 0
+Umbria                  0
+Valle d'aosta           1
+Veneto                  0
+dtype: uint16
+Percentage of each region within each cluster:
+regione_residenza
+Abruzzo                 31.218772
+Basilicata              46.192997
+Calabria                37.074934
+Campania                43.968003
+Lazio                   54.965224
+Liguria                 37.451414
+Lombardia               51.690426
+Marche                  41.129653
+Molise                  35.904400
+Piemonte                34.223557
+Prov. auton. bolzano    50.381337
+Prov. auton. trento     34.978951
+Puglia                  40.355845
+Sardegna                49.856381
+Sicilia                 39.510993
+Toscana                 36.551991
+Umbria                  41.813438
+Valle d'aosta           58.167675
+Veneto                  50.987230
+dtype: float64
+
+-Cluster and Increment Distribution Analysis- :
+Number of samples for each cluster
+cluster
+0    231473
+1     93146
+2     78462
+3     57428
+Name: count, dtype: int64
+Number of samples for each increment type
+incremento_teleassistenze
+low_increment       195920
+high_increment      171289
+medium_increment     70840
+decrement            22460
+Name: count, dtype: int64
+Number of samples for each combination of teleassistance increment and cluster
+   incremento_teleassistenze  cluster   count
+0                  decrement        0   13854
+1                  decrement        1    2722
+2                  decrement        2     712
+3                  decrement        3    5172
+4             high_increment        0   21879
+5             high_increment        1   77251
+6             high_increment        2   71875
+7             high_increment        3     284
+8              low_increment        0  188635
+9              low_increment        1    6382
+10             low_increment        2     655
+11             low_increment        3     248
+12          medium_increment        0    7105
+13          medium_increment        1    6791
+14          medium_increment        2    5220
+15          medium_increment        3   51724
