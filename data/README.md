@@ -14,6 +14,7 @@ This repository contains data used for analysis and modeling in the context of a
 data/
 ├── processed/
 │   ├── cleaned_data.parquet
+│   ├── clustered_data_all_feature.parquet
 │   ├── clustered_data.parquet
 │   ├── feature_extracted_data.parquet
 │   └── feature_selected_data.parquet
@@ -51,6 +52,7 @@ This folder contains data that has been processed or transformed in some way fro
 
 - **`clustered_data.parquet`**:
   - Contains the data after applying clustering algorithms. Each record has been assigned a cluster label based on the analysis.
+  - The `clustered_data_all_feature.parquet` file contains the same data as `clustered_data.parquet`, but with all original features included.
 
 ## Notes
 - The Parquet format is used for its efficiency in storage and processing, especially for large datasets. It allows for faster data reading and writing compared to traditional formats like CSV.
