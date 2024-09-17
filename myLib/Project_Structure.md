@@ -139,8 +139,9 @@ The project structure of the application is organized into the following directo
 [Quickly return to the top](#project-structure)
 
 ## **2. Flow Chart**
-TODO
-![Image](teleassistenze_flowchart v_1.drawio.png)
+The flow chart below illustrates the high-level process of the application, from data loading to model evaluation and visualization. The flow chart provides a visual representation of the pipeline described in the previous section.
+
+![Flow Chart](https://github.com/AlessiaRossi/Teleassistance-Supervised-Clustering/blob/main/myLib/teleassistenze_flowchart%20v_2.drawio.png?raw=true)
 
 [Quickly return to the top](#project-structure)
 
