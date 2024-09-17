@@ -4,13 +4,13 @@ env_FIA/*
 .DS_Store
 venv/*
 .venv/*
-data/processed/*
-!data/processed
+# data/processed/*
+# !data/processed
 setup.py
 src/teleassistance_ml_project.egg-info/
-graphs/*
-!graphs/
-graphs/analysis/*
-!graphs/analysis/
-logs&metrics/*
-!logs&metrics/
+# graphs/*
+# !graphs/
+# graphs/analysis/*
+# !graphs/analysis/
+# logs&metrics/*
+# !logs&metrics/
