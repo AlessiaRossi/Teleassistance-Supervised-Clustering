@@ -148,6 +148,8 @@ def main():
         feature_extraction_file_path = config['feature_extraction']['feature_extraction_path']
         df_extraction.to_parquet(feature_extraction_file_path)
 
+        print(df_extraction.info())
+
         # Create an instance of the ModellingClustering class
         modelling_clustering = ModellingClustering(df_extraction)
 
@@ -155,6 +157,8 @@ def main():
     elif os.path.exists(config['feature_extraction']['feature_extraction_path']):
         feature_extraction_file_path = config['feature_extraction']['feature_extraction_path']
         df_extraction = pd.read_parquet(feature_extraction_file_path)
+
+        print(df_extraction.info())
 
         # Create an instance of the ModellingClustering class
         modelling_clustering = ModellingClustering(df_extraction)

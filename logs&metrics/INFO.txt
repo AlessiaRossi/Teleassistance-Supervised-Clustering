@@ -1,7 +1,7 @@
-2024-09-17 14:35:33,512 - Data Preparation Started
-2024-09-17 14:35:41,778 - The DataFrame has 484291 rows and 33 columns.
+2024-09-17 15:01:01,979 - Data Preparation Started
+2024-09-17 15:01:06,966 - The DataFrame has 484291 rows and 33 columns.
 
-2024-09-17 14:35:43,133 - NULLS BEFORE DATA CLEANING 
+2024-09-17 15:01:07,843 - NULLS BEFORE DATA CLEANING 
  data_disdetta                  460639
 codice_provincia_erogazione     28776
 codice_provincia_residenza      28380
@@ -9,10 +9,18 @@ ora_fine_erogazione             28181
 ora_inizio_erogazione           28181
 comune_residenza                  135
 dtype: int64
-2024-09-17 14:36:04,217 - Data Preparation Completed
-2024-09-17 14:36:04,223 - Clustering Execution Started
-2024-09-17 14:36:09,533 - Columns to drop: ['id_prenotazione', 'id_paziente', 'data_nascita', 'sesso', 'tipologia_servizio', 'data_contatto', 'id_professionista_sanitario', 'data_erogazione', 'durata_erogazione_sec', 'anno', 'quadrimestre']
-2024-09-17 14:36:09,704 - Columns after dropping: Index(['regione_residenza', 'descrizione_attivita',
+2024-09-17 15:01:22,547 - Data Preparation Completed
+2024-09-17 15:01:22,548 - Clustering Execution Started
+2024-09-17 15:01:22,549 - Columns to drop: ['id_prenotazione', 'id_paziente', 'data_nascita', 'sesso', 'tipologia_servizio', 'data_contatto', 'id_professionista_sanitario', 'data_erogazione', 'durata_erogazione_sec', 'anno', 'quadrimestre']
+2024-09-17 15:01:22,577 - Columns after dropping: Index(['regione_residenza', 'descrizione_attivita',
        'tipologia_struttura_erogazione', 'tipologia_professionista_sanitario',
        'fascia_eta', 'incremento_teleassistenze'],
       dtype='object')
+2024-09-17 15:20:23,339 - Head of the DataFrame after Clustering 
+   regione_residenza                               descrizione_attivita     tipologia_struttura_erogazione tipologia_professionista_sanitario fascia_eta incremento_teleassistenze  cluster
+0          Piemonte  Insegnamento al paziente e/o alla sua famiglia...                Azienda Ospedaliera                         Infermiere      36-47            high_increment        0
+1           Toscana  Prestazione infermieristica connessa alla nece...  Azienda Ospedaliera Universitaria                         Infermiere      48-59            high_increment        0
+2    Emilia romagna                             Prestazione dietistica        Ospedale a gestione diretta                           Dietista      36-47            high_increment        0
+3          Campania                           Psicoterapia individuale                Azienda Ospedaliera                          Psicologo      48-59            high_increment        0
+4           Abruzzo                             Prestazione dietistica        Ospedale a gestione diretta                           Dietista      60-69            high_increment        0
+2024-09-17 15:20:32,146 - Clustering Execution Completed

@@ -140,6 +140,10 @@ The project structure of the application is organized into the following directo
 
 ## **2. Flow Chart**
 
+> Input and preoprocessing classes:
+><p>
+><img src='', width="200">
+></p>
 
 [Quickly return to the top](#project-structure)
 

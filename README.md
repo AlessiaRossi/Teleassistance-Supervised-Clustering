@@ -7,7 +7,7 @@
 2. [Enviroment setup](#2-enviroment-setup)
 3. [Data Sources](#3-data-sources)
 4. [Pipeline](#4-pipeline)
-5. [Outputs Program](./myLib/Outputs_Program.md)
+5. [Outputs Program](#5-outputs-program)
 
 
 ## 1. Project Description
@@ -70,3 +70,5 @@ You can find more details in the _Pipeline Description_ paragraph of the [Projec
 The goal of the challenge is to profile patients by analyzing their contribution to the increase in teleassistance services. This involves identifying common patterns and behaviors among patients that are linked to the rise in teleassistance usage.
 
 For more details on the outputs and results of the program, refer to the [Outputs Program Documentation](myLib/Outputs_Program.md).
+
+[Quickly return to the top](#teleassistance-supervised-clustering)
