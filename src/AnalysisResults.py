@@ -6,7 +6,7 @@ from plotly.subplots import make_subplots
 
 
 # Load the data
-file_path = '/Users/fabiodigregorio/Desktop/campus bio iscrizione/ Magistrale/FIA/Teleassistance-Supervised-Clustering/data/processed/clustered_data_all_feature.parquet'
+file_path = 'data/processed/clustered_data_all_feature.parquet'
 data = pd.read_parquet(file_path)
 
 
@@ -220,15 +220,16 @@ def create_increment_scatter_map(data):
             xanchor='right',
             yanchor='top',
             traceorder='normal',
-            font=dict(size=12),
+            font=dict(size=12, color='white'),
             bgcolor='rgba(0, 0, 0, 0.7)',  # Transparent legend background
-            bordercolor='black',
+            bordercolor='white',
             borderwidth=1
-        )
+        ),
+        legend_title_text="Increment Type"  # Remove the legend title
     )
 
     # Return the map figure
-    return fig, max_cluster_per_region, max_percentage_per_region # max incremtno vedi se serve 
+    return fig, max_cluster_per_region, max_percentage_per_region, max_inc_per_region
 
 def create_cluster_and_increment_pie_charts(data):
     """
@@ -311,6 +312,8 @@ def create_increment_and_cluster_bar_charts(data):
 
     Returns:
     - fig: Plotly figure object with two bar charts.
+    - incremento_counts: Series with the count of samples for each increment type.
+    - cluster_counts: Series with the count of samples for each cluster.
     """
     
     # Step 1: Calculate the number of samples for each increment type
@@ -370,7 +373,7 @@ def create_increment_and_cluster_bar_charts(data):
     fig.update_yaxes(title_text='Number of Samples', row=1, col=2)
 
     # Return the figure object
-    return fig
+    return fig, incremento_counts, cluster_counts
 
 def create_age_vs_increment_box_plot(data):
     """
@@ -395,46 +398,12 @@ def create_age_vs_increment_box_plot(data):
             'incremento_teleassistenze': 'Teleassistance Increment',
             'fascia_eta': 'Age Category'
         },
-        color_discrete_sequence=px.colors.sequential.Blues
+        color_discrete_sequence=['#00008B']
     )
 
     # Return the figure object
     return fig
 
-def create_cluster_vs_increment_violin_plot(data):
-    """
-    Creates a violin plot to visualize the distribution of teleassistance increments (`incremento_teleassistenze`) 
-    across different clusters (`cluster`).
-
-    Parameters:
-    - data: DataFrame containing 'cluster' and 'incremento_teleassistenze' columns.
-
-    Returns:
-    - fig: Plotly figure object with the violin plot.
-    """
-    
-    # Create the violin plot with Plotly
-    fig = px.violin(
-        data,
-        x='cluster',
-        y='incremento_teleassistenze',
-        title='Distribution of Teleassistance Increment by Cluster',
-        labels={
-            'cluster': 'Cluster',
-            'incremento_teleassistenze': 'Teleassistance Increment'
-        },
-        box=True,  # Show box plot inside the violin
-        points='all'  # Show all points
-    )
-
-    # Customize the layout
-    fig.update_layout(
-        xaxis_title='Cluster',
-        yaxis_title='Teleassistance Increment'
-    )
-
-    # Return the figure object
-    return fig
 
 def create_increment_vs_cluster_bar_chart(data):
     """
@@ -566,19 +535,19 @@ def plot_cluster_increment_heatmap(data):
     Returns:
     - fig: The Plotly figure object for the heatmap.
     """
-    # Calcola la frequenza di ogni combinazione di incremento e cluster
+    # Calcolate the number of samples for each combination of increment type and cluster
     cluster_increment_counts = data.groupby(['incremento_teleassistenze', 'cluster']).size().unstack(fill_value=0)
 
-    # Crea la heatmap con Plotly
+    # Create the heatmap with Plotly
     fig = px.imshow(
         cluster_increment_counts,
         text_auto=True,
-        color_continuous_scale='hot',
+        color_continuous_scale='Blues',
         labels=dict(x="Cluster", y="Increment Type"),
         title="Heatmap of Cluster Distribution by Increment Type"
     )
 
-    # Imposta le dimensioni della figura e i titoli degli assi
+    # Customize the layout
     fig.update_layout(
         xaxis_title="Cluster",
         yaxis_title="Increment Type",
@@ -586,7 +555,5 @@ def plot_cluster_increment_heatmap(data):
         height=600  # Altezza della figura
     )
 
-    # Mostra la heatmap
-    fig.show()
 
     return fig
