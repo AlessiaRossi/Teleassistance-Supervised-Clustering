@@ -580,6 +580,43 @@ def create_scatter_plot_by_increment_and_structure(data):
     # Return the figure object
     return fig
 
+def plot_cluster_increment_heatmap(data):
+    """
+    Plots a heatmap showing the frequency of each combination of 'incremento_teleassistenze' and 'cluster'.
+    
+    Parameters:
+    - data (pd.DataFrame): The input data containing the 'incremento_teleassistenze' and 'cluster' columns.
+    
+    Returns:
+    - fig: The Plotly figure object for the heatmap.
+    """
+    # Calcola la frequenza di ogni combinazione di incremento e cluster
+    cluster_increment_counts = data.groupby(['incremento_teleassistenze', 'cluster']).size().unstack(fill_value=0)
+
+    # Crea la heatmap con Plotly
+    fig = px.imshow(
+        cluster_increment_counts,
+        text_auto=True,
+        color_continuous_scale='hot',
+        labels=dict(x="Cluster", y="Increment Type"),
+        title="Heatmap of Cluster Distribution by Increment Type"
+    )
+
+    # Imposta le dimensioni della figura e i titoli degli assi
+    fig.update_layout(
+        xaxis_title="Cluster",
+        yaxis_title="Increment Type",
+        width=800,  # Larghezza della figura
+        height=600  # Altezza della figura
+    )
+
+    # Mostra la heatmap
+    fig.show()
+
+    return fig
+
+
+'''
 # 1. Gender Distribution Chart
 gender_dist_fig = create_gender_distribution_chart(data)
 gender_dist_fig.show()
@@ -619,3 +656,4 @@ scatter_cluster_professional_fig.show()
 # 10. Scatter Plot by Increment and Structure
 scatter_increment_structure_fig = create_scatter_plot_by_increment_and_structure(data)
 scatter_increment_structure_fig.show()
+'''

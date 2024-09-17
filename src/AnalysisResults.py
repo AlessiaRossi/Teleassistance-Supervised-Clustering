@@ -1,33 +1,143 @@
 import pandas as pd
 import plotly.express as px
-import logging
-import seaborn as sns
-import matplotlib.pyplot as plt
+import plotly.graph_objects as go
+from plotly.subplots import make_subplots
 
 
-def scatter_map(data):
-    ''' Analysis of the geographical distribution (region_residence) by cluster, using a scatter map. 
+
+# Load the data
+file_path = '/Users/fabiodigregorio/Desktop/campus bio iscrizione/ Magistrale/FIA/Teleassistance-Supervised-Clustering/data/processed/clustered_data_all_feature.parquet'
+data = pd.read_parquet(file_path)
+
+
+
+def create_gender_distribution_chart(data):
+    """
+    Function to analyze the distribution of men and women based on teleassistance increment
+    and display the results in an interactive bar chart.
+
+    Parameters:
+    - data: DataFrame containing the data with 'sesso', 'incremento_teleassistenze', and 'cluster' columns.
+    """
+    # Calculate the percentage of each gender within each cluster
+    sex_crosstab = pd.crosstab(data['sesso'], data['cluster'], normalize='index') * 100
+
+    # Identify the gender with the highest percentage for each cluster
+    max_sex_per_cluster = sex_crosstab.idxmax(axis=1)
+
+    # Extract the corresponding highest percentages of samples for each cluster
+    max_percentage_per_cluster = sex_crosstab.max(axis=1)
+
+    # Step 1: Calculate the number of samples for each combination of gender and increment type
+    sex_increment_counts = data.groupby(['sesso', 'incremento_teleassistenze']).size().reset_index(name='count')
     
-    Args:
-        data (pandas.DataFrame): The DataFrame containing the teleassistance data with columns 'region_residence' and 'cluster'.
+    # Step 2: Identify the dominant cluster for each increment type
+    dominant_cluster_per_inc_gen = data.groupby(['incremento_teleassistenze', 'sesso'])['cluster'].agg(lambda x: x.value_counts().idxmax()).reset_index(name='dominant_cluster')
+    
+    # Step 3: Merge the counts with the dominant cluster information
+    merged_data = pd.merge(sex_increment_counts, dominant_cluster_per_inc_gen, on=['incremento_teleassistenze', 'sesso'])
+    
+    # Step 4: Create the bar chart using Plotly
+    fig = px.bar(
+        merged_data,
+        x='incremento_teleassistenze',
+        y='count',
+        color='sesso',
+        text='dominant_cluster',  # Display the dominant cluster as text
+        title='Distribution of Men and Women by Teleassistance Increment Type and Dominant Cluster',
+        labels={'incremento_teleassistenze': 'Increment Type', 'count': 'Number of Samples', 'sesso': 'Gender'},
+        barmode='group',
+        color_discrete_map={'female': '#FF69B4', 'male': '#1E90FF'}
+    )
 
+    # Customize the chart
+    fig.update_layout(
+        xaxis_title='Increment Type',
+        yaxis_title='Number of Samples',
+        legend_title='Gender',
+        bargap=0.4
+    )
+
+    # Show the dominant cluster above the bars
+    fig.update_traces(textposition='outside')
+
+    # Return the chart
+    return fig, sex_crosstab, max_sex_per_cluster, max_percentage_per_cluster
+
+def create_increment_distribution_chart(data):
+    """
+    Creates a bar chart showing the distribution of teleassistance increments by year and dominant cluster.
+
+    Parameters:
+    - data: DataFrame containing 'anno', 'incremento_teleassistenze', and 'cluster' columns.
+    
     Returns:
-        pandas.Series: The dominant cluster for each region.
-        pandas.Series: Percentage of each region within each cluster
-        pandas.Series: The dominant increment category for each region.
-        plotly.graph_objects.Figure: The generated scatter map figure.
- '''
+    - fig: Plotly figure object with the bar chart.
+    """
+    
+    # Step 1: Calculate the number of samples for each combination of year and increment type
+    df_sample_counts = pd.crosstab([data['anno'], data['incremento_teleassistenze']], data['cluster'])
 
-    # Define latitude and longitude for each region in Italy
-    # These coordinates are used to accurately place each region on the map
-    # Add latitude and longitude for each region
+    # Step 2: Identify the dominant cluster for each combination of year and increment type
+    df_max_cluster = df_sample_counts.idxmax(axis=1)
+
+    # Step 3: Identify the highest number of samples for each combination of year and increment type
+    df_max_sample_count = df_sample_counts.max(axis=1)
+
+    # Step 4: Create a DataFrame with the necessary information
+    bar_data = pd.DataFrame({
+        'anno': [index[0] for index in df_sample_counts.index],  # Extract the year
+        'incremento_teleassistenze': [index[1] for index in df_sample_counts.index],  # Extract the increment type
+        'sample_count': df_max_sample_count.values,  # Number of samples
+        'dominant_cluster': df_max_cluster.values  # Dominant cluster
+    })
+
+    # Step 5: Create the bar chart with Plotly
+    fig = px.bar(
+        bar_data,
+        x='anno',
+        y='sample_count',
+        color='incremento_teleassistenze',  # Color by increment type
+        text='dominant_cluster',  # Display dominant cluster as text on top of the bars
+        barmode='group',  # Group bars by year
+        title='Distribution of Teleassistance Increments by Year and Dominant Cluster',
+        labels={'anno': 'Year', 'sample_count': 'Number of Samples', 'incremento_teleassistenze': 'Teleassistance Variation'},
+        color_discrete_sequence=px.colors.qualitative.Pastel  # Use pastel color palette
+    )
+
+    # Step 6: Customize the chart
+    fig.update_layout(
+        xaxis_title='Year',
+        yaxis_title='Number of Samples',
+        xaxis_tickangle=-45,  # Rotate x-axis labels by 45 degrees
+        width=900  # Set chart width
+    )
+
+    # Step 7: Show the dominant cluster above the bars
+    fig.update_traces(textposition='outside')
+
+    # Return the chart
+    return fig, df_sample_counts, df_max_cluster, df_max_sample_count
+
+def create_increment_scatter_map(data):
+    """
+    Creates a scatter map showing the highest percentage increment of teleassistance for each region in Italy.
+
+    Parameters:
+    - data: DataFrame containing 'regione_residenza', 'incremento_teleassistenze', and 'cluster' columns.
+    
+    Returns:
+    - fig: Plotly figure object with the scatter map.
+    """
+    
+    # Step 1: Define the coordinates for each region
     region_coords = {
         'Abruzzo': (42.351221, 13.398438),
         'Basilicata': (40.639470, 15.805148),
         'Calabria': (38.905975, 16.594401),
         'Campania': (40.839565, 14.250849),
-        'Emilia romagna': (44.494887, 11.342616),
-        'Friuli venezia giulia': (45.649526, 13.776818),
+        'Emilia-Romagna': (44.494887, 11.342616),
+        'Friuli Venezia Giulia': (45.649526, 13.776818),
         'Lazio': (41.892770, 12.482520),
         'Liguria': (44.411308, 8.932699),
         'Lombardia': (45.466797, 9.190498),
@@ -38,482 +148,445 @@ def scatter_map(data):
         'Sardegna': (39.215311, 9.110616),
         'Sicilia': (37.600000, 14.015356),
         'Toscana': (43.769560, 11.255814),
-        'Prov. auton. trento': (46.074779, 11.121749),
-        'Prov. auton. bolzano': (46.4982953, 11.3547582),
+        'Prov. auton. trento': (46.499334, 11.356624),
         'Umbria': (43.112203, 12.388784),
         'Valle d\'aosta': (45.737502, 7.320149),
+        'Prov. auton. bolzano': (46.4982953, 11.3547582),
         'Veneto': (45.434904, 12.338452)
     }
 
-    # Convert the dictionary to a DataFrame for easier manipulatio
-    coords_df = pd.DataFrame.from_dict(region_coords, orient='index', columns=['latitude',
-                                                                               'longitude']).reset_index()  # Reset the index, so 'regione_residenza' becomes a column
-    coords_df.rename(columns={'index': 'regione_residenza'}, inplace=True)  # Rename the columns
+    # Step 2: Convert the dictionary to a DataFrame
+    coords_df = pd.DataFrame.from_dict(region_coords, orient='index', columns=['latitude', 'longitude']).reset_index()
+    coords_df.rename(columns={'index': 'regione_residenza'}, inplace=True)
 
-    # Merge the data with the coordinates based on the region of residence
-    # This step adds latitude and longitude to the main data for each region
+    # Step 3: Merge the data with the coordinates
     data = pd.merge(data, coords_df, on='regione_residenza')
 
-    # Calculate the percentage distribution of clusters within each region
-    # The result is a crosstab that shows the percentage of each cluster in each region
+    # Step 4: Calculate the percentage of each increment for each region
+    region_inc_crosstab = pd.crosstab(data['regione_residenza'], data['incremento_teleassistenze'], normalize='index') * 100
+
+    # Step 5: Identify the increment with the highest percentage for each region
+    max_inc_per_region = region_inc_crosstab.idxmax(axis=1)
+
+    # Step 6: Extract the corresponding highest percentages of each increment for each region
+    max_percentage_per_region = region_inc_crosstab.max(axis=1)
+
+    # Step 7: Calculate the percentage of each cluster for each region
     region_cluster_crosstab = pd.crosstab(data['regione_residenza'], data['cluster'], normalize='index') * 100
 
-    # Identify the cluster with the highest percentage for each region
+    # Step 8: Identify the cluster with the highest percentage for each region
     max_cluster_per_region = region_cluster_crosstab.idxmax(axis=1)
 
-    # Extract the max percentages for each region
-    max_percentage_per_region = region_cluster_crosstab.max(axis=1)
-
-    # Identify the incremento_teleassistenze with the highest percentage for each region
-    max_increment_teleassistenze = data.groupby('regione_residenza')['incremento_teleassistenze'].max()
-
-    # Create a DataFrame for visualization containing the region, dominant cluster, and percentage
+    # Step 9: Create a DataFrame for the map
     map_data = pd.DataFrame({
-        'regione_residenza': max_cluster_per_region.index,
-        'cluster': max_cluster_per_region.values,
+        'regione_residenza': max_inc_per_region.index,
+        'incremento': max_inc_per_region.values,
         'percentage': max_percentage_per_region.values,
-        'incremento_teleassistenze': max_increment_teleassistenze.values  # Incremento teleassistenza
+        'cluster': max_cluster_per_region.values
     })
 
-    # Merge with coordinates to plot the map
+    # Step 10: Merge with geographic coordinates
     map_data = pd.merge(map_data, coords_df, on='regione_residenza')
 
-    # Create a scatter map using Plotly
+    # Step 11: Create the scatter map with Plotly
     fig = px.scatter_mapbox(
         map_data,
         lat='latitude',
         lon='longitude',
-        color='cluster',
-        size='percentage',
-        hover_name='regione_residenza',
+        color='incremento',  # Color by increment
+        size='percentage',  # Size based on percentage
+        hover_name='regione_residenza',  # Show region name on hover
         hover_data={
-            'cluster': True,  # Mostra il numero del cluster
-            'percentage': ':.2f',  # Mostra la percentuale di incremento
-            'incremento_teleassistenze': True  # Mostra incremento teleassistenza
+            'incremento': True,  # Show increment type
+            'percentage': ':.2f',  # Show percentage
+            'cluster': True  # Show cluster
         },
-        title='Cluster con percentuale di appartenenza maggiore per regione in Italia',
-        color_continuous_scale=px.colors.cyclical.IceFire,
+        title='Largest Teleassistance Increment by Region in Italy',
+        color_continuous_scale=px.colors.cyclical.IceFire,  # Color scale
         mapbox_style='carto-positron',
-        zoom=5
+        zoom=5  # Initial zoom level
     )
 
-    # Customize the map layout, including centering on Italy and adjusting the legend
+    # Step 12: Customize the map layout
     fig.update_layout(
         mapbox=dict(
-            center=dict(lat=41.8719, lon=12.5674),  # Centered on Italy
+            center=dict(lat=41.8719, lon=12.5674),  # Center the map on Italy
             zoom=5
         ),
-        margin={"r": 0, "t": 0, "l": 0, "b": 0},
+        margin={"r":0, "t":0, "l":0, "b":0},  # Remove extra margins
         legend=dict(
-            x=0.99,  # Positioned at the top right
-            y=0.99,  # Positioned at the top right
+            x=0.99,  # Position the legend at the top-right corner
+            y=0.99,
             xanchor='right',
             yanchor='top',
             traceorder='normal',
             font=dict(size=12),
-            bgcolor='rgba(0, 0, 0, 0.7)',  # Dark background color with transparency
-            bordercolor='black',  # black  border color
-            borderwidth=1  # Border width
+            bgcolor='rgba(0, 0, 0, 0.7)',  # Transparent legend background
+            bordercolor='black',
+            borderwidth=1
         )
     )
 
-    # fig.savefig('graphs/scatter_map.png')
-    return max_increment_teleassistenze, max_cluster_per_region, max_percentage_per_region, fig
+    # Return the map figure
+    return fig, max_cluster_per_region, max_percentage_per_region # max incremtno vedi se serve 
 
+def create_cluster_and_increment_pie_charts(data):
+    """
+    Creates a figure with two pie charts displaying the distribution of clusters and the distribution of 
+    the types of 'incremento_teleassistenze'.
 
-def age_group_bar_chart(data):
-    ''' Analysis of the age group distribution (fascia_eta) by cluster, using a bar chart. 
+    Parameters:
+    - data: DataFrame containing 'cluster' and 'incremento_teleassistenze' columns.
+
+    Returns:
+    - fig: Plotly figure object with two pie charts.
+    """
     
-    Args:
-        data (pandas.DataFrame): The DataFrame containing the teleassistance data with columns 'fascia_eta' and 'cluster'.
+    # Step 1: Create DataFrame for the cluster distribution
+    cluster_counts = data['cluster'].value_counts().reset_index()
+    cluster_counts.columns = ['cluster', 'count']
+
+    # Step 2: Create DataFrame for the distribution of incremento_teleassistenze types
+    tipologia_counts = data['incremento_teleassistenze'].value_counts().reset_index()
+    tipologia_counts.columns = ['incremento_teleassistenze', 'count']
+
+    # Step 3: Create a figure with two subplots (one for clusters, one for incremento_teleassistenze)
+    fig = make_subplots(
+        rows=1,
+        cols=2,
+        subplot_titles=(
+            'Cluster Distribution',
+            'Distribution of Incremento Teleassistenze Types'
+        ),
+        specs=[[{'type': 'domain'}, {'type': 'domain'}]]  # 'domain' specifies pie charts
+    )
+
+    # Step 4: Add pie chart for cluster distribution
+    fig.add_trace(
+        px.pie(
+            cluster_counts,
+            names='cluster',
+            values='count',
+            color_discrete_sequence=px.colors.qualitative.Dark2
+        ).update_traces(
+            textinfo='label+percent',
+            texttemplate='Cluster %{label} %{percent:.1%}'  # Custom label + percentage
+        ).data[0],
+        row=1, col=1
+    )
+
+    # Step 5: Add pie chart for incremento_teleassistenze distribution
+    fig.add_trace(
+        px.pie(
+            tipologia_counts,
+            names='incremento_teleassistenze',
+            values='count',
+            color_discrete_sequence=px.colors.qualitative.Dark2
+        ).update_traces(
+            textinfo='label+percent',
+            texttemplate='%{label} %{percent:.1%}'  # Custom label + percentage
+        ).data[0],
+        row=1, col=2
+    )
+
+    # Step 6: Update layout of the figure
+    fig.update_layout(
+        title_text='Distribution of Clusters and Types of Incremento Teleassistenze',
+        height=600,
+        width=1200,
+        showlegend=True,  # Keep legend visible
+        legend_title_text="Legend"
+    )
+
+    # Return the figure object
+    return fig
+
+def create_increment_and_cluster_bar_charts(data):
+    """
+    Creates a figure with two bar charts: one showing the distribution of `incremento_teleassistenze` 
+    types and the other showing the distribution of clusters.
+
+    Parameters:
+    - data: DataFrame containing 'incremento_teleassistenze' and 'cluster' columns.
 
     Returns:
-        pandas.Series: The dominant cluster for each age group.
-        pandas.Series: Highest percentage of increment type per age group.
-        pandas.Series: The dominant increment category for each age group.
-        pandas.DataFrame: The percentage of each cluster per age group.
-        pandas.DataFrame: The percentage of each increment type per age group.
-        plotly.graph_objects.Figure: The generated bar chart figure.
-    '''
-
-    # Create crosstab for teleassistance increment per age group
-    df_crosstab_increment = pd.crosstab(data['fascia_eta'], data['incremento_teleassistenze'], normalize='index') * 100
-
-    # Identify the increment category with the highest percentage per age group
-    df_max_increment = df_crosstab_increment.idxmax(axis=1)
-    ## Identify the highest percentage of increment type per age group
-    df_max_percentage_increment = df_crosstab_increment.max(axis=1)
-
-    # Create crosstab for clusters per age group
-    df_crosstab_cluster = pd.crosstab(data['fascia_eta'], data['cluster'], normalize='index') * 100
-
-    # Identify the cluster with the highest percentage per age group
-    df_max_cluster = df_crosstab_cluster.idxmax(axis=1)
-
-    # Create a DataFrame for plotting the bar chart with age group, cluster, and percentage
-    pie_data = pd.DataFrame({
-        'age_group': df_max_increment.index,
-        'incremento_teleassistenze': df_max_increment.values,
-        'percentage_increment': df_max_percentage_increment,
-        'dominant_cluster': df_max_cluster.values  # Add dominant cluster information
-    })
-
-    # Create a bar chart using Plotly to visualize the age group distribution by cluster
-    fig = px.bar(
-        pie_data,
-        x='age_group',
-        y='percentage_increment',
-        color='incremento_teleassistenze',
-        text='dominant_cluster',  # Add dominant cluster as text inside bars
-        title='Distrbuzione delle fasce d\'età per variazione teleassistenza e cluster dominante',
-        labels={'age_group': 'Fascia età', 'percentage_increment': 'Percentuale massima per tipo di incremento (%)',
-                'incremento_teleassistenze': 'Variazione Teleassistenza'},
-        color_discrete_sequence=px.colors.qualitative.Pastel
-    )
-
-    # Customize the chart layout, including the axis labels and chart width
-    fig.update_layout(
-        xaxis_title='Fascia d\'età',
-        yaxis_title='Percentuale di incremento (%)',
-        xaxis_tickangle=-45,
-        width=900  # Increase the width of the chart
-    )
-    # Show text (cluster numbers) on top of the bars
-    fig.update_traces(textposition='outside')
-
-    # fig.savefig('graphs/age_group_bar_chart.png')
-    return df_max_increment, df_max_percentage_increment, df_max_cluster, df_crosstab_cluster, df_crosstab_increment, fig
-
-
-def teleassistance_variation_bar_chart(data):
-    ''' Analysis of the teleassistance variation distribution (incremento_teleassistenze) by cluster, using a bar chart. 
+    - fig: Plotly figure object with two bar charts.
+    """
     
-    Args:
-        data (pandas.DataFrame): The DataFrame containing the teleassistance data with columns 'incremento_teleassistenze' and 'cluster'.
+    # Step 1: Calculate the number of samples for each increment type
+    incremento_counts = data['incremento_teleassistenze'].value_counts()
+
+    # Step 2: Calculate the number of samples for each cluster
+    cluster_counts = data['cluster'].value_counts()
+    print("Number of samples per cluster:")
+    print(cluster_counts)
+
+    # Step 3: Create a figure with two subplots (one for incremento and one for clusters)
+    fig = make_subplots(
+        rows=1,
+        cols=2,
+        subplot_titles=(
+            'Number of Samples per Increment Type',
+            'Number of Samples per Cluster'
+        ),
+        column_widths=[0.5, 0.5]
+    )
+
+    # Step 4: Add bar chart for incremento_teleassistenze distribution
+    fig.add_trace(
+        go.Bar(
+            x=incremento_counts.index,
+            y=incremento_counts.values,
+            name='Increment Type',
+            marker_color=px.colors.sequential.Viridis
+        ),
+        row=1, col=1
+    )
+
+    # Step 5: Add bar chart for cluster distribution
+    fig.add_trace(
+        go.Bar(
+            x=cluster_counts.index,
+            y=cluster_counts.values,
+            name='Cluster',
+            marker_color=px.colors.qualitative.Pastel
+        ),
+        row=1, col=2
+    )
+
+    # Step 6: Customize the general layout
+    fig.update_layout(
+        height=600,
+        width=1200,
+        showlegend=False,  # Hide legends to avoid repetition
+        title_text='Distribution of Samples by Increment Type and Cluster'
+    )
+
+    # Step 7: Add axis titles to both charts
+    fig.update_xaxes(title_text='Increment Type', row=1, col=1)
+    fig.update_yaxes(title_text='Number of Samples', row=1, col=1)
+
+    fig.update_xaxes(title_text='Cluster', row=1, col=2)
+    fig.update_yaxes(title_text='Number of Samples', row=1, col=2)
+
+    # Return the figure object
+    return fig
+
+def create_age_vs_increment_box_plot(data):
+    """
+    Creates a box plot to compare age categories (`fascia_eta`) with teleassistance increments 
+    (`incremento_teleassistenze`).
+
+    Parameters:
+    - data: DataFrame containing 'incremento_teleassistenze' and 'fascia_eta' columns.
 
     Returns:
-        pandas.DataFrame: Frequency of incremento_teleassistenze categories per cluster.
-        pandas.DataFrame: Cluster with the highest percentage for each increment category.
-        plotly.graph_objects.Figure: The generated bar chart figure.
-
-    '''
-
-    # Calculate the frequency of each 'incremento_teleassistenze' category per cluster
-    cluster_counts = data.groupby(['cluster', 'incremento_teleassistenze']).size().reset_index(name='count')
-
-    # Calculate the total count per cluster to compute percentages
-    total_counts_per_cluster = cluster_counts.groupby('cluster')['count'].sum().reset_index(name='total_count')
-
-    # Merge total counts with cluster counts to calculate percentages
-    cluster_counts = cluster_counts.merge(total_counts_per_cluster, on='cluster')
-    cluster_counts['percentage'] = (cluster_counts['count'] / cluster_counts['total_count']) * 100
-
-    # Identify the 'incremento_teleassistenze' category with the highest count for each cluster
-    dominant_increment_per_cluster = cluster_counts.loc[cluster_counts.groupby('cluster')['count'].idxmax()]
-
-    # Extract the cluster, 'incremento_teleassistenze' category, and percentage
-    result = dominant_increment_per_cluster[['cluster', 'incremento_teleassistenze', 'percentage']]
-
-    # Create an interactive bar chart with Plotly to visualize the distribution of teleassistance variations by cluster
-    fig = px.bar(
-        cluster_counts,
-        x='cluster',
-        y='percentage',
-        color='incremento_teleassistenze',
-        title='Distribuzione delle variazioni delle teleassistenze per cluster',
-        labels={'cluster': 'Cluster', 'percentage': 'Percentuale incremento (%)',
-                'incremento_teleassistenze': 'Teleassistance Variation'},
-        barmode='group',
-    )
-
-    # Customize the chart layout, including the axis labels and legend title
-    fig.update_layout(
-        xaxis_title='Cluster',
-        yaxis_title='Percentuale di incremento (%)',
-        legend_title='Variazione Teleassistenza',
-    )
-
-    # fig.savefig('graphs/teleassistance_variation_bar_chart.png')
-    return cluster_counts, result, fig
-
-
-def healthcare_professional_bar_chart(data):
-    ''' Analysis of the healthcare professional distribution (tipologia_professionista_sanitario) by cluster, using a bar chart. 
+    - fig: Plotly figure object with the box plot.
+    """
     
-    Args:
-        data (pandas.DataFrame): The DataFrame containing the teleassistance data with columns 'tipologia_professionista_sanitario' and 'cluster'.
-
-    Returns:
-        pandas.DataFrame: Frequency of healthcare professionals per teleassistence increment and dominant cluster.
-        plotly.graph_objects.Figure: The generated bar chart figure.
-    '''
-
-    # Calculate the frequency of each type of healthcare professional per cluster
-    cluster_counts = data.groupby(
-        ['cluster', 'tipologia_professionista_sanitario', 'incremento_teleassistenze']).size().reset_index(name='count')
-
-    # Calculate the total for each cluster to obtain percentages
-    total_counts_per_cluster = cluster_counts.groupby('cluster')['count'].sum().reset_index(name='total_count')
-
-    # Merge total counts with clusters to calculate percentages
-    cluster_counts = cluster_counts.merge(total_counts_per_cluster, on='cluster')
-    cluster_counts['percentage'] = (cluster_counts['count'] / cluster_counts['total_count']) * 100
-
-    # Identify the dominant 'incremento_teleassistenze' category for each healthcare professional
-    dominant_increment_per_professional = cluster_counts.loc[
-        cluster_counts.groupby('tipologia_professionista_sanitario')['percentage'].idxmax()]
-
-    # Create an interactive bar chart with Plotly to visualize the distribution of healthcare professionals by cluster
-    fig = px.bar(
-        dominant_increment_per_professional,
-        x='tipologia_professionista_sanitario',
-        y='percentage',
-        color='incremento_teleassistenze',
-        text='cluster',
-        title='Distribuzione dei professionisti sanitari per incremento teleassistenza e cluster dominante ',
-        labels={'tipologia_professionista_sanitario': 'Tipo di professionista',
-                'percentage': 'Percentuale incremento(%)',
-                'cluster': 'Cluster',
-                'incremento_teleassistenze': 'Incremento Teleassistenza'},
-        color_discrete_sequence=px.colors.qualitative.Set2
-    )
-
-    # Customize the appearance of text labels inside the bars
-    fig.update_traces(
-        textposition='outside',  # Text displayed inside the bars
-        textfont_size=12,
-        textfont_color='black'  # Black text color
-    )
-
-    # Customize the chart
-    fig.update_layout(
-        xaxis_title='Tipo di professionista sanitario',
-        yaxis_title='Percentuale di incremento (%)',
-        showlegend=True,  # Show the legend
-        legend=dict(
-            x=1.05,  # Horizontal position of the legend
-            y=1,  # Vertical position of the legend
-            traceorder='normal'  # Order of items in the legend
-        )
-    )
-
-    # fig.savefig('graphs/healtcare_professional_bar_chart.png')
-    return dominant_increment_per_professional, fig
-
-
-def gender_cluster_distribution_chart(data):
-    ''' Analysis of the gender distribution (sesso) by cluster, using a bar chart. 
-    
-    Args:
-        data (pandas.DataFrame): The DataFrame containing the teleassistance data with columns 'sesso' and 'cluster'.
-
-    Returns:
-        pandas.DataFrame: The percentage of each gender within each cluster 
-        pandas.Series: The dominant cluster for each gender.
-        pandas.Series: The dominant percentages of each gender within each cluster
-        plotly.graph_objects.Figure: The generated bar chart figure.
-    '''
-    print(data.columns)
-
-    # Calculate the percentage of each gender within each cluster
-    # The result is a crosstab that shows the gender distribution within each cluster
-    sex_crosstab = pd.crosstab(data['sesso'], data['cluster'], normalize='index') * 100
-
-    max_sex_per_cluster = sex_crosstab.idxmax(axis=1)
-
-    # Extract the corresponding highest percentages for each cluster
-    max_percentage_per_cluster = sex_crosstab.max(axis=1)
-
-    # Melt the crosstab DataFrame for easier plotting
-    melted_gender_data = sex_crosstab.reset_index().melt(id_vars='sesso', var_name='cluster', value_name='percentage')
-
-    # Create a bar chart using Plotly
-    fig = px.bar(
-        melted_gender_data,
-        x='cluster',
-        y='percentage',
-        color='sesso',
-        title='Distribuzione di uomini e donne per cluster',
-        labels={'cluster': 'Cluster', 'percentage': 'Percentuale (%)', 'sesso': 'Sesso'},
-        barmode='group',
-        color_discrete_map={'female': '#FF69B4', 'male': '#1E90FF'}
-    )
-
-    # Customize the chart
-    fig.update_layout(
-        xaxis_title='Cluster',
-        yaxis_title='Percentuale',
-        legend_title='Sesso',
-        bargap=0.4
-    )
-
-    # fig.savefig('graphs/gender_distribution_chart.png')
-    return sex_crosstab, max_sex_per_cluster, max_percentage_per_cluster, fig
-
-
-def increment_gender_distribution_chart(data):
-    ''' Analysis of the gender distribution (sesso) by increment type, using a bar chart.
-
-    Args:
-        data (pandas.DataFrame): The DataFrame containing the teleassistance data with columns 'sesso' and 'incremento_teleassistenze'.
-
-    Returns:
-        pandas.DataFrame: The percentage of each gender within each increment type.
-        pandas.Series: The dominant increment type for each gender.
-        pandas.Series: The dominant percentages of each gender within each increment type.
-        plotly.graph_objects.Figure: The generated bar chart figure.
-    '''
-    # Calculate the percentage of each gender within each increment type
-    sex_crosstab = pd.crosstab(data['sesso'], data['incremento_teleassistenze'], normalize='index') * 100
-
-    # Identify the gender with the highest percentage for each increment type
-    max_sex_per_inc = sex_crosstab.idxmax(axis=1)
-
-    # Extract the corresponding highest percentages of samples for each increment type
-    max_percentage_per_inc = sex_crosstab.max(axis=1)
-
-    # Melt the crosstab DataFrame for easier plotting
-    melted_gender_data = sex_crosstab.reset_index().melt(id_vars='sesso', var_name='incremento_teleassistenze',
-                                                         value_name='percentage')
-
-    # Create a bar chart using Plotly
-    fig = px.bar(
-        melted_gender_data,
+    # Create the box plot with Plotly
+    fig = px.box(
+        data,
         x='incremento_teleassistenze',
-        y='percentage',
-        color='sesso',
-        title='Distribuzione di uomini e donne per variazione incremento teleassistenza',
-        labels={'cluster': 'Cluster', 'percentage': 'Percentuale (%)', 'sesso': 'Sesso'},
-        barmode='group',
-        color_discrete_map={'female': '#FF69B4', 'male': '#1E90FF'}
-
-    )
-
-    # Customize the chart
-    fig.update_layout(
-        xaxis_title='Tipologia di incremento',
-        yaxis_title='Percentuale (%)',
-        legend_title='Sesso',
-        bargap=0.4
-    )
-
-    return sex_crosstab, max_sex_per_inc, max_percentage_per_inc, fig
-
-
-def year_cluster_increments_chart(data):
-    """ Analyzes teleassistance data, identifies dominant clusters for each year-increment combination,
-  and creates a bar chart visualizing the distribution.
-
-    Args:
-        data (pandas.DataFrame): The DataFrame containing the teleassistance data with columns 'anno', 'incremento_teleassistenze', and 'cluster'.
-
-    Returns:
-        pandas.Series: The dominant cluster for each year-increment combination.
-        pandas.Series: The percentage of the dominant cluster for each year-increment combination.
-        plotly.graph_objects.Figure: The generated bar chart figure.
-  """
-
-    # Create crosstab for percentage and identify dominant clusters
-    df_crosstab_increment = (
-            pd.crosstab([data['anno'], data['incremento_teleassistenze']], data['cluster'], normalize='index') * 100
-    )
-    # Identify the cluster with the highest percentage for each year-increment combination
-    df_max_cluster_inc = df_crosstab_increment.idxmax(axis=1)
-    # Identify the highest percentage of samples of increment type for each combination of year and increment type
-    df_crosstab_cluster = (
-            pd.crosstab([data['anno'], data['incremento_teleassistenze']], data['cluster'], normalize='index') * 100
-    )
-    # Identify the percentage of samples of increment type for each combination of year and increment type
-    df_max_percentage_increment_cla = df_crosstab_increment.max(axis=1)
-
-    # Create a DataFrame with bar chart data
-    bar_data = pd.DataFrame({
-        'anno': [index[0] for index in df_crosstab_increment.index],
-        'incremento_teleassistenze': [index[1] for index in df_crosstab_increment.index],
-        'percentage_increment': df_max_percentage_increment_cla.values,
-        'dominant_cluster': df_max_cluster_inc.values
-    })
-
-    # Create the bar chart with Plotly
-    fig = px.bar(
-        bar_data,
-        x='anno',
-        y='percentage_increment',
+        y='fascia_eta',
         color='incremento_teleassistenze',
-        text='dominant_cluster',
-        barmode='group',
-        title='Distribuzione delle variazioni delle teleassistenze per anno e cluster dominante',
-        labels={'anno': 'Anno', 'percentage_increment': 'Percentuale Incremento (%)',
-                'incremento_teleassistenze': 'Variazione Teleassistenza'},
-        color_discrete_sequence=px.colors.qualitative.Pastel
+        title='Age Category vs Teleassistance Increment',
+        labels={
+            'incremento_teleassistenze': 'Teleassistance Increment',
+            'fascia_eta': 'Age Category'
+        },
+        color_discrete_sequence=px.colors.sequential.Blues
     )
 
-    # Customize the chart layout
-    fig.update_layout(
-        xaxis_title='Anno',
-        yaxis_title='Percentuale Incremento (%)',
-        xaxis_tickangle=-45,
-        width=900
-    )
+    # Return the figure object
+    return fig
 
-    # Show dominant cluster above bars
-    fig.update_traces(textposition='outside')
+def create_cluster_vs_increment_violin_plot(data):
+    """
+    Creates a violin plot to visualize the distribution of teleassistance increments (`incremento_teleassistenze`) 
+    across different clusters (`cluster`).
 
-    # fig.savefig('graphs/teleassistance_cluster_increments_chart.png')
-
-    return df_max_cluster_inc, df_max_percentage_increment_cla, df_crosstab_cluster, fig
-
-
-def heatmap_plot(data):
-    ''' Analysis of the cluster distribution by increment type, using a heatmap.
-
-    Args:
-        data (pandas.DataFrame): The DataFrame containing the teleassistance data with columns 'cluster' and 'incremento_teleassistenze'.
+    Parameters:
+    - data: DataFrame containing 'cluster' and 'incremento_teleassistenze' columns.
 
     Returns:
-        plotly.graph_objects.Figure: The generated heatmap figure.
-    '''
-    # Calculate the frequency of each combination of cluster and increment type
-    cluster_increment_counts = data.groupby(['cluster', 'incremento_teleassistenze']).size().unstack(fill_value=0)
-
-    # Create the heatmap
-    plt.figure(figsize=(10, 8))
-    sns.heatmap(cluster_increment_counts, annot=True, fmt='d', cmap='viridis', cbar=True)
-
-    # Set titles and labels
-    plt.title('Heatmap of Cluster Distribution by Increment Type')
-    plt.xlabel('Increment Type')
-    plt.ylabel('Cluster')
-
-    # fig.savefig('graphs/heatmap.png')
-    return plt
-
-
-'''def chart_execution(df:pd.DataFrame, config:dict): 
-    ''' 'Execute the analysis of the teleassistance data and generate the charts.' '''
-
-    max_cluster_per_region, max_percentage_per_region = scatter_map(df)
-    logging.info(f'Dominant cluster per region: {max_cluster_per_region}')
-    logging.info(f'Dominant percentage per region: {max_percentage_per_region}')
-
-    df_max_increment,df_max_percentage_increment,df_max_cluster = age_group_bar_chart(df)
-    logging.info(f'Dominant increment per age group: {df_max_increment}')
-    logging.info(f'Dominant percentage increment per age group: {df_max_percentage_increment}')
-    logging.info(f'Dominant cluster per age group: {df_max_cluster}')
-
-    result = teleassistance_variation_bar_chart(df)
-    logging.info(f'Dominant increment per cluster: {result}')
+    - fig: Plotly figure object with the violin plot.
+    """
     
-    healthcare_professional_bar_chart(df)
+    # Create the violin plot with Plotly
+    fig = px.violin(
+        data,
+        x='cluster',
+        y='incremento_teleassistenze',
+        title='Distribution of Teleassistance Increment by Cluster',
+        labels={
+            'cluster': 'Cluster',
+            'incremento_teleassistenze': 'Teleassistance Increment'
+        },
+        box=True,  # Show box plot inside the violin
+        points='all'  # Show all points
+    )
 
-    sex_crosstab, max_sex_per_cluster, max_percentage_per_cluster = gender_distribution_chart(df)
-    logging.info(f'The percentage of each gender within each cluster: {sex_crosstab}')
-    logging.info(f'The dominant percentages for each cluster: {max_sex_per_cluster}')
-    logging.info(f'The dominant percentagesof each gender within each cluster {max_percentage_per_cluster}')
+    # Customize the layout
+    fig.update_layout(
+        xaxis_title='Cluster',
+        yaxis_title='Teleassistance Increment'
+    )
+
+    # Return the figure object
+    return fig
+
+def create_increment_vs_cluster_bar_chart(data):
+    """
+    Creates a grouped bar chart to visualize the distribution of samples across different teleassistance increments 
+    (`incremento_teleassistenze`) and clusters (`cluster`).
+
+    Parameters:
+    - data: DataFrame containing 'incremento_teleassistenze' and 'cluster' columns.
+
+    Returns:
+    - fig: Plotly figure object with the grouped bar chart.
+    """
     
+    # Step 1: Calculate the number of samples for each combination of teleassistance increment and cluster
+    increment_cluster_counts = data.groupby(['incremento_teleassistenze', 'cluster']).size().reset_index(name='count')
+    
+    # Step 2: Create the bar chart with Plotly
+    fig = px.bar(
+        increment_cluster_counts,
+        x='incremento_teleassistenze',
+        y='count',
+        color='cluster',
+        title='Distribution of Samples by Teleassistance Increment and Cluster',
+        labels={
+            'incremento_teleassistenze': 'Teleassistance Increment',
+            'count': 'Number of Samples',
+            'cluster': 'Cluster'
+        },
+        barmode='group',
+        color_continuous_scale=px.colors.cyclical.IceFire  # Use a cyclical color scale
+    )
 
-    df_max_cluster_inc,df_max_percentage_increment = teleassistance_cluster_increments_chart(df)
-    logging.info(f'Dominant cluster per year-increment combination: {df_max_cluster}')
+    # Customize the layout of the chart
+    fig.update_layout(
+        xaxis_title='Teleassistance Increment',
+        yaxis_title='Number of Samples',
+        legend_title='Cluster',
+        bargap=0.4  # Gap between bars
+    )
 
-    return max_cluster_per_region, max_percentage_per_region, df_max_increment, df_max_percentage_increment, df_max_cluster, result,sex_crosstab,max_sex_per_cluster,max_percentage_per_cluster,df_max_cluster_inc,df_max_percentage_increment
-'''
+    # Return the figure object
+    return fig, increment_cluster_counts
+
+def create_scatter_plot_by_cluster_and_professional(data):
+    """
+    Creates a 2D scatter plot to visualize the distribution of clusters relative to the type of increment 
+    (`incremento_teleassistenze`) and the type of professional (`tipologia_professionista_sanitario`).
+
+    Parameters:
+    - data: DataFrame containing 'cluster', 'incremento_teleassistenze', and 'tipologia_professionista_sanitario' columns.
+
+    Returns:
+    - fig: Plotly figure object with the scatter plot.
+    """
+    
+    # Step 1: Group the data by cluster, increment type, and professional type
+    df_grouped = data.groupby(['cluster', 'incremento_teleassistenze', 'tipologia_professionista_sanitario']).size().reset_index(name='count')
+
+    # Step 2: Create the scatter plot with Plotly
+    fig = px.scatter(
+        df_grouped,
+        x='incremento_teleassistenze',  # Teleassistance increment on the x-axis
+        y='tipologia_professionista_sanitario',  # Professional type on the y-axis
+        size='count',  # Size of the points based on the number of samples
+        color='cluster',  # Color of the points based on the cluster
+        symbol='cluster',  # Different symbols for different clusters
+        hover_data=['count'],  # Show the count on hover
+        title='Distribution of Clusters by Professional Type and Teleassistance Increment',
+        size_max=50  # Increase the maximum size of the points
+    )
+
+    # Customize the layout
+    fig.update_layout(
+        xaxis_title='Type of Increment',
+        yaxis_title='Professional Type',
+        width=900,
+        height=600
+    )
+
+    # Return the figure object
+    return fig
+
+def create_scatter_plot_by_increment_and_structure(data):
+    """
+    Creates a 2D scatter plot to visualize the distribution of clusters relative to the type of increment 
+    (`incremento_teleassistenze`) and the type of structure (`tipologia_struttura_erogazione`).
+
+    Parameters:
+    - data: DataFrame containing 'cluster', 'incremento_teleassistenze', and 'tipologia_struttura_erogazione' columns.
+
+    Returns:
+    - fig: Plotly figure object with the scatter plot.
+    """
+    
+    # Step 1: Group the data by cluster, increment type, and structure type
+    df_grouped = data.groupby(['cluster', 'incremento_teleassistenze', 'tipologia_struttura_erogazione']).size().reset_index(name='count')
+
+    # Step 2: Create the scatter plot with Plotly
+    fig = px.scatter(
+        df_grouped,
+        x='incremento_teleassistenze',  # Teleassistance increment on the x-axis
+        y='tipologia_struttura_erogazione',  # Structure type on the y-axis
+        size='count',  # Size of the points based on the number of samples
+        color='cluster',  # Color of the points based on the cluster
+        symbol='cluster',  # Different symbols for different clusters
+        hover_data=['count'],  # Show the count on hover
+        title='Distribution of Clusters by Increment Type and Structure',
+        size_max=50  # Increase the maximum size of the points
+    )
+
+    # Customize the layout
+    fig.update_layout(
+        xaxis_title='Type of Increment',
+        yaxis_title='Type of Structure',
+        width=900,
+        height=600
+    )
+
+    # Return the figure object
+    return fig
+
+def plot_cluster_increment_heatmap(data):
+    """
+    Plots a heatmap showing the frequency of each combination of 'incremento_teleassistenze' and 'cluster'.
+    
+    Parameters:
+    - data (pd.DataFrame): The input data containing the 'incremento_teleassistenze' and 'cluster' columns.
+    
+    Returns:
+    - fig: The Plotly figure object for the heatmap.
+    """
+    # Calcola la frequenza di ogni combinazione di incremento e cluster
+    cluster_increment_counts = data.groupby(['incremento_teleassistenze', 'cluster']).size().unstack(fill_value=0)
+
+    # Crea la heatmap con Plotly
+    fig = px.imshow(
+        cluster_increment_counts,
+        text_auto=True,
+        color_continuous_scale='hot',
+        labels=dict(x="Cluster", y="Increment Type"),
+        title="Heatmap of Cluster Distribution by Increment Type"
+    )
+
+    # Imposta le dimensioni della figura e i titoli degli assi
+    fig.update_layout(
+        xaxis_title="Cluster",
+        yaxis_title="Increment Type",
+        width=800,  # Larghezza della figura
+        height=600  # Altezza della figura
+    )
+
+    # Mostra la heatmap
+    fig.show()
+
+    return fig

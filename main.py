@@ -16,10 +16,10 @@ from src.data_prep.FeatureSelection import FeatureSelection
 from src.data_prep.FeatureExtraction import FeatureExtraction
 from src.ModellingClustering import ModellingClustering
 from src.MetricsEvaluation import MetricsEvaluation
-from src.AnalysisResults import (age_group_bar_chart, teleassistance_variation_bar_chart,
-                                 healthcare_professional_bar_chart, increment_gender_distribution_chart, scatter_map,
-                                 year_cluster_increments_chart,
-                                 gender_cluster_distribution_chart, heatmap_plot)
+from src.AnalysisResults import (create_gender_distribution_chart, create_increment_distribution_chart, create_increment_scatter_map,
+                                 create_cluster_and_increment_pie_charts, create_increment_and_cluster_bar_charts, create_age_vs_increment_box_plot,
+                                 create_cluster_vs_increment_violin_plot, create_increment_vs_cluster_bar_chart, create_scatter_plot_by_cluster_and_professional,
+                                 create_scatter_plot_by_increment_and_structure, plot_cluster_increment_heatmap)
 import yaml
 import logging
 import os
@@ -209,6 +209,91 @@ def main():
         logging.info('Analysis Results Started')
         charts_output_path = config['analysis']['charts_output_path']
 
+        # Crea i grafici
+        # Gender Distribution Chart
+        gender_chart, sex_crosstab, max_sex_per_cluster, max_percentage_per_cluster = create_gender_distribution_chart(df_clustered)
+        print(f'Gender Distribution Chart:\n{sex_crosstab}\n')
+
+        # Increment Distribution Chart
+        increment_chart, df_sample_counts, df_max_cluster, df_max_sample_count = create_increment_distribution_chart(df_clustered)
+        print(f'Increment Distribution Chart:\n{df_sample_counts}\n')
+
+        # Scatter Map
+        scatter_map, max_cluster_per_region, max_percentage_per_region = create_increment_scatter_map(df_clustered)
+        print(f'Scatter Map:\n{max_cluster_per_region}\n')
+
+        # Pie Charts
+        pie_charts = create_cluster_and_increment_pie_charts(df_clustered)
+        print(f'Pie Charts:\n{pie_charts}\n')
+
+        # Bar Charts
+        bar_charts = create_increment_and_cluster_bar_charts(df_clustered)
+        print(f'Bar Charts:\n{bar_charts}\n')
+
+        # Box Plot
+        box_plot = create_age_vs_increment_box_plot(df_clustered)
+        print(f'Box Plot:\n{box_plot}\n')
+
+        # Violin Plot
+        violin_plot = create_cluster_vs_increment_violin_plot(df_clustered)
+        print(f'Violin Plot:\n{violin_plot}\n')
+
+        # Bar Chart
+        bar_chart, increment_cluster_counts = create_increment_vs_cluster_bar_chart(df_clustered)
+        print(f'Bar Chart:\n{increment_cluster_counts}\n')
+
+        # Scatter Plot Professional
+        scatter_plot_professional = create_scatter_plot_by_cluster_and_professional(df_clustered)
+        print(f'Scatter Plot Professional:\n{scatter_plot_professional}\n')
+
+        # Scatter Plot Structure
+        scatter_plot_structure = create_scatter_plot_by_increment_and_structure(df_clustered)
+        print(f'Scatter Plot Structure:\n{scatter_plot_structure}\n')
+
+        # Heatmap
+        heatmap = plot_cluster_increment_heatmap(df_clustered)
+        print(f'Heatmap:\n{heatmap}\n')
+
+        # Salva i grafici come file HTML
+        gender_chart.write_html(charts_output_path + 'gender_chart.html')
+        increment_chart.write_html(charts_output_path + 'increment_chart.html')
+        scatter_map.write_html(charts_output_path + 'scatter_map.html')
+        pie_charts.write_html(charts_output_path + 'pie_charts.html')
+        bar_charts.write_html(charts_output_path + 'bar_charts.html')
+        box_plot.write_html(charts_output_path + 'box_plot.html')
+        violin_plot.write_html(charts_output_path + 'violin_plot.html')
+        bar_chart.write_html(charts_output_path + 'bar_chart.html')
+        scatter_plot_professional.write_html(charts_output_path + 'scatter_plot_professional.html')
+        scatter_plot_structure.write_html(charts_output_path + 'scatter_plot_structure.html')
+        heatmap.write_html(charts_output_path + 'heatmap.html')
+
+        # Print and log the values
+        with open(config['analysis']['analysis_file_path'], 'w') as file:
+            file.write(f'\n-Analysis Results- :\n')
+            file.write(f'Gender Distribution Chart:\n{sex_crosstab}\n')
+            file.write(f'Increment Distribution Chart:\n{df_sample_counts}\n')
+            file.write(f'Scatter Map:\n{max_cluster_per_region}\n')
+            file.write(f'Pie Charts:\n{pie_charts}\n')
+            file.write(f'Bar Charts:\n{bar_charts}\n')
+            file.write(f'Box Plot:\n{box_plot}\n')
+            file.write(f'Violin Plot:\n{violin_plot}\n')
+            file.write(f'Bar Chart:\n{increment_cluster_counts}\n')
+            file.write(f'Scatter Plot Professional:\n{scatter_plot_professional}\n')
+            file.write(f'Scatter Plot Structure:\n{scatter_plot_structure}\n')
+            file.write(f'Heatmap:\n{heatmap}\n')
+
+        logging.info('Analysis Results Completed')
+
+
+if __name__ == '__main__':
+    main()
+
+## old code 
+'''# Phase 6: Analysis Results
+    if config['analysis']['analysis_enabled']:
+        logging.info('Analysis Results Started')
+        charts_output_path = config['analysis']['charts_output_path']
+
         # Age Group Bar Chart
         df_max_cluster, df_max_increment, df_max_percentage_increment, df_crosstab_cluster, df_crosstab_increment, age_group_fig = age_group_bar_chart(
             df_clustered)
@@ -286,10 +371,7 @@ def main():
 
         # Heat
         heatmap = heatmap_plot(complete_df_clustered)
-        heatmap.write_html(charts_output_path + 'heatmap.html')
+        heatmap.savefig(charts_output_path + 'heatmap.png')
 
         logging.info('Analysis Results Completed')
-
-
-if __name__ == '__main__':
-    main()
+'''
