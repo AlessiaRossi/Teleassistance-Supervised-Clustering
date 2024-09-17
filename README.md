@@ -1,5 +1,4 @@
 # **_Teleassistance-Supervised-Clustering_**
-To read the README.md in Italian, click [here](myLib/README_ita.md)
 
 ## Index
 
@@ -8,7 +7,7 @@ To read the README.md in Italian, click [here](myLib/README_ita.md)
 2. [Enviroment setup](#2-enviroment-setup)
 3. [Data Sources](#3-data-sources)
 4. [Pipeline](#4-pipeline)
-5. [Outputs Program](./myLib/Outputs_Program.md)
+5. [Outputs Program](#5-outputs-program)
 
 
 ## 1. Project Description
@@ -58,9 +57,9 @@ For more details, refer to the [Data Directory](./data/README.md).
 ## **4. Pipeline**
 The data processing and analysis pipeline includes the following steps:
 1. **Data Cleaning**: Handle missing values, correct inconsistencies, and remove irrelevant information.
-2. **Feature Extraction**: Generate new features from the raw attributes.
-3. **Feature Selection**: Retain only the most relevant features for modeling.
-4. **Clustering**: Apply clustering algorithms to group patients based on common patterns or behaviors.
+2. **Feature Selection**: Retain only the most relevant features for modeling.
+3. **Feature Extraction**: Generate new feature **_incremento_teleassistenze_** from the raw attributes.
+4. **Clustering**: Apply clustering algorithm (**K-Modes**)  to group patients based on common patterns or behaviors.
 5. **Analysis**: Analyze the differences among patient groups to determine which features contribute to the increase in teleassistance.
 
 You can find more details in the _Pipeline Description_ paragraph of the [Project Structure](./myLib/Project_Structure.md) file.
@@ -71,3 +70,5 @@ You can find more details in the _Pipeline Description_ paragraph of the [Projec
 The goal of the challenge is to profile patients by analyzing their contribution to the increase in teleassistance services. This involves identifying common patterns and behaviors among patients that are linked to the rise in teleassistance usage.
 
 For more details on the outputs and results of the program, refer to the [Outputs Program Documentation](myLib/Outputs_Program.md).
+
+[Quickly return to the top](#teleassistance-supervised-clustering)
