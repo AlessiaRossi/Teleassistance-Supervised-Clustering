@@ -16,10 +16,10 @@ from src.data_prep.FeatureSelection import FeatureSelection
 from src.data_prep.FeatureExtraction import FeatureExtraction
 from src.ModellingClustering import ModellingClustering
 from src.MetricsEvaluation import MetricsEvaluation
-from src.AnalysisResults import (create_gender_distribution_chart, create_increment_distribution_chart, create_increment_scatter_map,
-                                 create_cluster_and_increment_pie_charts, create_increment_and_cluster_bar_charts, create_age_vs_increment_box_plot,
-                                 create_cluster_vs_increment_violin_plot, create_increment_vs_cluster_bar_chart, create_scatter_plot_by_cluster_and_professional,
-                                 create_scatter_plot_by_increment_and_structure, plot_cluster_increment_heatmap)
+from src.AnalysisResults import (age_group_bar_chart, teleassistance_variation_bar_chart,
+                                 healthcare_professional_bar_chart, increment_gender_distribution_chart, scatter_map,
+                                 year_cluster_increments_chart,
+                                 gender_cluster_distribution_chart, heatmap_plot)
 import yaml
 import logging
 import os
@@ -99,16 +99,21 @@ def main():
         cleaned_file_path = config['cleaning']['cleaned_file_path']
         df_cleaning.to_parquet(cleaned_file_path)
 
+        # Create an instance of the FeatureSelection class
+        feature_selection = FeatureSelection(df_cleaning)
+
         logging.info('Data Cleaning Execution Completed')
     elif os.path.exists(config['cleaning']['cleaned_file_path']):
         cleaned_file_path = config['cleaning']['cleaned_file_path']
         df_cleaning = pd.read_parquet(cleaned_file_path)
-    else:
+
+        # Create an instance of the FeatureSelection class
+        feature_selection = FeatureSelection(df_cleaning)
+    elif not config['cleaning']['cleaning_enabled'] and not os.path.exists(config['cleaning']['cleaned_file_path']):
         raise FileNotFoundError(
             'The cleaned_data.parquet file does not exist. Please enable the cleaning process to create it.')
 
-    # Create an instance of the FeatureSelection class
-    feature_selection = FeatureSelection(df_cleaning)
+
 
     # Phase 2: Feature Selection
     if config['feature_selection']['selection_enabled']:
@@ -126,16 +131,21 @@ def main():
         feature_selected_file_path = config['feature_selection']['feature_selected_file_path']
         df_selection.to_parquet(feature_selected_file_path)
 
+        # Create an instance of the FeatureExtraction class
+        feature_extraction = FeatureExtraction(df_selection)
+
         logging.info('Feature Selection Execution Completed')
     elif os.path.exists(config['feature_selection']['feature_selected_file_path']):
         feature_selected_file_path = config['feature_selection']['feature_selected_file_path']
         df_selection = pd.read_parquet(feature_selected_file_path)
-    else:
+
+        # Create an instance of the FeatureExtraction class
+        feature_extraction = FeatureExtraction(df_selection)
+    elif not config['feature_selection']['selection_enabled'] and not os.path.exists(config['feature_selection']['feature_selected_file_path']):
         raise FileNotFoundError(
             'The feature_selected_data.parquet file does not exist. Please enable the feature selection process to create it.')
 
-    # Create an instance of the FeatureExtraction class
-    feature_extraction = FeatureExtraction(df_selection)
+
 
     # Phase 3: Feature Extraction
     if config['feature_extraction']['extraction_enabled']:
@@ -150,18 +160,22 @@ def main():
         feature_extraction_file_path = config['feature_extraction']['feature_extraction_path']
         df_extraction.to_parquet(feature_extraction_file_path)
 
+        # Create an instance of the ModellingClustering class
+        modelling_clustering = ModellingClustering(df_extraction)
+
         logging.info('Feature Extraction Execution Completed')
     elif os.path.exists(config['feature_extraction']['feature_extraction_path']):
         feature_extraction_file_path = config['feature_extraction']['feature_extraction_path']
         df_extraction = pd.read_parquet(feature_extraction_file_path)
-    else:
+
+        # Create an instance of the ModellingClustering class
+        modelling_clustering = ModellingClustering(df_extraction)
+    elif not config['feature_extraction']['extraction_enabled'] and not os.path.exists(config['feature_extraction']['feature_extraction_path']):
         raise FileNotFoundError(
             'The feature_extracted_data.parquet file does not exist. Please enable the feature extraction process to create it.')
 
     logging.info('Data Preparation Completed')
 
-    # Create an instance of the ModellingClustering class
-    modelling_clustering = ModellingClustering(df_extraction)
 
     # Phase 4: Clustering
     if config['modelling_clustering']['clustering_enabled']:
@@ -177,6 +191,9 @@ def main():
         df_clustered.to_parquet(clustering_file_path)
         complete_df_clustered.to_parquet(clustering_file_path_all_feature)
 
+        # Create an instance of the MetricsEvaluation class
+        metrics_evaluation = MetricsEvaluation(df_clustered)
+
         logging.info('Clustering Execution Completed')
     elif os.path.exists(config['modelling_clustering']['clustering_file_path']):
         clustering_file_path = config['modelling_clustering']['clustering_file_path']
@@ -184,12 +201,14 @@ def main():
 
         df_clustered = pd.read_parquet(clustering_file_path)
         complete_df_clustered = pd.read_parquet(clustering_file_path_all_feature)
-    else:
+
+        # Create an instance of the MetricsEvaluation class
+        metrics_evaluation = MetricsEvaluation(df_clustered)
+    elif not config['modelling_clustering']['clustering_enabled'] and not os.path.exists(config['modelling_clustering']['clustering_file_path']):
         raise FileNotFoundError(
             'The clustered_data.parquet file does not exist. Please enable the clustering process to create it.')
 
-    # Create an instance of the MetricsEvaluation class
-    metrics_evaluation = MetricsEvaluation(df_clustered)
+    
 
     # Phase 5: Metrics
     if config['metrics']['metrics_enabled']:
@@ -368,6 +387,10 @@ if __name__ == '__main__':
             file.write(f'Dominant cluster for each combination of year and increment type:\n{df_max_cluster_inc}\n')
             file.write(
                 f'Highest percentage for each combination of year and increment type:\n{df_max_percentage_increment_cla}\n')
+
+        # Heat
+        heatmap = heatmap_plot(complete_df_clustered)
+        heatmap.savefig(charts_output_path + 'heatmap.png')
 
         # Heat
         heatmap = heatmap_plot(complete_df_clustered)

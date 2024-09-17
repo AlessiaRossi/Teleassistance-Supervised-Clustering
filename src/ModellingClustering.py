@@ -35,7 +35,7 @@ class ModellingClustering:
         # Calculate the cost for different numbers of clusters
         for numero_cluster in K:
             # print(numero_cluster)
-            kmodes = KModes(n_clusters=numero_cluster, init='Huang', n_init=1, verbose=0)
+            kmodes = KModes(n_clusters=numero_cluster, init='Huang', n_init=10, verbose=0)
             kmodes.fit_predict(df)
 
             # print('kmodes.cost_: ', kmodes.cost_)
@@ -92,9 +92,11 @@ class ModellingClustering:
 
         # Drop unnecessary columns based on the configuration
         list_cols_to_drop = config['modelling_clustering']['list_cols_to_drop']
-        cols_to_drop = self.df_labeled.columns[list_cols_to_drop]
-        logging.info(f'Columns to drop: {cols_to_drop}')
-        df = self.df_labeled.drop(columns=cols_to_drop)
+        # cols_to_drop = self.df_labeled.columns[list_cols_to_drop]
+
+        logging.info(f'Columns to drop: {list_cols_to_drop}')
+
+        df = self.df_labeled.drop(columns=list_cols_to_drop)
         logging.info(f'Columns after dropping: {df.columns}')
 
         # # Apply the Elbow Method if enabled in the configuration
@@ -109,7 +111,7 @@ class ModellingClustering:
         if config['modelling_clustering']['prediction_enabled']:
             n_clusters = config['modelling_clustering']['n_clusters']
 
-            kmodes = KModes(n_clusters=n_clusters, init='Huang', n_init=10, verbose=0)
+            kmodes = KModes(n_clusters=n_clusters, init='Huang', n_init=15, verbose=0)
             model_pkl_file = config['modelling_clustering']['model_pkl_file']
 
             with open(model_pkl_file, 'wb') as file:
