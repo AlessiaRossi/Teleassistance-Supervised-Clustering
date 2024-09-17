@@ -5,8 +5,8 @@
 Percentage of each gender within each cluster:
 cluster          0          1          2          3
 sesso                                              
-female   52.073338  19.504674  16.206236  12.215752
-male     48.122287  21.081991  18.023385  12.772336
+female   52.153035  24.391856  12.980288  10.474821
+male     48.301591  26.489102  13.097265  12.112041
 Gender with the highest percentage for each cluster:
 sesso
 female    0
@@ -14,67 +14,67 @@ male      0
 dtype: uint16
 Dominant percentages of each gender within each cluster:
 sesso
-female    52.073338
-male      48.122287
+female    52.153035
+male      48.301591
 dtype: float64
 
 -Year Distribution Analysis- :
 Calculate the number of samples for each combination of year and increment type:
 cluster                             0      1      2      3
 anno incremento_teleassistenze                            
-2019 decrement                   3535    639    156   1262
-     high_increment              2258   7599   7720     37
-     low_increment              40779   1286    105     43
-     medium_increment            1233    975    752   8334
-2020 decrement                   3895    717    168   1447
-     high_increment              5943  25356  22376     91
-     low_increment              51505   1687    160     61
-     medium_increment            1854   1794   1545  14443
-2021 decrement                   3424    739    188   1297
-     high_increment              7193  28208  24753     81
-     low_increment              48862   1719    193     62
-     medium_increment            2042   2319   1653  16129
-2022 decrement                   3000    627    200   1166
-     high_increment              6485  16088  17026     75
-     low_increment              47489   1690    197     82
-     medium_increment            1976   1703   1270  12818
+2019 decrement                   4476    125    991      0
+     high_increment              1780  10754    120   4960
+     low_increment              41177    103    929      4
+     medium_increment             922   1360   8309    703
+2020 decrement                   4987    133   1107      0
+     high_increment              4777  33442    367  15180
+     low_increment              52209    161   1040      3
+     medium_increment            1433   2706  13880   1617
+2021 decrement                   4495    150   1003      0
+     high_increment              5660  37999    478  16098
+     low_increment              49566    191   1077      2
+     medium_increment            1505   3686  15346   1606
+2022 decrement                   3961    166    866      0
+     high_increment              5319  23604    392  10359
+     low_increment              48223    198   1037      0
+     medium_increment            1560   1970  13080   1157
 Dominant cluster for each combination of year and increment type:
 anno  incremento_teleassistenze
 2019  decrement                    0
-      high_increment               2
+      high_increment               1
       low_increment                0
-      medium_increment             3
+      medium_increment             2
 2020  decrement                    0
       high_increment               1
       low_increment                0
-      medium_increment             3
+      medium_increment             2
 2021  decrement                    0
       high_increment               1
       low_increment                0
-      medium_increment             3
+      medium_increment             2
 2022  decrement                    0
-      high_increment               2
+      high_increment               1
       low_increment                0
-      medium_increment             3
+      medium_increment             2
 dtype: uint16
 highest number of samples for each combination of year and increment type:
 anno  incremento_teleassistenze
-2019  decrement                     3535
-      high_increment                7720
-      low_increment                40779
-      medium_increment              8334
-2020  decrement                     3895
-      high_increment               25356
-      low_increment                51505
-      medium_increment             14443
-2021  decrement                     3424
-      high_increment               28208
-      low_increment                48862
-      medium_increment             16129
-2022  decrement                     3000
-      high_increment               17026
-      low_increment                47489
-      medium_increment             12818
+2019  decrement                     4476
+      high_increment               10754
+      low_increment                41177
+      medium_increment              8309
+2020  decrement                     4987
+      high_increment               33442
+      low_increment                52209
+      medium_increment             13880
+2021  decrement                     4495
+      high_increment               37999
+      low_increment                49566
+      medium_increment             15346
+2022  decrement                     3961
+      high_increment               23604
+      low_increment                48223
+      medium_increment             13080
 dtype: int64
 
 -Geographical Distribution Analysis- :
@@ -111,8 +111,8 @@ Liguria                 0
 Lombardia               0
 Marche                  0
 Molise                  0
-Piemonte                3
-Prov. auton. bolzano    0
+Piemonte                0
+Prov. auton. bolzano    1
 Prov. auton. trento     0
 Puglia                  0
 Sardegna                0
@@ -148,10 +148,10 @@ dtype: float64
 -Cluster and Increment Distribution Analysis- :
 Number of samples for each cluster
 cluster
-0    231473
-1     93146
-2     78462
-3     57428
+0    232050
+1    116748
+2     60022
+3     51689
 Name: count, dtype: int64
 Number of samples for each increment type
 incremento_teleassistenze
@@ -162,19 +162,18 @@ decrement            22460
 Name: count, dtype: int64
 Number of samples for each combination of teleassistance increment and cluster
    incremento_teleassistenze  cluster   count
-0                  decrement        0   13854
-1                  decrement        1    2722
-2                  decrement        2     712
-3                  decrement        3    5172
-4             high_increment        0   21879
-5             high_increment        1   77251
-6             high_increment        2   71875
-7             high_increment        3     284
-8              low_increment        0  188635
-9              low_increment        1    6382
-10             low_increment        2     655
-11             low_increment        3     248
-12          medium_increment        0    7105
-13          medium_increment        1    6791
-14          medium_increment        2    5220
-15          medium_increment        3   51724
+0                  decrement        0   17919
+1                  decrement        1     574
+2                  decrement        2    3967
+3             high_increment        0   17536
+4             high_increment        1  105799
+5             high_increment        2    1357
+6             high_increment        3   46597
+7              low_increment        0  191175
+8              low_increment        1     653
+9              low_increment        2    4083
+10             low_increment        3       9
+11          medium_increment        0    5420
+12          medium_increment        1    9722
+13          medium_increment        2   50615
+14          medium_increment        3    5083

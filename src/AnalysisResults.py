@@ -340,8 +340,11 @@ def create_increment_and_cluster_bar_charts(data):
         go.Bar(
             x=incremento_counts.index,
             y=incremento_counts.values,
-            name='Increment Type',
+            hovertemplate='Increment Type: %{x}<br>'
+                          'Number of Samples: %{y}',
+            name=' ',
             marker_color=px.colors.sequential.Viridis
+
         ),
         row=1, col=1
     )
@@ -351,7 +354,9 @@ def create_increment_and_cluster_bar_charts(data):
         go.Bar(
             x=cluster_counts.index,
             y=cluster_counts.values,
-            name='Cluster',
+            name=' ',
+            hovertemplate='Cluster: %{x}<br> '
+                          'Number of Samples: %{y}',
             marker_color=px.colors.qualitative.Pastel
         ),
         row=1, col=2

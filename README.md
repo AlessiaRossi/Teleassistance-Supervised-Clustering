@@ -7,7 +7,7 @@
 2. [Enviroment setup](#2-enviroment-setup)
 3. [Data Sources](#3-data-sources)
 4. [Pipeline](#4-pipeline)
-5. [Outputs Program](#5-outputs-program)
+5. [Results & Graphs](#5-results--graphs)
 
 
 ## 1. Project Description
@@ -35,7 +35,7 @@ Before running the code, it's important to take some precautions and set up your
 2. Activate the Virtual Environment:
    - If you're using Windows:    `.\venv\Scripts\activate`
    - If you're using Unix or MacOS:    `source ./venv/Scripts/activate`
-3. Deactivate the Environment (When Finished):
+3. OPTIONAL - Deactivate the Environment (When Finished):
    - Use the following command to deactivate the virtual environment:    `deactivate`
 4. Install Dependencies:
    - After cloning the project and activating the virtual environment, install the required dependencies using:    `pip install -r requirements.txt`
@@ -66,9 +66,10 @@ You can find more details in the _Pipeline Description_ paragraph of the [Projec
 
 [Quickly return to the top](#teleassistance-supervised-clustering)
 
-## **5. Outputs Program**
+## **5. Results & Graphs**
 The goal of the challenge is to profile patients by analyzing their contribution to the increase in teleassistance services. This involves identifying common patterns and behaviors among patients that are linked to the rise in teleassistance usage.
 
-For more details on the outputs and results of the program, refer to the [Outputs Program Documentation](myLib/Outputs_Program.md).
+For a detailed visualization of the results and graphs obtained, please refer to the [Presentazione_progetto_FIA](./myLib/Presentazione_proggetto_FIA.pptx).
+
 
 [Quickly return to the top](#teleassistance-supervised-clustering)

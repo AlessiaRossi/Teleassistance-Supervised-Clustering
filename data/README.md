@@ -35,7 +35,7 @@ This folder contains the raw data files as obtained from the source. The files i
     - **...** (Please refer to this [file](../myLib/challenge_campus_biomedico.pdf) from page 9, for the full list of variables and descriptions).
 
 - **`Codici-statistici-e-denominazioni-aggiornato-2023.xlsx`**:
-  - This Excel file contains updated statistical codes and denominations relevant to the dataset. In particular, this dataset is used for imputate_comune_residenza method that you can find in the [data_cleaning.py](../src/data_prep/data_cleaning.py) script.
+  - This Excel file contains updated statistical codes and denominations relevant to the dataset. In particular, this dataset is used for imputate_comune_residenza method that you can find in the [DataCleaning.py](../src/data_prep/DataCleaning.py) script.
 
 ## 2. `processed/` Directory
 This folder contains data that has been processed or transformed in some way from the raw data. These files are typically the result of various preprocessing steps and are used for analysis and modeling.
