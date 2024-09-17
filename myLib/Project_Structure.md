@@ -139,7 +139,8 @@ The project structure of the application is organized into the following directo
 [Quickly return to the top](#project-structure)
 
 ## **2. Flow Chart**
-
+TODO
+![Image](teleassistenze_flowchart v_1.drawio.png)
 
 [Quickly return to the top](#project-structure)
 
