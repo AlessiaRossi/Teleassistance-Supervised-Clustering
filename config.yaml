@@ -22,9 +22,9 @@ feature_extraction:
 # Phase 4
 modelling_clustering:
   clustering_enabled: True
-  elbow_enabled: true
-  prediction_enabled: true
-  max_clusters: 10
+  elbow_enabled: False
+  prediction_enabled: True
+  max_clusters: 13
   n_clusters: 4
   list_cols_to_drop:  ['id_prenotazione', 'id_paziente', 'data_nascita', 'sesso',
                       'tipologia_servizio', 'data_contatto', 'id_professionista_sanitario',

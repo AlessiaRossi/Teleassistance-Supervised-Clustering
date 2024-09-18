@@ -132,7 +132,7 @@ The project structure of the application is organized into the following directo
     - **Process**: The `AnalysisResults.py` script in [src/AnalysisResults.py](../src/AnalysisResults.py) is dedicated to creating visualizations and narratives that make the data insights clear and understandable. This can include charts, graphs, and other forms of data representation.
     - **Output**: The visualizations and any associated summaries are either saved to a file or displayed as specified in the script, providing a comprehensive view of the data and the results of the analysis.
 
-    The visualizations generated during the analysis can be found in the [Presentazione_progetto_FIA](./myLib/Presentazione_proggetto_FIA.pptx) file.
+    The visualizations generated during the analysis can be found in the [Presentazione_progetto_FIA](./Presentazione_proggetto_FIA.pdf) file.
 
     ---
 

@@ -31,7 +31,7 @@ class MetricsEvaluation:
         # Iterate over each cluster
         for cluster_id in np.unique(clusters):
             # Obtain the indices of data points in the cluster
-            print(cluster_id)
+            # print(cluster_id)
 
             cluster_indices = np.where(clusters == cluster_id)[0] # [0] to get the array from the tuple, as np.where returns a tuple
             # print('Cluster indices:', cluster_indices)
@@ -43,7 +43,7 @@ class MetricsEvaluation:
 
             # Count the number of data points in each class
             most_common_label, count = Counter(cluster_labels).most_common(1)[0] # most_common returns a list of tuples, we take the first one
-            print(f'Most common label: {most_common_label}, count: {count}')
+            logging.info(f'Most common label: {most_common_label}, count: {count}')
 
             purity_sum += count
 
@@ -66,7 +66,7 @@ class MetricsEvaluation:
         # Calculate the silhouette scores for each sample
         silhouette_vals = silhouette_samples(features, clusters)
         
-        print(silhouette_vals)
+        # print(silhouette_vals)
 
         # Calculate the mean silhouette score
         # NOTE, OPTIMIZE: the code work, but the mean silhouette can be calulated in a more efficient way. "np.mean(silhouette_vals)" is enough
@@ -97,7 +97,7 @@ class MetricsEvaluation:
         clusters = df['cluster'].to_numpy()
         # Remove the cluster column to get the feature data
         feature_columns = df.drop(columns=['cluster'])
-        print(feature_columns.columns)
+        # print(feature_columns.columns)
         
     # Convert non-numeric columns to numeric using LabelEncoder
         for column in feature_columns.columns:
@@ -112,7 +112,7 @@ class MetricsEvaluation:
         X_standardized = scaler.fit_transform(feature_columns)
 
         X_standardized_df = pd.DataFrame(X_standardized)
-        print(X_standardized_df.head())
+        # print(X_standardized_df.head())
 
         return X_standardized_df, clusters
 

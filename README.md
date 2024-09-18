@@ -28,7 +28,7 @@ To recap:
 [Quickly return to the top](#teleassistance-supervised-clustering)
 
 ## **2. Enviroment setup**
-Before running the code, it's important to take some precautions and set up your environment properly. Follow these steps:
+Before running the code, ensure you are using Python version 3.10.*. It's important to take some precautions and set up your environment properly. Follow these steps:
 1. Create a Virtual Environment:
    - Open your terminal or command prompt.
    - Run the following command to create a virtual environment named "venv":` python -m venv venv`
@@ -42,7 +42,10 @@ Before running the code, it's important to take some precautions and set up your
      This command downloads all the non-standard modules required by the application.
 5. If your Python version used to generate the virtual environment doesn't contain an updated version of pip, update pip using:  `pip install --upgrade pip `
   
-Once you've set up your virtual environment and installed the dependencies, you're ready to run the application. Simply navigate to the `main.py` file and execute it.
+Once you've set up your virtual environment and installed the dependencies, you're ready to run the application. Simply navigate to the [`main.py`](main.py) file and execute it.
+
+>**Note**:
+Before running the application, ensure that you configure the [`config.yaml`](config.yaml) file to decide which phases of the pipeline to execute. This file allows you to enable or disable specific steps in the data processing and analysis pipeline according to your requirements.
 
 [Quickly return to the top](#teleassistance-supervised-clustering)
 
@@ -69,7 +72,7 @@ You can find more details in the _Pipeline Description_ paragraph of the [Projec
 ## **5. Results & Graphs**
 The goal of the challenge is to profile patients by analyzing their contribution to the increase in teleassistance services. This involves identifying common patterns and behaviors among patients that are linked to the rise in teleassistance usage.
 
-For a detailed visualization of the results and graphs obtained, please refer to the [Presentazione_progetto_FIA](./myLib/Presentazione_proggetto_FIA.pptx).
+For a detailed visualization of the results and graphs obtained, please refer to the [Presentazione_progetto_FIA](./myLib/Presentazione_proggetto_FIA.pdf).
 
 
 [Quickly return to the top](#teleassistance-supervised-clustering)
