@@ -35,7 +35,7 @@ class ModellingClustering:
         # Calculate the cost for different numbers of clusters
         for numero_cluster in K:
             # print(numero_cluster)
-            kmodes = KModes(n_clusters=numero_cluster, init='Huang', n_init=1, verbose=0)
+            kmodes = KModes(n_clusters=numero_cluster, init='Huang', n_init=10, verbose=0)
             kmodes.fit_predict(df)
 
             # print('kmodes.cost_: ', kmodes.cost_)
