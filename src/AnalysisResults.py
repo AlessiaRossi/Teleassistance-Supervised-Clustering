@@ -6,8 +6,8 @@ from plotly.subplots import make_subplots
 
 
 # Load the data
-file_path = 'data/processed/clustered_data_all_feature.parquet'
-data = pd.read_parquet(file_path)
+# file_path = 'data/processed/clustered_data_all_feature.parquet'
+# data = pd.read_parquet(file_path)
 
 
 
