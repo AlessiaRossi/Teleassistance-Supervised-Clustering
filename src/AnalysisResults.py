@@ -321,8 +321,8 @@ def create_increment_and_cluster_bar_charts(data):
 
     # Step 2: Calculate the number of samples for each cluster
     cluster_counts = data['cluster'].value_counts()
-    print("Number of samples per cluster:")
-    print(cluster_counts)
+    # print("Number of samples per cluster:")
+    # print(cluster_counts)
 
     # Step 3: Create a figure with two subplots (one for incremento and one for clusters)
     fig = make_subplots(

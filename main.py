@@ -148,7 +148,7 @@ def main():
         feature_extraction_file_path = config['feature_extraction']['feature_extraction_path']
         df_extraction.to_parquet(feature_extraction_file_path)
 
-        print(df_extraction.info())
+        # print(df_extraction.info())
 
         # Create an instance of the ModellingClustering class
         modelling_clustering = ModellingClustering(df_extraction)
@@ -159,7 +159,7 @@ def main():
         df_extraction = pd.read_parquet(feature_extraction_file_path)
  
 
-        print(df_extraction.info())
+        # print(df_extraction.info())
 
         # Create an instance of the ModellingClustering class
         modelling_clustering = ModellingClustering(df_extraction)
@@ -303,95 +303,3 @@ def main():
 
 if __name__ == '__main__':
     main()
-
-## old code 
-'''# Phase 6: Analysis Results
-    if config['analysis']['analysis_enabled']:
-        logging.info('Analysis Results Started')
-        charts_output_path = config['analysis']['charts_output_path']
-
-        # Age Group Bar Chart
-        df_max_cluster, df_max_increment, df_max_percentage_increment, df_crosstab_cluster, df_crosstab_increment, age_group_fig = age_group_bar_chart(
-            df_clustered)
-        age_group_fig.write_html(charts_output_path + 'age_group_bar_chart.html')
-
-        # Print and log the values
-        with open(config['analysis']['analysis_file_path'], 'w') as file:
-            file.write(f'\n-Age Group Bar Chart Analysis- :\n')
-            file.write(f'Cluster with the highest percentage for each age group:\n{df_max_cluster}\n')
-            file.write(f'Increment category with the highest percentage per age group :\n{df_max_increment}\n')
-            file.write(f'Highest percentage of increment type per age group:\n{df_max_percentage_increment}\n')
-            file.write(f'Percentage of samples of increment type per age group:\n{df_crosstab_increment}\n')
-            file.write(f'Percentage of samples of cluster per age group:\n{df_crosstab_increment}\n')
-
-        # Teleassistance Variation Bar Chart
-        cluster_counts, result, teleassistance_fig = teleassistance_variation_bar_chart(df_clustered)
-        teleassistance_fig.write_html(charts_output_path + 'teleassistance_variation_bar_chart.html')
-
-        with open(config['analysis']['analysis_file_path'], 'a') as file:
-            file.write(f'\n-Teleassistance Variation Bar Chart Analysis- :\n')
-            file.write(f'Frequency of incremento_teleassistenze categories per cluster: \n{cluster_counts}\n')
-            file.write(f'Cluster with the highest percentage for each increment category: \n{result}\n')
-
-        # Healthcare Professional Bar Chart
-        dominant_increment_per_professional, healthcare_fig = healthcare_professional_bar_chart(df_clustered)
-        healthcare_fig.write_html(charts_output_path + 'healthcare_professional_bar_chart.html')
-
-        with open(config['analysis']['analysis_file_path'], 'a') as file:
-            file.write(f'\n-Healthcare Professional Bar Chart Analysis- :\n')
-            file.write(
-                f'Frequency of each type of healthcare professional per teleassistance increment and dominant cluster: \n{dominant_increment_per_professional}\n')
-
-        # Gender-Cluster Distribution Bar Chart
-        sex_crosstab, max_sex_per_cluster, max_percentage_per_cluster, gender_fig = gender_cluster_distribution_chart(
-            complete_df_clustered)
-        gender_fig.write_html(charts_output_path + 'gender-cluster_distribution_bar_chart.html')
-        # Gender-Increment Distribution Bar Chart
-        sex_crosstab_inc, max_sex_per_inc, max_percentage_per_inc, gender_inc_fig = increment_gender_distribution_chart(
-            complete_df_clustered)
-        gender_inc_fig.write_html(charts_output_path + 'gender-increment_distribution_bar_chart.html')
-        # Print and log the values
-        with open(config['analysis']['analysis_file_path'], 'a') as file:
-            file.write(f'\n-Gender Distribution Analysis- :\n')
-            file.write(f'Percentage of each gender within each cluster:\n{sex_crosstab}\n')
-            file.write(f'Gender with the highest percentage for each cluster:\n{max_sex_per_cluster}\n')
-            file.write(f'Dominant percentages of each gender within each cluster:\n{max_percentage_per_cluster}\n')
-            file.write(f'Percentage of each gender within each increment type:\n{sex_crosstab_inc}\n')
-            file.write(f'Gender with the highest percentage for each increment type:\n{max_sex_per_inc}\n')
-            file.write(f'Dominant percentages of each gender within each increment type:\n{max_percentage_per_inc}\n')
-
-        # Scatter Map
-        max_cluster_per_region, max_percentage_per_region, max_increment_teleassistenze, scatter_map_fig = scatter_map(
-            df_clustered)
-        scatter_map_fig.write_html(charts_output_path + 'scatter_map.html')
-
-        # Print and log the values
-        with open(config['analysis']['analysis_file_path'], 'a') as file:
-            file.write(f'\n-Scatter Map Analysis- :\n')
-            file.write(
-                f'Type of increment with the highest percentage for each region:\n{max_increment_teleassistenze}\n')
-            file.write(f'Cluster with the highest percentage for each region:\n{max_cluster_per_region}\n')
-            file.write(f'Percentage of each region within each cluster:\n{max_percentage_per_region}\n')
-
-        # Year Cluser Increment Chart
-        df_max_cluster_inc, df_max_percentage_increment_cla, df_crosstab_cluster, fig = year_cluster_increments_chart(
-            complete_df_clustered)
-        fig.write_html(charts_output_path + 'teleassistance_increment_cluster.html')
-
-        # Print and log the values
-        with open(config['analysis']['analysis_file_path'], 'a') as file:
-            file.write(f'\n-Year Increment Cluster Analysis- :\n')
-            file.write(f'Dominant cluster for each combination of year and increment type:\n{df_max_cluster_inc}\n')
-            file.write(
-                f'Highest percentage for each combination of year and increment type:\n{df_max_percentage_increment_cla}\n')
-
-        # Heat
-        heatmap = heatmap_plot(complete_df_clustered)
-        heatmap.savefig(charts_output_path + 'heatmap.png')
-
-        # Heat
-        heatmap = heatmap_plot(complete_df_clustered)
-        heatmap.savefig(charts_output_path + 'heatmap.png')
-
-        logging.info('Analysis Results Completed')
-'''

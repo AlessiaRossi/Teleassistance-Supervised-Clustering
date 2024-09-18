@@ -103,7 +103,7 @@ class ModellingClustering:
         if config['modelling_clustering']['elbow_enabled']:
             max_clusters = config['modelling_clustering']['max_clusters']
             # print('max_clusters', max_clusters, type(max_clusters))
-            print(df.head())
+            # print(df.head())
             self.__elbow_method(df, max_clusters)
             
 
